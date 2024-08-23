@@ -1,0 +1,3 @@
+D:/GitProjects/Embedded_Libs/cmake-build-debug/CMakeFiles/Embedded_Libs.elf.dir
+D:/GitProjects/Embedded_Libs/cmake-build-debug/CMakeFiles/edit_cache.dir
+D:/GitProjects/Embedded_Libs/cmake-build-debug/CMakeFiles/rebuild_cache.dir
