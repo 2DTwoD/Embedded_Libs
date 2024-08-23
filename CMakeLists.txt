@@ -19,9 +19,9 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_C_STANDARD 11)
 
 #Uncomment for hardware floating point
-#add_compile_definitions(ARM_MATH_CM4;ARM_MATH_MATRIX_CHECK;ARM_MATH_ROUNDING)
-#add_compile_options(-mfloat-abi=hard -mfpu=fpv4-sp-d16)
-#add_link_options(-mfloat-abi=hard -mfpu=fpv4-sp-d16)
+add_compile_definitions(ARM_MATH_CM4;ARM_MATH_MATRIX_CHECK;ARM_MATH_ROUNDING)
+add_compile_options(-mfloat-abi=hard -mfpu=fpv4-sp-d16)
+add_link_options(-mfloat-abi=hard -mfpu=fpv4-sp-d16)
 
 #Uncomment for software floating point
 #add_compile_options(-mfloat-abi=soft)
@@ -55,35 +55,41 @@ include_directories(
         Control/all/inc
         Core/Inc
         Discrete/all/inc
-        Discrete/F103/inc
+        #Discrete/F103/inc
         Discrete/F407/inc
-        Drivers/CMSIS/Device/ST/STM32F1xx/Include
+        #Drivers/CMSIS/Device/ST/STM32F1xx/Include
         Drivers/CMSIS/Device/ST/STM32F4xx/Include
         Drivers/CMSIS/Include
         FreeRTOS/ARM_CM4F
         FreeRTOS/Inc
         Main/inc
-        Misc/inc
-        Observe/inc
+        Misc/all/inc
+        #Misc/F103/inc
+        Misc/F407/inc
+        Observe/all/inc
         Tasks/Inc
-        Timer/inc
+        Timer/all/inc
 )
 
 add_definitions(-DDEBUG -DSTM32F407xx)
 
 file(GLOB_RECURSE SOURCES
-        "Analog/*.*"
-        "Comm/*.*"
-        "Control/*.*"
-        "Core/*.*"
-        "Drivers/*.*"
-        "Discrete/*.*"
+        "Analog/all/*.*"
+        "Comm/all/*.*"
+        "Comm/F407/*.*"
+        "Control/all/*.*"
+        "Core/Src/*.*"
+        "Core/Startup/startup_stm32f407vetx.s"
+        "Discrete/all/*.*"
+        "Discrete/F407/*.*"
+        "Drivers/CMSIS/Device/ST/STM32F4xx/*.*"
         "FreeRTOS/*.*"
         "Main/*.*"
-        "Misc/*.*"
-        "Observe/*.*"
+        "Misc/all/*.*"
+        "Misc/F407/*.*"
+        "Observe/all/*.*"
         "Tasks/*.*"
-        "Timer/*.*"
+        "Timer/all/*.*"
 )
 
 set(LINKER_SCRIPT ${CMAKE_SOURCE_DIR}/STM32F407VETX_FLASH.ld)

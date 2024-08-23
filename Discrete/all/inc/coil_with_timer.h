@@ -1,7 +1,6 @@
 #ifndef COIL_WITH_TIMER_H
 #define COIL_WITH_TIMER_H
 
-#include "stm32f103xb.h"
 #include "interfaces.h"
 #include "gpio_common.h"
 #include "common.h"
@@ -13,7 +12,7 @@
 
 class CoilOnDelay: private OnDelayCommon, public Coil, public IUpdated1ms {
   public:
-		CoilOnDelay(GPIO_TypeDef *gpio, uint8_t pin, uint16_t delay);
+		CoilOnDelay(GPIO_Info gpioInfo, uint16_t delay);
 	
 		void update1ms() override;
 	
@@ -26,7 +25,7 @@ class CoilOffDelay: private OffDelayCommon, public Coil, public IUpdated1ms {
   public:
 		using Coil::set;
 		using Coil::reset;
-		CoilOffDelay(GPIO_TypeDef *gpio, uint8_t pin, uint16_t delay);
+		CoilOffDelay(GPIO_Info gpioInfo, uint16_t delay);
 	
 		void update1ms() override;
 	
@@ -39,7 +38,7 @@ class CoilPulse: private PulseCommon, public Coil, public IUpdated1ms  {
   public:
 		using Coil::set;
 		using Coil::reset;
-		CoilPulse(GPIO_TypeDef *gpio, uint8_t pin, uint16_t delay);
+		CoilPulse(GPIO_Info gpioInfo, uint16_t delay);
 	
 		void update1ms() override;
 	

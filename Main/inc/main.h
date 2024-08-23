@@ -1,11 +1,10 @@
 #ifndef MAIN_H
 #define MAIN_H
 
-#include "stm32f103xb.h"
 #include "FreeRTOS.h"
 #include "task.h"
 
-#include "init.h"
+#include "misc_init.h"
 #include "global_vars.h"
 #include "all_tasks.h"
 

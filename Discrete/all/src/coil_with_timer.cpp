@@ -1,7 +1,7 @@
 #include "coil_with_timer.h"
 
 //CoilOnDelayed
-CoilOnDelay::CoilOnDelay(GPIO_TypeDef *gpio, uint8_t pin, uint16_t delay): Coil(gpio, pin), OnDelayCommon(delay) {
+CoilOnDelay::CoilOnDelay(GPIO_Info gpioInfo, uint16_t delay): Coil(gpioInfo), OnDelayCommon(delay) {
 }
 void CoilOnDelay::update1ms() {
 	OnDelayCommon::update();
@@ -16,7 +16,7 @@ CoilOnDelay& CoilOnDelay::operator=(bool value){
 }
 
 //CoilOffDelayed
-CoilOffDelay::CoilOffDelay(GPIO_TypeDef *gpio, uint8_t pin, uint16_t delay): Coil(gpio, pin), OffDelayCommon(delay) {
+CoilOffDelay::CoilOffDelay(GPIO_Info gpioInfo, uint16_t delay): Coil(gpioInfo), OffDelayCommon(delay) {
 }
 void CoilOffDelay::update1ms() {
 	OffDelayCommon::update();
@@ -31,7 +31,7 @@ CoilOffDelay& CoilOffDelay::operator=(bool value){
 }
 
 //CoilPulse
-CoilPulse::CoilPulse(GPIO_TypeDef *gpio, uint8_t pin, uint16_t delay): Coil(gpio, pin), PulseCommon(delay) {
+CoilPulse::CoilPulse(GPIO_Info gpioInfo, uint16_t delay): Coil(gpioInfo), PulseCommon(delay) {
 }
 void CoilPulse::update1ms() {
 	PulseCommon::update();

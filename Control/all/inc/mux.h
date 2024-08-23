@@ -4,16 +4,16 @@
 #include <cstdint>
 #include <cstdarg>
 
-#include "common.h"
+#include "math_fun.h"
 
 template<typename T>
 class Mux{
 	private:
-		uint8_t capacity;
-		uint8_t channel;
+		uint8_t capacity{};
+		uint8_t channel{};
 		T** inArray;
 	public:
-		Mux(uint8_t capacity){
+		explicit Mux(uint8_t capacity){
 			this->capacity = max((uint8_t)1, capacity);
 			inArray = new T*[capacity];
 		}

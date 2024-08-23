@@ -1,13 +1,18 @@
 #include "all_tasks.h"
 
-extern CoilOffDelay led;
+extern CoilOffDelay led1;
+extern Coil led2;
+extern OnDelay delay;
 extern SimpleInputDelayed button;
-extern Counter counter;
 
 void ledTask(void *pvParameters){
+    delay = true;
 	while(true){
-		led = button.isActive();
-		//counter += button.isActive();
+		led1 = button.isActive();
+        if(delay.get()){
+            led2.toggle();
+            delay.reset();
+        }
 		vTaskDelay(1);
 	}
 }

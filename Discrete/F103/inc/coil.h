@@ -6,10 +6,11 @@
 #include "gpio_common.h"
 #include "common.h"
 #include "common_timer.h"
+#include "programm_coil.h"
 
 class Coil: public GPIOcommon, public ProgrammCoil {
   public:
-		Coil(GPIO_TypeDef *gpio, uint8_t pin);
+		explicit Coil(GPIO_Info gpioInfo);
 	
 		bool isActive() override;
 	

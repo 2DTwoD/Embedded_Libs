@@ -1,6 +1,6 @@
-#include "../inc/coil.h"
+#include "coil.h"
 
-Coil::Coil(GPIO_TypeDef *gpio, uint8_t pin): GPIOcommon(gpio, pin) {
+Coil::Coil(GPIO_Info gpioInfo): GPIOcommon(gpioInfo) {
 	if(pin < 8){
         setRegisterWithAutoShift(&gpio->CRL, 0x1111 << (4 * pin), 0b0001);
 	} else {

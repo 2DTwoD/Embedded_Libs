@@ -8,29 +8,30 @@
 
 class PIDreg: public IUpdatedSomewhere{
 	private:
-		float pv;
-		float t = 1.0f;
+		float pv{0.0f};
+		float t{1.0f};
 	
-		float sp = 0.0f;
-		float kp = 1.0f;
-		float ti = 10.0f;
-		float td = 0.0f;
-		float db = 0.0f;
-		float upOutLim = 100.0f;
-		float downOutLim = 0.0f;
-		bool AUTO = false;
-		bool inverse = false;
+		float sp{0.0f};
+		float kp{1.0f};
+		float ti{10.0f};
+		float td{0.0f};
+		float db{0.0f};
+		float upOutLim{100.0f};
+		float downOutLim{0.0f};
+		bool AUTO{false};
+		bool inverse{false};
 	
-		float out  = 0.0f;
-		float e0;
-		float e1;
-		float e2;
-		float g0;
-		float g1;
-		float g2;
+		float out{0.0f};
+		float e0{0.0f};
+		float e1{0.0f};
+		float e2{0.0f};
+		float g0{0.0f};
+		float g1{0.0f};
+		float g2{0.0f};
 	public:
-		PIDreg(uint16_t t, float sp = 0.0f, float kp = 1.0f, float ti = 10.0f, float td = 0.0f,	float db = 0.0f, 
-																			float upOutLim = 100.0f, float downOutLim = 0.0f, bool inverse = false);
+		PIDreg(uint16_t t, float sp = 0.0f, float kp = 1.0f,
+               float ti = 10.0f, float td = 0.0f, float db = 0.0f,
+               float upOutLim = 100.0f, float downOutLim = 0.0f, bool inverse = false);
 		uint16_t getT();
 		void setPv(float);
 		float getPv();

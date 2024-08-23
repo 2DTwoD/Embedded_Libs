@@ -5,9 +5,9 @@
 #include "FreeRTOS.h"
 #include "task.h"
 
-#include "../../Discrete/F103/inc/coil.h"
+#include "coil.h"
 #include "coil_with_timer.h"
-#include "simple_input.h"
+#include "simple_input_delayed.h"
 #include "counter.h"
 #include "pid.h"
 #include "analog_monitor.h"
