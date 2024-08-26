@@ -1,20 +1,13 @@
 #include "pid.h"
-
-PIDreg::PIDreg(uint16_t t, float sp, float kp, float ti, float td,	float db, float upOutLim, float downOutLim, bool inverse){
-	this->sp = sp;
-	this->t = (float)t;
-	this->kp = kp;
-	this->ti = ti;
-	this->td = td;
-	this->db = db;
-	this->upOutLim = upOutLim;
-	this->downOutLim = downOutLim;
-	this->inverse = inverse;
+PIDreg::PIDreg(uint16_t t, float sp, float kp, float ti, float td,
+               float db, float upOutLim, float downOutLim, bool inverse):
+               t(t), sp(sp), kp(kp), ti(ti), td(td), db(db),
+               upOutLim(upOutLim), downOutLim(downOutLim), inverse(inverse){
 	updateKoef();
 	reset();
 }
 uint16_t PIDreg::getT(){
-	return (uint16_t)t;
+	return t;
 }
 void PIDreg::setPv(float value){
 	pv = value;

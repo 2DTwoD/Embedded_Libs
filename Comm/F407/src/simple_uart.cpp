@@ -1,4 +1,4 @@
-#include "../inc/simple_uart.h"
+#include "simple_uart.h"
 //For STM32F407
 SimpleUART::SimpleUART(volatile USART_TypeDef *uart, GPIO_Info RxGPIO, GPIO_Info TxGPIO, uint32_t busFreq,
                        USARTbaudRate baudRate, USARTparity parity, USARTstopBits stopBits, uint16_t bufferSize,
@@ -126,6 +126,11 @@ void SimpleUART::send(uint8_t *bytes, uint16_t len) {
     for (int i = 0; i < len; i++){
         sendByte(bytes[i]);
     }
+}
+void SimpleUART::click() {
+    char mes[10];
+    sprintf(mes, "click%d", clickCount++);
+    print(mes);
 }
 
 void SimpleUART::IRQhandler() {

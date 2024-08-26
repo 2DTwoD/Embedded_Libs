@@ -9,10 +9,10 @@
 
 class TwoPosCommon{
 	protected:
-		float in;
-		float sp;
-		bool reverse;
-		bool out;
+		float in{0.0f};
+		float sp{50.0f};
+		bool reverse{false};
+		bool out{false};
 	public:
 		TwoPosCommon(float sp = 50.0f, bool reverse = false);
 		void set(float value);
@@ -27,10 +27,10 @@ class TwoPosCommon{
 
 class TwoPosGist: public TwoPosCommon, public IUpdatedSomewhere{
 	private:
-		float lowGist;
-		float highGist;
+		float lowGist{0.0f};
+		float highGist{0.0f};
 	public:
-		TwoPosGist(float sp = 50.0f, float lowGist = 0.0f, float highGist = 0.0f, bool reverse = false);
+        explicit TwoPosGist(float sp = 50.0f, float lowGist = 0.0f, float highGist = 0.0f, bool reverse = false);
 		void set(float value);
 		void setLowGist(float value);
 		float getLowGist();
@@ -42,11 +42,11 @@ class TwoPosGist: public TwoPosCommon, public IUpdatedSomewhere{
 
 class TwoPosTim: public TwoPosCommon, public IUpdated1ms{
 	private:
-		CommonTimer *lowTimer = nullptr;
-		CommonTimer *highTimer = nullptr;
+		CommonTimer *lowTimer{nullptr};
+		CommonTimer *highTimer{nullptr};
 	public:
 		TwoPosTim(float sp = 50.0f, uint16_t lowTime = 0, uint16_t highTim = 0, bool reverse = false);
-	  ~TwoPosTim();
+	    ~TwoPosTim();
 		void setLowTime(uint16_t value);
 		uint16_t getLowTime();
 		void setHighTime(uint16_t value);

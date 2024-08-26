@@ -9,7 +9,7 @@
 class PIDreg: public IUpdatedSomewhere{
 	private:
 		float pv{0.0f};
-		float t{1.0f};
+		uint16_t t{20};
 	
 		float sp{0.0f};
 		float kp{1.0f};
@@ -29,7 +29,8 @@ class PIDreg: public IUpdatedSomewhere{
 		float g1{0.0f};
 		float g2{0.0f};
 	public:
-		PIDreg(uint16_t t, float sp = 0.0f, float kp = 1.0f,
+
+    PIDreg(uint16_t t, float sp, float kp = 1.0f,
                float ti = 10.0f, float td = 0.0f, float db = 0.0f,
                float upOutLim = 100.0f, float downOutLim = 0.0f, bool inverse = false);
 		uint16_t getT();

@@ -2,14 +2,14 @@
 
 extern PIDreg pid;
 
+
 void pidTask(void *pvParameters){
-	/*pid.setKp(0.1f);
+	pid.setKp(0.1f);
 	pid.setTi(200.0f);
 	pid.setTd(1.0f);
-	pid.setAuto(true);*/
+	pid.setAuto(true);
 	while(true){
-		/*pid = 50;
-		vTaskDelay(pid.getT());*/
-		vTaskDelay(1);
+		pid = 50.0f;
+		vTaskDelay(pid.getT());
 	}
 }

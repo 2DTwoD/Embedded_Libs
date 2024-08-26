@@ -32,7 +32,7 @@
 .global  g_pfnVectors
 .global  Default_Handler
 
-/* start address for the initialization values of the .data section. 
+/* start address for the initialization values of the .data section.
 defined in linker script */
 .word  _sidata
 /* start address for the .data section. defined in linker script */  
@@ -59,7 +59,10 @@ defined in linker script */
   .type  Reset_Handler, %function
 Reset_Handler:  
   ldr   sp, =_estack     /* set stack pointer */
-
+/*
+Enable FPU for global operations with floating point
+*/
+  bl  enableFPU
 
 /* Copy the data segment initializers from flash to SRAM */  
   ldr r0, =_sdata
@@ -96,7 +99,7 @@ LoopFillZerobss:
     bl __libc_init_array
 /* Call the application's entry point.*/
   bl  main
-  bx  lr    
+  bx  lr
 .size  Reset_Handler, .-Reset_Handler
 
 /**

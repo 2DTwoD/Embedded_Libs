@@ -18,6 +18,7 @@
 #include "analog_out.h"
 #include "rf_impulse.h"
 #include "sequence.h"
+#include "simple_uart.h"
 
 void ledTask(void *pvParameters);
 void pidTask(void *pvParameters);

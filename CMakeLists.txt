@@ -23,6 +23,7 @@ add_compile_definitions(ARM_MATH_CM4;ARM_MATH_MATRIX_CHECK;ARM_MATH_ROUNDING)
 add_compile_options(-mfloat-abi=hard -mfpu=fpv4-sp-d16)
 add_link_options(-mfloat-abi=hard -mfpu=fpv4-sp-d16)
 
+
 #Uncomment for software floating point
 #add_compile_options(-mfloat-abi=soft)
 
@@ -52,6 +53,7 @@ endif ()
 include_directories(
         Analog/all/inc
         Comm/all/inc
+        Comm/F407/inc
         Control/all/inc
         Core/Inc
         Discrete/all/inc

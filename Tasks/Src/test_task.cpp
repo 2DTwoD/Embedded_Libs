@@ -1,9 +1,10 @@
 #include "all_tasks.h"
 
+extern SimpleUART uart;
 
 void testTask(void *pvParameters){
 	while(true){
-
-		vTaskDelay(1);
+        uart.click();
+		vTaskDelay(1000);
 	}
 }
