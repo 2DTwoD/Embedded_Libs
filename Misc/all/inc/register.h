@@ -40,6 +40,15 @@ public:
         return (reg & (1 << pos)) > 0;
     }
 
+    bool isZero(uint8_t pos){
+        if(pos > size) return false;
+        return getBit(pos) == false;
+    }
+
+    bool isOne(uint8_t pos){
+        return getBit(pos) == true;
+    }
+
     void setValue(T mask, uint32_t val){
         int8_t pos = getPosition(mask);
         if(pos < 0) return;

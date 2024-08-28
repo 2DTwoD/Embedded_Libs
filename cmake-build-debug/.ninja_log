@@ -162,3 +162,10 @@
 68	401	7465387377848617	CMakeFiles/Embedded_Libs.elf.dir/Misc/F407/src/init.cpp.obj	f43b81fd1f76bf65
 6	379	7465387681568631	CMakeFiles/Embedded_Libs.elf.dir/Main/src/main.cpp.obj	560a2e305fcbac3d
 379	1236	7465387685302092	Embedded_Libs.elf	1ffae40109421760
+6	625	7465474295040992	CMakeFiles/Embedded_Libs.elf.dir/Comm/F407/src/simple_uart.cpp.obj	cfa43fb3d29e97f8
+82	645	7465474295790978	CMakeFiles/Embedded_Libs.elf.dir/Tasks/Src/led_task.cpp.obj	4439be8e0856cb91
+72	648	7465474295690961	CMakeFiles/Embedded_Libs.elf.dir/Main/src/main.cpp.obj	560a2e305fcbac3d
+76	651	7465474295740984	CMakeFiles/Embedded_Libs.elf.dir/Misc/F407/src/init.cpp.obj	f43b81fd1f76bf65
+275	665	7465474297730997	CMakeFiles/Embedded_Libs.elf.dir/Tasks/Src/test_task.cpp.obj	b921e06960e9adb
+166	677	7465474296640970	CMakeFiles/Embedded_Libs.elf.dir/Tasks/Src/pidTask.cpp.obj	7085c4e3f0df292c
+677	1485	7465474301751011	Embedded_Libs.elf	1ffae40109421760

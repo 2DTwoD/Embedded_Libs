@@ -17,7 +17,7 @@ void rccInit(){
     RCC_CR |= RCC_CR_HSEON_Pos;
     while(!RCC_CR.getBit(RCC_CR_HSERDY_Pos));
 
-    //Устанавливаем делители
+    //Устанавливаем divP mulN divM
     RCC_PLLCFGR = {RCC_PLLCFGR_PLLP_Msk, 0};
     RCC_PLLCFGR = {RCC_PLLCFGR_PLLN_Msk, 336};
     RCC_PLLCFGR = {RCC_PLLCFGR_PLLM_Msk, 25};
@@ -146,25 +146,32 @@ void i2cInit() {
     Register<uint32_t> I2C_CCR(I2C1->CCR);
     Register<uint32_t> I2C_TRISE(I2C1->TRISE);
 
+    //Тактирование
     RCC_AHB1ENR |= RCC_AHB1ENR_GPIOBEN_Pos;
     RCC_APB1ENR |= RCC_APB1ENR_I2C1EN_Pos;
 
+    //В режиме AF
     GPIOB_MODER = {GPIO_MODER_MODE8_Msk, 0b10};
     GPIOB_MODER = {GPIO_MODER_MODE9_Msk, 0b10};
 
+    //Выход Open-drain
     GPIOB_OTYPER |= GPIO_OTYPER_OT8_Pos;
     GPIOB_OTYPER |= GPIO_OTYPER_OT9_Pos;
 
+    //Very high speed
     GPIOB_OSPEEDR = {GPIO_OSPEEDR_OSPEED8_Msk, 0b11};
     GPIOB_OSPEEDR = {GPIO_OSPEEDR_OSPEED9_Msk, 0b11};
 
+    //AF4
     GPIOB_AFRH = {GPIO_AFRH_AFSEL8_Msk, 0b100};
     GPIOB_AFRH = {GPIO_AFRH_AFSEL9_Msk, 0b100};
 
     I2C_CR1 |= I2C_CR1_SWRST_Pos;
-    while(!I2C_CR1.getBit(I2C_CR1_SWRST_Pos));
+    while(I2C_CR1.isZero(I2C_CR1_SWRST_Pos));
+
     I2C_CR1 ^= I2C_CR1_SWRST_Pos;
-    while(I2C_CR1.getBit(I2C_CR1_SWRST_Pos));
+    while(I2C_CR1.isOne(I2C_CR1_SWRST_Pos));
+
     I2C_CR1 = 0;
     I2C_CR2 = 0;
     I2C_CR2 = {I2C_CR2_FREQ_Msk, 42};
