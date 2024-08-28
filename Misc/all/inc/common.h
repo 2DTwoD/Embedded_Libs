@@ -8,6 +8,12 @@ enum IMPULSE {
 	RISE_FALL
 };
 
+template <typename T>
+struct MaskVal {
+    T mask;
+    T value;
+};
+
 void badTimeOut(uint32_t);
 
 int8_t getPosition(volatile uint32_t mask);

@@ -11,25 +11,28 @@ SimpleUART::SimpleUART(volatile USART_TypeDef *uart, GPIO_Info RxGPIO, GPIO_Info
     uart->BRR = 0;
     uart->GTPR = 0;
     //RCC, IRQ set
-    if(uart == USART1){
-        RCC->APB2ENR |= RCC_APB2ENR_USART1EN;
-        NVIC_EnableIRQ(USART1_IRQn);
-    } else if(uart == USART2){
+    IRQn_Type irqType;
+    if(uart == USART2){
         RCC->APB2ENR |= RCC_APB1ENR_USART2EN;
-        NVIC_EnableIRQ(USART2_IRQn);
+        irqType = USART2_IRQn;
     } else if(uart == USART3){
         RCC->APB2ENR |= RCC_APB1ENR_USART3EN;
-        NVIC_EnableIRQ(USART3_IRQn);
+        irqType = USART3_IRQn;
     } else if(uart == UART4){
         RCC->APB2ENR |= RCC_APB1ENR_UART4EN;
-        NVIC_EnableIRQ(UART4_IRQn);
+        irqType = UART4_IRQn;
     } else if(uart == UART5){
         RCC->APB2ENR |= RCC_APB1ENR_UART5EN;
-        NVIC_EnableIRQ(UART5_IRQn);
+        irqType = UART5_IRQn;
     } else if(uart == USART6){
         RCC->APB2ENR |= RCC_APB2ENR_USART6EN;
-        NVIC_EnableIRQ(USART6_IRQn);
+        irqType = USART6_IRQn;
+    } else {
+        RCC->APB2ENR |= RCC_APB2ENR_USART1EN;
+        irqType = USART1_IRQn;
     }
+    NVIC_EnableIRQ(irqType);
+    NVIC_SetPriority(irqType, 10);
     //define alternate function code
     uint8_t AFcode;
     if(uart == USART1 || uart == USART2 || uart == USART3){

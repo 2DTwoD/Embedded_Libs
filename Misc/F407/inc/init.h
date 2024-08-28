@@ -5,7 +5,7 @@
 
 void commonInit();
 void rccInit();
-void tickInit();
+void tickInit(TIM_TypeDef* tim, uint16_t busFreqMHz);
 void spiInit();
 void i2cInit();
 
