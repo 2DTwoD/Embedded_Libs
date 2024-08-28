@@ -4,7 +4,7 @@
 #include "FreeRTOS.h"
 #include "task.h"
 
-#include "misc_init.h"
+#include "init.h"
 #include "global_vars.h"
 #include "all_tasks.h"
 
