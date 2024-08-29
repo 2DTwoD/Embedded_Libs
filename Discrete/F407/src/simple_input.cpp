@@ -1,8 +1,8 @@
 #include "simple_input.h"
 //SimpleInput
 SimpleInput::SimpleInput(GPIO_Info gpioInfo): GPIOcommon(gpioInfo){
-    setRegisterWithAutoShift(&gpio->MODER, 0b11 << 2 * pin, 0);
-    setRegisterWithAutoShift(&gpio->PUPDR, 0b11 << 2 * pin, 0b01);
+    setRegValShift(gpio->MODER, 0b11 << 2 * pin, 0);
+    setRegValShift(gpio->PUPDR, 0b11 << 2 * pin, 0b01);
 	#ifdef SIM_ON
 	sim_on = true;
 	#endif

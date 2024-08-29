@@ -1,7 +1,7 @@
 #ifndef SIMPLE_INPUT_H
 #define SIMPLE_INPUT_H
 #include "stm32f407xx.h"
-#include "common.h"
+#include "register.h"
 #include "interfaces.h"
 #include "gpio_common.h"
 #include "common_timer.h"

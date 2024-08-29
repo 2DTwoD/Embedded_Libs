@@ -20,10 +20,12 @@ public:
     bool bufferIsNotEmpty() const;
     uint16_t getBufferSize() const;
     uint16_t getBufferIndex() const;
-    void getBytes(uint8_t *const dst, uint16_t start, uint16_t len);
+    void getBytes(uint8_t *const dst, uint16_t start, uint16_t quantity);
     uint8_t getByte(uint16_t index);
     void clearBytes(uint16_t start, uint16_t quantity);
     void clearByte(uint16_t index);
+    uint8_t getAndClearByte(uint16_t index);
+    void getAndClearBytes(uint8_t *const dst, uint16_t start, uint16_t quantity);
     void getAll(uint8_t *const dst);
     void clearALl();
     ~Buffer();

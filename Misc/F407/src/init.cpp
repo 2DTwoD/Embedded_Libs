@@ -110,23 +110,23 @@ void spiInit() {
     /*RCC->AHB1ENR |= RCC_AHB1ENR_GPIOBEN | RCC_AHB1ENR_GPIOCEN;*/
     //RCC->APB1ENR |= RCC_APB1ENR_SPI2EN;
     //Скорость пинов very high
-    setRegisterWithAutoShift(&GPIOB->OSPEEDR, GPIO_OSPEEDR_OSPEED10_Msk, 0b11);
-    setRegisterWithAutoShift(&GPIOC->OSPEEDR, GPIO_OSPEEDR_OSPEED2_Msk, 0b11);
-    setRegisterWithAutoShift(&GPIOC->OSPEEDR, GPIO_OSPEEDR_OSPEED3_Msk, 0b11);
+    setRegValShift(GPIOB->OSPEEDR, GPIO_OSPEEDR_OSPEED10_Msk, 0b11);
+    setRegValShift(GPIOC->OSPEEDR, GPIO_OSPEEDR_OSPEED2_Msk, 0b11);
+    setRegValShift(GPIOC->OSPEEDR, GPIO_OSPEEDR_OSPEED3_Msk, 0b11);
     //Режим альтернативной функции AF5
-    setRegisterWithAutoShift(&GPIOB->AFR[1], GPIO_AFRH_AFSEL10_Msk, 0b101);
-    setRegisterWithAutoShift(&GPIOC->AFR[0], GPIO_AFRL_AFSEL2_Msk, 0b101);
-    setRegisterWithAutoShift(&GPIOC->AFR[0], GPIO_AFRL_AFSEL3_Msk, 0b101);
+    setRegValShift(GPIOB->AFR[1], GPIO_AFRH_AFSEL10_Msk, 0b101);
+    setRegValShift(GPIOC->AFR[0], GPIO_AFRL_AFSEL2_Msk, 0b101);
+    setRegValShift(GPIOC->AFR[0], GPIO_AFRL_AFSEL3_Msk, 0b101);
     //Делитель частоты (/32)
-    setRegisterWithAutoShift(&SPI2->CR1, SPI_CR1_BR_Msk, 0b100);
+    setRegValShift(SPI2->CR1, SPI_CR1_BR_Msk, 0b100);
     //Полярность и фаза (0, 0)
-    setRegister(&SPI2->CR1, SPI_CR1_CPOL_Msk | SPI_CR1_CPHA_Msk, 0);
+    setRegister(SPI2->CR1, SPI_CR1_CPOL_Msk | SPI_CR1_CPHA_Msk, 0);
     //Формат (8 бит)
-    setRegisterWithAutoShift(&SPI2->CR1, SPI_CR1_DFF_Msk, 0);
+    setRegValShift(SPI2->CR1, SPI_CR1_DFF_Msk, 0);
     //MSB сначала
-    setRegisterWithAutoShift(&SPI2->CR1, SPI_CR1_LSBFIRST_Msk, 0);
+    setRegValShift(SPI2->CR1, SPI_CR1_LSBFIRST_Msk, 0);
     //SSM SSI утсанавливаю, т.к. программно меняю NSS
-    setRegisterWithAutoShift(&SPI2->CR1, SPI_CR1_SSM_Msk | SPI_CR1_SSI_Msk, 0b11);
+    setRegValShift(SPI2->CR1, SPI_CR1_SSM_Msk | SPI_CR1_SSI_Msk, 0b11);
     //MSTR и SPE установить при установленном NSS
     spi2Nss = true;
     SPI2->CR1 |= SPI_CR1_MSTR;

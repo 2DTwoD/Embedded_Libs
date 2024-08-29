@@ -4,7 +4,7 @@
 #include "stm32f407xx.h"
 #include "interfaces.h"
 #include "gpio_common.h"
-#include "common.h"
+#include "register.h"
 #include "common_timer.h"
 #include "programm_coil.h"
 

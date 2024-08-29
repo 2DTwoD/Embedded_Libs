@@ -1,7 +1,7 @@
 #include "coil.h"
 
 Coil::Coil(GPIO_Info gpioInfo): GPIOcommon(gpioInfo) {
-    setRegisterWithAutoShift(&gpio->MODER, 0b11 << (2 * pin), 0b01);
+    setRegValShift(gpio->MODER, 0b11 << (2 * pin), 0b01);
 }
 bool Coil::isActive(){
 	return (gpio->ODR & (1 << pin)) > 0;

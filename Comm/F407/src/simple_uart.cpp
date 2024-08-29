@@ -1,10 +1,10 @@
 #include "simple_uart.h"
 //For STM32F407
-SimpleUART::SimpleUART(volatile USART_TypeDef *uart, GPIO_Info RxGPIO, GPIO_Info TxGPIO, uint32_t busFreq,
+SimpleUART::SimpleUART(volatile USART_TypeDef *uart, GPIO_Info RxGPIO, GPIO_Info TxGPIO, uint32_t busFreqMHz,
                        USARTbaudRate baudRate, USARTparity parity, USARTstopBits stopBits, uint16_t bufferSize,
                        uint32_t errorDelay)
         : OnDelayCommon(errorDelay), uart(uart), Buffer(bufferSize){
-    //reset registers
+    //Сбросить все
     uart->CR1 = 0;
     uart->CR2 = 0;
     uart->CR3 = 0;
@@ -46,11 +46,11 @@ SimpleUART::SimpleUART(volatile USART_TypeDef *uart, GPIO_Info RxGPIO, GPIO_Info
     adjustGPIO(RxGPIO, AFcode);
     adjustGPIO(TxGPIO, AFcode);
     //baudRate
-    float div = busFreq / (16.0f * baudRate);
+    float div = busFreqMHz * 1000000 / (16.0f * baudRate);
     uint16_t mantissa = (uint16_t) div;
-    uint8_t fraction = (uint8_t)((div - (float)mantissa) * 16.0);
-    setRegisterWithAutoShift(&uart->BRR, USART_BRR_DIV_Mantissa_Msk, mantissa);
-    setRegisterWithAutoShift(&uart->BRR, USART_BRR_DIV_Fraction_Msk, fraction);
+    uint8_t fraction = (uint8_t)((div - (float)mantissa) * 16.0f);
+    setRegValShift(uart->BRR, USART_BRR_DIV_Mantissa_Msk, mantissa);
+    setRegValShift(uart->BRR, USART_BRR_DIV_Fraction_Msk, fraction);
     //parity
     if(parity != NO_PARITY){
         uart->CR1 |= USART_CR1_PCE;
@@ -62,10 +62,10 @@ SimpleUART::SimpleUART(volatile USART_TypeDef *uart, GPIO_Info RxGPIO, GPIO_Info
     //stop bits
     switch(stopBits){
         case _1_5:
-            setRegisterWithAutoShift(&uart->CR2, USART_CR2_STOP_Msk, 0b11);
+            setRegValShift(uart->CR2, USART_CR2_STOP_Msk, 0b11);
             break;
         case _2:
-            setRegisterWithAutoShift(&uart->CR2, USART_CR2_STOP_Msk, 0b10);
+            setRegValShift(uart->CR2, USART_CR2_STOP_Msk, 0b10);
             break;
         default:
             break;
@@ -100,12 +100,12 @@ void SimpleUART::adjustGPIO(GPIO_Info &uartGPIO, uint8_t AFcode) {
     }
     //GPIO
     uartGPIO.pin = min((uint8_t )15, uartGPIO.pin);
-    setRegisterWithAutoShift(&uartGPIO.gpio->MODER, 0b11 << (uartGPIO.pin * 2), 0b10);
-    setRegisterWithAutoShift(&uartGPIO.gpio->OSPEEDR, 0b11 << (uartGPIO.pin * 2), 0b11);
+    setRegValShift(uartGPIO.gpio->MODER, 0b11 << (uartGPIO.pin * 2), 0b10);
+    setRegValShift(uartGPIO.gpio->OSPEEDR, 0b11 << (uartGPIO.pin * 2), 0b11);
     if(uartGPIO.pin < 8){
-        setRegisterWithAutoShift(&uartGPIO.gpio->AFR[0], 0b1111 << (uartGPIO.pin * 4), AFcode);
+        setRegValShift(uartGPIO.gpio->AFR[0], 0b1111 << (uartGPIO.pin * 4), AFcode);
     } else {
-        setRegisterWithAutoShift(&uartGPIO.gpio->AFR[1], 0b1111 << ((uartGPIO.pin - 8) * 4), AFcode);
+        setRegValShift(uartGPIO.gpio->AFR[1], 0b1111 << ((uartGPIO.pin - 8) * 4), AFcode);
     }
 }
 

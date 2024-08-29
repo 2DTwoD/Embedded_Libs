@@ -3,22 +3,80 @@
 
 #include <cstdint>
 
-#include "common.h"
+template <typename T>
+struct MaskVal {
+    T mask;
+    T value;
+};
+
+template<typename T>
+int8_t getPosition(T mask){
+    int8_t size = (int8_t)sizeof(T) * 8;
+    for(int8_t i = 0; i < size; i++){
+        if(mask & (1<<i)) return i;
+    }
+    return -1;
+}
+
+template<typename T>
+bool getBit(T& reg, uint32_t pos){
+    return (reg & (1 << pos)) > 0;
+}
+
+template<typename T>
+void setBit(T& reg, uint32_t pos){
+    reg |= (1 << pos);
+}
+
+template<typename T>
+void resetBit(T& reg, uint32_t pos){
+    reg &= ~(1 << pos);
+}
+
+template<typename T>
+void toggleBit(T& reg, uint32_t pos){
+    if(getBit(reg, pos)){
+        resetBit(reg, pos);
+        return;
+    }
+    setBit(reg, pos);
+}
+
+template<typename T>
+void toggleBitTwice(T& reg, uint32_t pos){
+    toggleBit(reg, pos);
+    toggleBit(reg, pos);
+}
+
+template<typename T>
+void setRegister(T& reg, uint32_t mask, uint32_t value){
+    reg &= ~mask;
+    reg |= value;
+}
+
+template<typename T>
+void setRegister(T& reg, MaskVal<T> maskVal){
+    setRegister(reg, maskVal.mask, maskVal.value);
+}
+
+template<typename T>
+void setRegValShift(T& reg, uint32_t mask, uint32_t value){
+    int8_t pos = getPosition(mask);
+    if(pos < 0) return;
+    reg &= ~mask;
+    reg |= (value << pos);
+}
+
+template<typename T>
+void setRegValShift(T& reg, MaskVal<T> maskVal){
+    setRegValShift(reg, maskVal.mask, maskVal.value);
+}
 
 template<typename T>
 class Register {
 private:
     volatile T& reg;
     uint8_t size;
-
-    int8_t getPosition(T mask){
-        for(uint8_t i = 0; i < size; i++){
-            if(mask & (1<<i)) {
-                return (int8_t) i;
-            }
-        }
-        return -1;
-    }
 
 public:
     explicit Register(volatile T& reg): reg(reg) {

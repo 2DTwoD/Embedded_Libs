@@ -3,6 +3,13 @@
 
 #include "common.h"
 
+
+enum IMPULSE {
+    RISE = 0,
+    FALL,
+    RISE_FALL
+};
+
 class RFimpulse{
 	private:
 		bool prev;

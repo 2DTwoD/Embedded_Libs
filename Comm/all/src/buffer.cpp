@@ -13,10 +13,10 @@ bool Buffer::bufferOverFlow() const {
     return bufferIndex >= bufferSize;
 }
 
-void Buffer::getBytes(uint8_t *const dst, uint16_t start, uint16_t len){
+void Buffer::getBytes(uint8_t *const dst, uint16_t start, uint16_t quantity){
     start = min(start, (uint16_t)(bufferSize - 1));
-    len = min(len, (uint16_t)(bufferSize - start));
-    getPartOfArray(buffer,bufferSize, start, len, dst);
+    quantity = min(quantity, (uint16_t)(bufferSize - start));
+    getPartOfArray(buffer, bufferSize, start, quantity, dst);
 }
 
 uint8_t Buffer::getByte(uint16_t index){
@@ -76,4 +76,15 @@ void Buffer::clearALl() {
 
 uint16_t Buffer::getBufferIndex() const {
     return bufferIndex;
+}
+
+uint8_t Buffer::getAndClearByte(uint16_t index) {
+    uint8_t res = getByte(index);
+    clearByte(index);
+    return res;
+}
+
+void Buffer::getAndClearBytes(uint8_t *const dst, uint16_t start, uint16_t quantity) {
+    getBytes(dst, start, quantity);
+    clearBytes(start, quantity);
 }

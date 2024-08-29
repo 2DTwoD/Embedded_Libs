@@ -3,7 +3,6 @@
 #include <cstdio>
 #include "stm32f407xx.h"
 
-#include "common.h"
 #include "register.h"
 #include "on_delay.h"
 #include "buffer.h"
@@ -37,7 +36,7 @@ private:
     static void adjustGPIO(GPIO_Info& uartGPIO, uint8_t AFcode);
 public:
     SimpleUART(volatile USART_TypeDef *uart, GPIO_Info RxGPIO, GPIO_Info TxGPIO,
-               uint32_t busFreq, USARTbaudRate baudRate, USARTparity parity, USARTstopBits stopBits,
+               uint32_t busFreqMHz, USARTbaudRate baudRate, USARTparity parity, USARTstopBits stopBits,
                uint16_t bufferSize, uint32_t errorDelay);
     void sendByte(uint8_t byte);
     void send(uint8_t* bytes, uint16_t len);

@@ -1,5 +1,6 @@
 #ifndef MATH_FUN_H
 #define MATH_FUN_H
+#include <cstdint>
 
 template<typename T>
 T max(T val1, T val2){
@@ -45,5 +46,7 @@ T abs(T value){
     }
     return value;
 }
+
+uint32_t round(float value);
 
 #endif //MATH_FUN_H
