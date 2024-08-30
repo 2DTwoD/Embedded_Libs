@@ -20,6 +20,7 @@
 #include "rf_impulse.h"
 #include "sequence.h"
 #include "simple_uart.h"
+#include "simple_i2c.h"
 
 void ledTask(void *pvParameters);
 void pidTask(void *pvParameters);

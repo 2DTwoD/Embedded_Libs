@@ -13,6 +13,7 @@ class PulseCommon: private CommonTimer {
 		void set(bool value);
 		bool get();
 		void reset();
+        void again();
 };
 
 class Pulse: public PulseCommon, public IUpdated1ms {

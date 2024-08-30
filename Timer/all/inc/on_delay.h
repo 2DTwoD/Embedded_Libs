@@ -11,6 +11,7 @@ class OnDelayCommon: private CommonTimer {
 		void setPause(bool value);
 		bool get();
 		void reset();
+        void again();
 };
 
 class OnDelay: public OnDelayCommon, public IUpdated1ms {

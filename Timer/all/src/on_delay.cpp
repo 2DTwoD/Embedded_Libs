@@ -19,6 +19,10 @@ void OnDelayCommon::reset(){
 	CommonTimer::reset();
 }
 
+void OnDelayCommon::again() {
+    CommonTimer::prepareAndStart();
+}
+
 //OnDelay
 OnDelay::OnDelay(uint32_t period): OnDelayCommon(period){
 }

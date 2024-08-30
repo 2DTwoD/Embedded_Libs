@@ -110,8 +110,7 @@ void SimpleUART::adjustGPIO(GPIO_Info &uartGPIO, uint8_t AFcode) {
 }
 
 void SimpleUART::sendByte(uint8_t byte) {
-    OnDelayCommon::set(true);
-    OnDelayCommon::reset();
+    OnDelayCommon::again();
     while(!(uart->SR & USART_SR_TXE)){
         if(OnDelayCommon::get()) return;
     }

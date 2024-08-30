@@ -26,6 +26,10 @@ void OffDelayCommon::reset(){
 	CommonTimer::finish();
 }
 
+void OffDelayCommon::again() {
+    CommonTimer::prepareAndStart();
+}
+
 //OffDelay
 OffDelay::OffDelay(uint32_t period): OffDelayCommon(period){
 }

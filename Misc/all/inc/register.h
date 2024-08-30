@@ -24,6 +24,16 @@ bool getBit(T& reg, uint32_t pos){
 }
 
 template<typename T>
+bool bitIsZero(T& reg, uint32_t pos){
+    return getBit(reg, pos) == false;
+}
+
+template<typename T>
+bool bitIsOne(T& reg, uint32_t pos){
+    return getBit(reg, pos) == true;
+}
+
+template<typename T>
 void setBit(T& reg, uint32_t pos){
     reg |= (1 << pos);
 }

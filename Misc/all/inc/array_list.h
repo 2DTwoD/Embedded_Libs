@@ -1,12 +1,13 @@
-#ifndef LIST_H
-#define LIST_H
+#ifndef ARRAY_LIST_H
+#define ARRAY_LIST_H
 
 #include <cstdint>
 #include "math_fun.h"
 #include "array_fun.h"
+#include "ilist.h"
 
 template<typename T>
-class List{
+class ArrayList: public IList<T>{
 private:
     uint8_t increase;
     uint16_t totalSize;
@@ -22,41 +23,40 @@ private:
     }
 
 public:
-    explicit List(uint8_t increaseStep) {
+    using IList<T>::get;
+    using IList<T>::add;
+    using IList<T>::remove;
+    using IList<T>::copyTo;
+
+    explicit ArrayList(uint8_t increaseStep): IList<T>() {
         increase = max((uint8_t )1, increaseStep);
         totalSize = increase;
         array = new T[totalSize];
     }
 
-    List(const T* const src, uint16_t len, uint8_t increaseStep): List(increaseStep) {
-        add(src, len);
+    ArrayList(const T* const src, uint16_t len, uint8_t increaseStep): ArrayList(increaseStep) {
+        IList<T>::add(src, len);
     }
 
-    List(const T* const src, uint16_t len): List(src, len, 10) {
-    }
+    ArrayList(const T* const src, uint16_t len): ArrayList(src, len, 10) {}
 
-    List(): List(10){
-    }
+    ArrayList(): ArrayList(10){}
 
-    uint16_t size() const {
+    uint16_t size() const override {
         return curIndex;
     }
 
-    bool isEmpty() const {
+    bool isEmpty() const override {
         return curIndex == 0;
     }
 
-    T get(uint16_t index){
+    T get(uint16_t index) const override {
         if(isEmpty()) return (T)0;
         index = min(index, (uint16_t )(size() - 1));
         return array[index];
     }
 
-    T get(){
-        return get(size() - 1);
-    }
-
-    void add(uint16_t index, T value){
+    void add(uint16_t index, T value) override {
         index = min(size(), index);
         if(size() >= totalSize){
             extend();
@@ -65,72 +65,43 @@ public:
         curIndex++;
     }
 
-    void add(T value){
-        add(size(), value);
-    }
-
-    void add(const T* const src, uint16_t start, uint16_t quantity, uint16_t index){
-        for(uint16_t i = 0; i < quantity; i++){
-            add(index + i, src[i + start]);
-        }
-    }
-
-    void add(const T* const src, uint16_t len, uint16_t index){
-        add(src, 0, len, index);
-    }
-
-    void add(const T* const src, uint16_t len){
-        add(src, 0, len, size());
-    }
-
-    void remove(uint16_t index, uint16_t quantity){
+    void remove(uint16_t index, uint16_t quantity) override {
         if(index >= size()) return;
         quantity = min(quantity, (uint16_t )(size() - index));
-        deleteElementInArray(array, size(), index, quantity, 0);
+        deleteElementInArray(array, size(), index, quantity, (T)0);
         curIndex -= quantity;
     }
 
-    void remove(uint16_t index){
-        remove(index, 1);
-    }
-
-    void remove(){
-        remove(size() - 1);
-    }
-
-    int32_t firstIndexOf(T value){
+    int32_t firstIndexOf(T value) const override {
         for(uint16_t i = 0; i < size(); i++){
             if(array[i] == value) return i;
         }
         return -1;
     }
 
-    int32_t lastIndexOf(T value){
+    int32_t lastIndexOf(T value) const override {
         for(int32_t i = size() - 1; i >= 0; i--){
             if(array[i] == value) return i;
         }
         return -1;
     }
 
-    void copyTo(T* dst, uint16_t len){
+    void copyTo(T* dst, uint16_t len) const override {
         copyArrays(array, dst, len);
     }
 
-    void copyTo(T* dst){
-        copyTo(dst, size());
-    }
 
-    void clear(){
+    void clear() override {
         curIndex = 0;
     }
 
-    void fill(T value){
+    void fill(T value) override {
         fillArray(array, size(), value);
     }
 
-    ~List(){
+    ~ArrayList(){
         delete[] array;
     }
 };
 
-#endif //LIST_H
+#endif //ARRAY_LIST_H

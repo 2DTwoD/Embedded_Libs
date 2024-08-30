@@ -1,5 +1,5 @@
 #include "main.h"
-
+#include "array_list.h"
 int main(void)
 {
 	rccInit();

@@ -13,6 +13,7 @@ class OffDelayCommon: private CommonTimer{
 		void set(bool value);
 		bool get();
 		void reset();
+        void again();
 };
 
 class OffDelay: public OffDelayCommon, public IUpdated1ms {

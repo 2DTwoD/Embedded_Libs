@@ -1,5 +1,6 @@
 #ifndef _INTERFACES_H
 #define _INTERFACES_H
+#include <cstdint>
 
 class ISwitch {
 	public:
@@ -15,4 +16,5 @@ class IUpdatedSomewhere {
 	public:
 		virtual void updateSomewhere() = 0;
 };
+
 #endif //_INTERFACES_H

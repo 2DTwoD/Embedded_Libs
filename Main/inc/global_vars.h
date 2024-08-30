@@ -24,17 +24,20 @@ SimpleUART uart(USART1,
                 128,
                 10);
 SimpleI2C i2c(I2C1,
-              {GPIOB, 8},
               {GPIOB, 9},
+              {GPIOB, 8},
               42,
-              SM,
-              _2_1);
+              FM,
+              _2_1,
+              128,
+              10);
 
 IUpdated1ms *updateObjects[] = {
         &button,
         &led1,
         &delay,
-        &uart
+        &uart,
+        &i2c
 };
 
 uint8_t updateObjectsSize = sizeof(updateObjects) / sizeof(*updateObjects);
