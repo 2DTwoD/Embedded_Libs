@@ -98,8 +98,19 @@ void SimpleI2C::resetI2C() {
     while(bitIsOne(i2c->CR1, I2C_CR1_SWRST_Pos));
 }
 
-bool SimpleI2C::commonRW(uint8_t address, I2C_RW rw,
-                         bool (*action)(SimpleI2C* ths, uint8_t *const, uint8_t), uint8_t *const src, uint8_t len) {
+void SimpleI2C::solveProblem() {
+    if(bitIsOne(sda.gpio->IDR, sda.pin) && bitIsOne(scl.gpio->IDR, scl.pin)){
+        resetI2C();
+        return;
+    }
+    if(bitIsOne(i2c->SR2, I2C_SR2_MSL_Pos)) {
+        stopBus();
+        return;
+    }
+    toggleBitTwice(i2c->CR1, I2C_CR1_PE_Pos);
+}
+
+bool SimpleI2C::startBus(uint8_t address, I2C_RW rw) {
     if(bitIsOne(i2c->SR2, I2C_SR2_BUSY_Pos)){
         solveProblem();
         return false;
@@ -108,9 +119,8 @@ bool SimpleI2C::commonRW(uint8_t address, I2C_RW rw,
     resetBit(i2c->CR1, I2C_CR1_POS_Pos);
     //Старт шины
     setBit(i2c->CR1, I2C_CR1_START_Pos);
-
-    OnDelayCommon::again();
     //Ожидание start
+    OnDelayCommon::again();
     while(bitIsZero(i2c->SR1, I2C_SR1_SB_Pos)){
         if(OnDelayCommon::get()) {
             solveProblem();
@@ -121,43 +131,45 @@ bool SimpleI2C::commonRW(uint8_t address, I2C_RW rw,
     i2c->SR1;
     //Записать в DR адрес и команду read/write(1/0)
     i2c->DR = (address << 1) | rw;
-    OnDelayCommon::again();
     //Ожидание ответа от адреса
+    OnDelayCommon::again();
     while(bitIsZero(i2c->SR1, I2C_SR1_AF_Pos) && bitIsZero(i2c->SR1, I2C_SR1_ADDR_Pos)){
         if(OnDelayCommon::get()) {
             solveProblem();
             return false;
         }
     }
-    if(bitIsOne(i2c->SR1, I2C_SR1_ADDR_Pos)){//Устройство отозвалось
+    if(bitIsOne(i2c->SR1, I2C_SR1_ADDR_Pos)){
+        //Устройство отозвалось
         //Сброс ADDR
         i2c->SR1;
         i2c->SR2;
-        //Сделать что-нибудь
-        if(action(this, src, len)){
-            //Стоп
-            setBit(i2c->CR1, I2C_CR1_STOP_Pos);
-            return true;
-        } else {
-            solveProblem();
-        }
-    } else {//Устройство не отозвалось (AF = 1)
-        //Стоп
-        setBit(i2c->CR1, I2C_CR1_STOP_Pos);
-        //Сброс AF
-        resetBit(i2c->SR1, I2C_SR1_AF_Pos);
+        return true;
+    } else {
+        //Устройство не отозвалось (AF = 1)
+        stopBus();
+        return false;
+    }
+}
+
+void SimpleI2C::stopBus() {
+    //Стоп
+    setBit(i2c->CR1, I2C_CR1_STOP_Pos);
+    //Сброс AF
+    resetBit(i2c->SR1, I2C_SR1_AF_Pos);
+}
+
+bool SimpleI2C::slaveIsExist(uint8_t address) {
+    if(startBus(address, WRITE)){
+        stopBus();
+        return true;
     }
     return false;
 }
 
-bool SimpleI2C::slaveIsExist(uint8_t address) {
-    return commonRW(address, WRITE, [](SimpleI2C*, uint8_t *const, uint8_t) -> bool{ return true;},
-                    nullptr, 0);
-}
-
 void SimpleI2C::getSlaves(uint8_t *const dst, uint8_t len) {
     uint8_t index = 0;
-    fillArray(dst, len, (uint8_t )1);
+    fillArray(dst, len, (uint8_t)0);
     for(uint8_t i = 0; i < 128; i++){
         if(slaveIsExist(i)) {
             dst[index++] = i;
@@ -170,132 +182,53 @@ void SimpleI2C::update1ms() {
     OnDelayCommon::update();
 }
 
-void SimpleI2C::solveProblem() {
-    if(bitIsOne(sda.gpio->IDR, (1 << sda.pin)) && bitIsOne(scl.gpio->IDR, (1 << scl.pin))){
-        resetI2C();
-        return;
-    }
-    if(bitIsOne(i2c->SR2, I2C_SR2_MSL_Pos)) {
-        setBit(i2c->CR1, I2C_CR1_STOP_Pos);
-        return;
-    }
-    toggleBitTwice(i2c->CR1, I2C_CR1_PE_Pos);
-}
-
-void SimpleI2C::transmit(uint8_t address, uint8_t *const src, uint16_t len) {
-    commonRW(address, WRITE, [](SimpleI2C* ths, uint8_t *const src, uint8_t len) -> bool{
-        for(uint8_t i = 0; i < len; i++){
-            ths->i2c->DR = src[i];
-            //Ожидание пока данные перейдут в регистр сдвига
-            while(bitIsZero(ths->i2c->SR1, I2C_SR1_TXE_Pos)){
-                if(bitIsOne(ths->i2c->SR1, I2C_SR1_AF_Pos)){
-                    //Стоп
-                    setBit(ths->i2c->CR1, I2C_CR1_STOP_Pos);
-                    //Сброс AF
-                    resetBit(ths->i2c->SR1, I2C_SR1_AF_Pos);
-                    return false;
-                }
+bool SimpleI2C::write(uint8_t address, uint8_t *const src, uint16_t len) {
+    for(uint8_t i = 0; i < len; i++){
+        i2c->DR = src[i];
+        //Ожидание пока данные перейдут в регистр сдвига
+        while(bitIsZero(i2c->SR1, I2C_SR1_TXE_Pos)){
+            if(bitIsOne(i2c->SR1, I2C_SR1_AF_Pos)){
+                stopBus();
+                return false;
             }
         }
-        return true;
-        }, src, len);
+    }
+    return true;
 }
 
-void SimpleI2C::receive(uint8_t address, uint16_t len) {
-    commonRW(address, READ, [](SimpleI2C* ths, uint8_t *const src, uint8_t len) -> bool{
-        for(uint8_t i = 0; i < len; i++){
-            if(i < len -1) {
-                //Если не последний байт, то отправляем ACK
-                setBit(ths->i2c->CR1, I2C_CR1_ACK_Pos);
-            } else {
-                //Последний байт, выключаем подтверждение
-                resetBit(ths->i2c->CR1, I2C_CR1_ACK_Pos);
-                //Стоп
-                setBit(ths->i2c->CR1, I2C_CR1_STOP_Pos);
-            }
-            ths->again();
-            //Ожидание данных в сдвиговом регистре
-            while(bitIsZero(ths->i2c->SR1, I2C_SR1_RXNE_Pos)){
-                if(ths->get()) return false;
-            }
-            //Считать данные в буфер
-            ths->addByte(ths->i2c->DR);
+bool SimpleI2C::read(uint8_t address, uint16_t len) {
+    for(uint8_t i = 0; i < len; i++){
+        if(i < len -1) {
+            //Если не последний байт, то отправляем ACK
+            setBit(i2c->CR1, I2C_CR1_ACK_Pos);
+        } else {
+            //Последний байт, выключаем подтверждение
+            resetBit(i2c->CR1, I2C_CR1_ACK_Pos);
+            //Стоп
+            setBit(i2c->CR1, I2C_CR1_STOP_Pos);
         }
-        return true;
-    }, nullptr, len);
-}
-
-void SimpleI2C::transmit(uint8_t address, uint8_t value) {
-    commonRW(address, WRITE, [](SimpleI2C* ths, uint8_t *const src, uint8_t len) -> bool{
-            ths->i2c->DR = src[value];
-            //Ожидание пока данные перейдут в регистр сдвига
-            while(bitIsZero(ths->i2c->SR1, I2C_SR1_TXE_Pos)){
-                if(bitIsOne(ths->i2c->SR1, I2C_SR1_AF_Pos)){
-                    //Стоп
-                    setBit(ths->i2c->CR1, I2C_CR1_STOP_Pos);
-                    //Сброс AF
-                    resetBit(ths->i2c->SR1, I2C_SR1_AF_Pos);
-                    return false;
-                }
-            }
-        return true;
-    }, nullptr, 0);
-}
-
-void SimpleI2C::receive(uint8_t address) {
-    commonRW(address, READ, [](SimpleI2C* ths, uint8_t *const src, uint8_t len) -> bool{
-        //Последний байт, выключаем подтверждение
-        resetBit(ths->i2c->CR1, I2C_CR1_ACK_Pos);
-        //Стоп
-        setBit(ths->i2c->CR1, I2C_CR1_STOP_Pos);
-        ths->again();
         //Ожидание данных в сдвиговом регистре
-        while(bitIsZero(ths->i2c->SR1, I2C_SR1_RXNE_Pos)){
-            if(ths->get()) return false;
+        OnDelayCommon::again();
+        while(bitIsZero(i2c->SR1, I2C_SR1_RXNE_Pos)){
+            if(OnDelayCommon::get()) return false;
         }
         //Считать данные в буфер
-        ths->addByte(ths->i2c->DR);
-        return true;
-    }, nullptr, 0);
+        Buffer::addByte(i2c->DR);
+    }
+    return true;
 }
 
-bool SimpleI2C::startBus(uint8_t address, I2C_RW rw) {
-    if(bitIsOne(i2c->SR2, I2C_SR2_BUSY_Pos)){
-        solveProblem();
-        return false;
-    }
-    //ACK bit controls the (N)ACK of the current byte being received in the shift register.
-    resetBit(i2c->CR1, I2C_CR1_POS_Pos);
-    //Старт шины
-    setBit(i2c->CR1, I2C_CR1_START_Pos);
 
-    OnDelayCommon::again();
-    //Ожидание start
-    while(bitIsZero(i2c->SR1, I2C_SR1_SB_Pos)){
-        if(OnDelayCommon::get()) {
-            solveProblem();
-            return false;
-        }
+bool SimpleI2C::transmit(uint8_t address, uint8_t *const src, uint16_t len) {
+    if(startBus(address, WRITE)){
+        return write(address, src, len);
     }
-    //Сброс SB путем чтения SR1 и записи DR
-    i2c->SR1;
-    //Записать в DR адрес и команду read/write(1/0)
-    i2c->DR = (address << 1) | rw;
-    OnDelayCommon::again();
-    //Ожидание ответа от адреса
-    while(bitIsZero(i2c->SR1, I2C_SR1_AF_Pos) && bitIsZero(i2c->SR1, I2C_SR1_ADDR_Pos)){
-        if(OnDelayCommon::get()) {
-            solveProblem();
-            return false;
-        }
+    return false;
+}
+
+bool SimpleI2C::receive(uint8_t address, uint16_t len) {
+    if(startBus(address, READ)){
+        return read(address, len);
     }
-    if(bitIsOne(i2c->SR1, I2C_SR1_ADDR_Pos)){//Устройство отозвалось
-        return true;
-    } else {//Устройство не отозвалось (AF = 1)
-        //Стоп
-        setBit(i2c->CR1, I2C_CR1_STOP_Pos);
-        //Сброс AF
-        resetBit(i2c->SR1, I2C_SR1_AF_Pos);
-        return false;
-    }
+    return false;
 }
