@@ -4,11 +4,11 @@ SimpleI2C::SimpleI2C(I2C_TypeDef *i2c, GPIO_Info sda, GPIO_Info scl, uint8_t bus
                      I2C_Mode mode, I2C_Duty duty, uint16_t bufferSize, uint32_t errorDelay):
                      OnDelayCommon(errorDelay), Buffer(bufferSize), i2c(i2c), sda(sda), scl(scl) {
     if(i2c == I2C2){
-        setBit(RCC->APB1ENR, RCC_APB1ENR_I2C2EN_Pos);
+        setBit(RCC->APB1ENR, RCC_APB1ENR_I2C2EN);
     } else if(i2c == I2C3){
-        setBit(RCC->APB1ENR, RCC_APB1ENR_I2C3EN_Pos);
+        setBit(RCC->APB1ENR, RCC_APB1ENR_I2C3EN);
     } else {
-        setBit(RCC->APB1ENR, RCC_APB1ENR_I2C1EN_Pos);
+        setBit(RCC->APB1ENR, RCC_APB1ENR_I2C1EN);
     }
     //GPIO
     adjustGPIO(sda);
@@ -30,19 +30,19 @@ SimpleI2C::SimpleI2C(I2C_TypeDef *i2c, GPIO_Info sda, GPIO_Info scl, uint8_t bus
     uint16_t ccr;
     //Fast or Slow mode
     if(mode == FM){
-        setBit(i2c->CCR, I2C_CCR_FS_Pos);
+        setBit(i2c->CCR, I2C_CCR_FS);
         trise = round(300 / tpclk) + 1;
         //Duty (Tlow/Thigh)
         if(duty == _16_9){
-            setBit(i2c->CCR, I2C_CCR_DUTY_Pos);
+            setBit(i2c->CCR, I2C_CCR_DUTY);
             ccr = busFreqMHz / 10;
         } else {
-            resetBit(i2c->CCR, I2C_CCR_DUTY_Pos);
+            resetBit(i2c->CCR, I2C_CCR_DUTY);
             ccr = (busFreqMHz * 10) / 12;
         }
 
     } else {
-        resetBit(i2c->CCR, I2C_CCR_FS_Pos);
+        resetBit(i2c->CCR, I2C_CCR_FS);
         ccr = busFreqMHz * 5;
         trise = round(1000 / tpclk) + 1;
     }
@@ -51,34 +51,34 @@ SimpleI2C::SimpleI2C(I2C_TypeDef *i2c, GPIO_Info sda, GPIO_Info scl, uint8_t bus
     //установить рассчитанное trice
     setRegValShift(i2c->TRISE, I2C_TRISE_TRISE_Msk, trise);
     //Запустить I2C
-    setBit(i2c->CR1, I2C_CR1_PE_Pos);
+    setBit(i2c->CR1, I2C_CR1_PE);
 }
 
 void SimpleI2C::adjustGPIO(GPIO_Info gpioInfo) {
     //Тактирование
     if(gpioInfo.gpio == GPIOA){
-        setBit(RCC->AHB1ENR, RCC_AHB1ENR_GPIOAEN_Pos);
+        setBit(RCC->AHB1ENR, RCC_AHB1ENR_GPIOAEN);
     } else if(gpioInfo.gpio == GPIOB){
-        setBit(RCC->AHB1ENR, RCC_AHB1ENR_GPIOBEN_Pos);
+        setBit(RCC->AHB1ENR, RCC_AHB1ENR_GPIOBEN);
     } else if(gpioInfo.gpio == GPIOC){
-        setBit(RCC->AHB1ENR, RCC_AHB1ENR_GPIOCEN_Pos);
+        setBit(RCC->AHB1ENR, RCC_AHB1ENR_GPIOCEN);
     } else if(gpioInfo.gpio == GPIOD){
-        setBit(RCC->AHB1ENR, RCC_AHB1ENR_GPIODEN_Pos);
+        setBit(RCC->AHB1ENR, RCC_AHB1ENR_GPIODEN);
     } else if(gpioInfo.gpio == GPIOE){
-        setBit(RCC->AHB1ENR, RCC_AHB1ENR_GPIOEEN_Pos);
+        setBit(RCC->AHB1ENR, RCC_AHB1ENR_GPIOEEN);
     } else if(gpioInfo.gpio == GPIOF){
-        setBit(RCC->AHB1ENR, RCC_AHB1ENR_GPIOFEN_Pos);
+        setBit(RCC->AHB1ENR, RCC_AHB1ENR_GPIOFEN);
     } else if(gpioInfo.gpio == GPIOG){
-        setBit(RCC->AHB1ENR, RCC_AHB1ENR_GPIOGEN_Pos);
+        setBit(RCC->AHB1ENR, RCC_AHB1ENR_GPIOGEN);
     } else if(gpioInfo.gpio == GPIOH){
-        setBit(RCC->AHB1ENR, RCC_AHB1ENR_GPIOHEN_Pos);
+        setBit(RCC->AHB1ENR, RCC_AHB1ENR_GPIOHEN);
     } else if(gpioInfo.gpio == GPIOI){
-        setBit(RCC->AHB1ENR, RCC_AHB1ENR_GPIOIEN_Pos);
+        setBit(RCC->AHB1ENR, RCC_AHB1ENR_GPIOIEN);
     }
     //В режиме AF
     setRegValShift(gpioInfo.gpio->MODER, (0b11 << (gpioInfo.pin * 2)), 0b10);
     //Выход Open-drain
-    setBit(gpioInfo.gpio->OTYPER, gpioInfo.pin);
+    setBitByPos(gpioInfo.gpio->OTYPER, gpioInfo.pin);
     //Very high speed
     setRegValShift(gpioInfo.gpio->OSPEEDR, (0b11 << (gpioInfo.pin * 2)), 0b11);
     //Pull up
@@ -92,30 +92,30 @@ void SimpleI2C::adjustGPIO(GPIO_Info gpioInfo) {
 }
 
 void SimpleI2C::resetI2C() {
-    setBit(i2c->CR1, I2C_CR1_SWRST_Pos);
-    while(bitIsZero(i2c->CR1, I2C_CR1_SWRST_Pos));
-    resetBit(i2c->CR1, I2C_CR1_SWRST_Pos);
-    while(bitIsOne(i2c->CR1, I2C_CR1_SWRST_Pos));
+    setBit(i2c->CR1, I2C_CR1_SWRST);
+    while(bitIsZero(i2c->CR1, I2C_CR1_SWRST));
+    resetBit(i2c->CR1, I2C_CR1_SWRST);
+    while(bitIsOne(i2c->CR1, I2C_CR1_SWRST));
 }
 
 void SimpleI2C::stopBus() {
-    setBit(i2c->CR1, I2C_CR1_STOP_Pos);
+    setBit(i2c->CR1, I2C_CR1_STOP);
 }
 
 void SimpleI2C::resetAF() {
-    resetBit(i2c->SR1, I2C_SR1_AF_Pos);
+    resetBit(i2c->SR1, I2C_SR1_AF);
 }
 
 void SimpleI2C::resetPE() {
-    resetBit(i2c->CR1, I2C_CR1_PE_Pos);
-    setBit(i2c->CR1, I2C_CR1_PE_Pos);
+    resetBit(i2c->CR1, I2C_CR1_PE);
+    setBit(i2c->CR1, I2C_CR1_PE);
 }
 
 void SimpleI2C::solveBusy() {
-    if(bitIsOne(sda.gpio->IDR, sda.pin) && bitIsOne(scl.gpio->IDR, scl.pin)){
+    if(bitIsOneByPos(sda.gpio->IDR, sda.pin) && bitIsOneByPos(scl.gpio->IDR, scl.pin)){
         resetI2C();
     }
-    if(bitIsOne(i2c->SR2, I2C_SR2_MSL_Pos)) {
+    if(bitIsOne(i2c->SR2, I2C_SR2_MSL)) {
         stopBus();
     }
     if(i2c->CR1 != 1) {
@@ -126,18 +126,18 @@ void SimpleI2C::solveBusy() {
 bool SimpleI2C::startBus(uint8_t address, I2C_RW rw) {
     //Ожидание пока шина освободится
     OnDelayCommon::again();
-    while(bitIsOne(i2c->SR2, I2C_SR2_BUSY_Pos)){
+    while(bitIsOne(i2c->SR2, I2C_SR2_BUSY)){
         if(OnDelayCommon::get()){
             solveBusy();
             return false;
         }
     }
     //Старт шины
-    resetBit(i2c->CR1, I2C_CR1_POS_Pos);
-    setBit(i2c->CR1, I2C_CR1_START_Pos);
+    resetBit(i2c->CR1, I2C_CR1_POS);
+    setBit(i2c->CR1, I2C_CR1_START);
     //Ожидание start
     OnDelayCommon::again();
-    while(bitIsZero(i2c->SR1, I2C_SR1_SB_Pos)){
+    while(bitIsZero(i2c->SR1, I2C_SR1_SB)){
         if(OnDelayCommon::get()){
             return false;
         }
@@ -147,12 +147,12 @@ bool SimpleI2C::startBus(uint8_t address, I2C_RW rw) {
     i2c->DR = (address << 1) | rw;
     //Ожидание ответа от адреса
     OnDelayCommon::again();
-    while(bitIsZero(i2c->SR1, I2C_SR1_AF_Pos) && bitIsZero(i2c->SR1, I2C_SR1_ADDR_Pos)){
+    while(bitIsZero(i2c->SR1, I2C_SR1_AF) && bitIsZero(i2c->SR1, I2C_SR1_ADDR)){
         if(OnDelayCommon::get()) {
             return false;
         }
     }
-    if(bitIsOne(i2c->SR1, I2C_SR1_ADDR_Pos)) {//Устройство отозвалось
+    if(bitIsOne(i2c->SR1, I2C_SR1_ADDR)) {//Устройство отозвалось
         //Сброс ADDR
         i2c->SR1;
         i2c->SR2;
@@ -174,9 +174,10 @@ bool SimpleI2C::write(uint8_t address, uint8_t *const src, uint16_t len) {
         //Запись данных в DR
         i2c->DR = src[i];
         //Ожидание пока данные перейдут в регистр сдвига
-        while(bitIsZero(i2c->SR1, I2C_SR1_TXE_Pos)){
-            if(bitIsOne(i2c->SR1, I2C_SR1_AF_Pos)){
+        while(bitIsZero(i2c->SR1, I2C_SR1_TXE)){
+            if(bitIsOne(i2c->SR1, I2C_SR1_AF)){
                 result = false;
+                resetAF();
                 break;
             }
         }
@@ -189,16 +190,16 @@ bool SimpleI2C::read(uint8_t address, uint16_t len) {
     for(uint8_t i = 0; i < len; i++){
         if(i < len - 1) {
             //Если не последний байт, то отправляем ACK
-            setBit(i2c->CR1, I2C_CR1_ACK_Pos);
+            setBit(i2c->CR1, I2C_CR1_ACK);
         } else {
             //Последний байт, выключаем подтверждение
-            resetBit(i2c->CR1, I2C_CR1_ACK_Pos);
+            resetBit(i2c->CR1, I2C_CR1_ACK);
             //Стоп
             stopBus();
         }
         //Ожидание данных в сдвиговом регистре
         OnDelayCommon::again();
-        while(bitIsZero(i2c->SR1, I2C_SR1_RXNE_Pos)){
+        while(bitIsZero(i2c->SR1, I2C_SR1_RXNE)){
             if(OnDelayCommon::get()) {
                 stopBus();
                 return false;

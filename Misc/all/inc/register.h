@@ -19,43 +19,83 @@ int8_t getPosition(T mask){
 }
 
 template<typename T>
-bool getBit(T& reg, uint32_t pos){
+bool getBit(T& reg, uint32_t mask){
+    return (reg & mask) > 0;
+}
+
+template<typename T>
+bool bitIsZero(T& reg, uint32_t mask){
+    return getBit(reg, mask) == false;
+}
+
+template<typename T>
+bool bitIsOne(T& reg, uint32_t mask){
+    return getBit(reg, mask) == true;
+}
+
+template<typename T>
+void setBit(T& reg, uint32_t mask){
+    reg |= mask;
+}
+
+template<typename T>
+void resetBit(T& reg, uint32_t mask){
+    reg &= ~mask;
+}
+
+template<typename T>
+void toggleBit(T& reg, uint32_t mask){
+    if(getBit(reg, mask)){
+        resetBit(reg, mask);
+        return;
+    }
+    setBit(reg, mask);
+}
+
+template<typename T>
+void toggleBitTwice(T& reg, uint32_t mask){
+    toggleBit(reg, mask);
+    toggleBit(reg, mask);
+}
+
+template<typename T>
+bool getBitByPos(T& reg, uint32_t pos){
     return (reg & (1 << pos)) > 0;
 }
 
 template<typename T>
-bool bitIsZero(T& reg, uint32_t pos){
-    return getBit(reg, pos) == false;
+bool bitIsZeroByPos(T& reg, uint32_t pos){
+    return getBitByPos(reg, pos) == false;
 }
 
 template<typename T>
-bool bitIsOne(T& reg, uint32_t pos){
-    return getBit(reg, pos) == true;
+bool bitIsOneByPos(T& reg, uint32_t pos){
+    return getBitByPos(reg, pos) == true;
 }
 
 template<typename T>
-void setBit(T& reg, uint32_t pos){
+void setBitByPos(T& reg, uint32_t pos){
     reg |= (1 << pos);
 }
 
 template<typename T>
-void resetBit(T& reg, uint32_t pos){
+void resetBitByPos(T& reg, uint32_t pos){
     reg &= ~(1 << pos);
 }
 
 template<typename T>
-void toggleBit(T& reg, uint32_t pos){
-    if(getBit(reg, pos)){
-        resetBit(reg, pos);
+void toggleBitByPos(T& reg, uint32_t pos){
+    if(getBitByPos(reg, pos)){
+        resetBitByPos(reg, pos);
         return;
     }
-    setBit(reg, pos);
+    setBitByPos(reg, pos);
 }
 
 template<typename T>
-void toggleBitTwice(T& reg, uint32_t pos){
-    toggleBit(reg, pos);
-    toggleBit(reg, pos);
+void toggleBitTwiceByPos(T& reg, uint32_t pos){
+    toggleBitByPos(reg, pos);
+    toggleBitByPos(reg, pos);
 }
 
 template<typename T>
@@ -93,28 +133,48 @@ public:
         size = (int8_t)sizeof(T) * 8;
     }
 
-    void setBit(uint8_t pos){
+    void set(T mask){
+        reg |= mask;
+    }
+
+    void reset(T mask){
+        reg &= ~mask;
+    }
+
+    T get(T mask){
+        return (reg & mask);
+    }
+
+    bool isZero(T mask){
+        return getBit(mask) == 0;
+    }
+
+    bool isOne(T mask){
+        return getBit(mask) > 0;
+    }
+
+    void setBitByPos(uint8_t pos){
         if(pos > size) return;
         reg |= (1 << pos);
     }
 
-    void resetBit(uint8_t pos){
+    void resetBitByPos(uint8_t pos){
         if(pos > size) return;
         reg &= ~(1 << pos);
     }
 
-    bool getBit(uint8_t pos){
+    bool getBitByPos(uint8_t pos){
         if(pos > size) return false;
         return (reg & (1 << pos)) > 0;
     }
 
-    bool isZero(uint8_t pos){
+    bool isZeroByPos(uint8_t pos){
         if(pos > size) return false;
-        return getBit(pos) == false;
+        return getBitByPos(pos) == false;
     }
 
-    bool isOne(uint8_t pos){
-        return getBit(pos) == true;
+    bool isOneByPos(uint8_t pos){
+        return getBitByPos(pos) == true;
     }
 
     void setValue(T mask, uint32_t val){
@@ -141,12 +201,12 @@ public:
     }
 
     Register<T>& operator|=(uint8_t pos){
-        setBit(pos);
+        setBitByPos(pos);
         return *this;
     }
 
     Register<T>& operator^=(uint8_t pos){
-        resetBit(pos);
+        resetBitByPos(pos);
         return *this;
     }
 };

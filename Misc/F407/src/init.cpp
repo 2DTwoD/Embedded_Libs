@@ -15,7 +15,7 @@ void rccInit(){
 
     //Включаем HSE
     RCC_CR |= RCC_CR_HSEON_Pos;
-    while(!RCC_CR.getBit(RCC_CR_HSERDY_Pos));
+    while(!RCC_CR.getBitByPos(RCC_CR_HSERDY_Pos));
 
     //Устанавливаем divP mulN divM
     RCC_PLLCFGR = {RCC_PLLCFGR_PLLP_Msk, 0};
@@ -27,7 +27,7 @@ void rccInit(){
 
     //Разрешаем PLL
     RCC_CR |= RCC_CR_PLLON_Pos;
-    while(!RCC_CR.getBit(RCC_CR_PLLRDY_Pos));
+    while(!RCC_CR.getBitByPos(RCC_CR_PLLRDY_Pos));
 
     //These bits represent the ratio of the CPU clock period to the flash memory access time
     FLASH->ACR |= FLASH_ACR_LATENCY_5WS;
@@ -103,9 +103,9 @@ void tickInit(TIM_TypeDef* tim, uint16_t busFreqMHz){
 void spiInit() {
     Register<uint32_t> RCC_AHB1ENR(RCC->AHB1ENR);
     Register<uint32_t> RCC_APB1ENR(RCC->APB1ENR);
-    RCC_AHB1ENR.setBit(RCC_AHB1ENR_GPIOBEN_Pos);
-    RCC_AHB1ENR.setBit(RCC_AHB1ENR_GPIOCEN_Pos);
-    RCC_APB1ENR.setBit(RCC_APB1ENR_SPI2EN_Pos);
+    RCC_AHB1ENR.setBitByPos(RCC_AHB1ENR_GPIOBEN_Pos);
+    RCC_AHB1ENR.setBitByPos(RCC_AHB1ENR_GPIOCEN_Pos);
+    RCC_APB1ENR.setBitByPos(RCC_APB1ENR_SPI2EN_Pos);
     //Тактирование разрешить SPI, GPIO
     /*RCC->AHB1ENR |= RCC_AHB1ENR_GPIOBEN | RCC_AHB1ENR_GPIOCEN;*/
     //RCC->APB1ENR |= RCC_APB1ENR_SPI2EN;
@@ -167,10 +167,10 @@ void i2cInit() {
     GPIOB_AFRH = {GPIO_AFRH_AFSEL9_Msk, 0b100};
 
     I2C_CR1 |= I2C_CR1_SWRST_Pos;
-    while(I2C_CR1.isZero(I2C_CR1_SWRST_Pos));
+    while(I2C_CR1.isZeroByPos(I2C_CR1_SWRST_Pos));
 
     I2C_CR1 ^= I2C_CR1_SWRST_Pos;
-    while(I2C_CR1.isOne(I2C_CR1_SWRST_Pos));
+    while(I2C_CR1.isOneByPos(I2C_CR1_SWRST_Pos));
 
     I2C_CR1 = 0;
     I2C_CR2 = 0;
