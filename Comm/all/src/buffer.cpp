@@ -24,6 +24,10 @@ uint8_t Buffer::getByte(uint16_t index){
     return buffer[index];
 }
 
+uint8_t Buffer::getByte() {
+    return getByte(0);
+}
+
 void Buffer::clearBytes(uint16_t start, uint16_t quantity){
     start = min(start, (uint16_t)(bufferSize - 1));
     quantity = min(quantity, (uint16_t)(bufferSize - start));
@@ -34,6 +38,10 @@ void Buffer::clearBytes(uint16_t start, uint16_t quantity){
 
 void Buffer::clearByte(uint16_t index){
     clearBytes(index, 1);
+}
+
+void Buffer::clearByte() {
+    clearByte(0);
 }
 
 bool Buffer::bufferIsEmpty() const {
@@ -83,8 +91,12 @@ uint8_t Buffer::getAndClearByte(uint16_t index) {
     clearByte(index);
     return res;
 }
+uint8_t Buffer::getAndClearByte() {
+    return getAndClearByte(0);
+}
 
 void Buffer::getAndClearBytes(uint8_t *const dst, uint16_t start, uint16_t quantity) {
     getBytes(dst, start, quantity);
     clearBytes(start, quantity);
 }
+

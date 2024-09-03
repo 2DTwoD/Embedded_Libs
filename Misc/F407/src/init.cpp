@@ -97,7 +97,7 @@ void tickInit(TIM_TypeDef* tim, uint16_t busFreqMHz){
 	tim->DIER |= TIM_DIER_UIE;
 	tim->CR1 |= TIM_CR1_CEN;
 	NVIC_EnableIRQ(irqType);
-	NVIC_SetPriority(irqType, 6);
+	NVIC_SetPriority(irqType, 0);
 }
 
 void spiInit() {
