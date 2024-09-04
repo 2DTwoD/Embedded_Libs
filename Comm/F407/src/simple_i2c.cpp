@@ -55,7 +55,7 @@ SimpleI2C::SimpleI2C(I2C_TypeDef *i2c, GPIO_Info sda, GPIO_Info scl, uint8_t bus
 }
 
 void SimpleI2C::adjustGPIO(GPIO_Info gpioInfo) {
-    //Тактирование
+    //Включить тактирование порта
     if(gpioInfo.gpio == GPIOA){
         setBit(RCC->AHB1ENR, RCC_AHB1ENR_GPIOAEN);
     } else if(gpioInfo.gpio == GPIOB){
@@ -229,16 +229,16 @@ void SimpleI2C::getSlaves(uint8_t *const dst, uint8_t len) {
     }
 }
 
-bool SimpleI2C::transmit(uint8_t address, uint8_t *const src, uint16_t len) {
+bool SimpleI2C::send(uint8_t address, uint8_t *const src, uint16_t len) {
     if(startBus(address, WRITE)){
         return write(address, src, len);
     }
     return false;
 }
 
-bool SimpleI2C::transmit(uint8_t address, uint8_t value) {
+bool SimpleI2C::send(uint8_t address, uint8_t value) {
     uint8_t container[1] = {value};
-    return transmit(address, container, 1);
+    return send(address, container, 1);
 }
 
 bool SimpleI2C::receive(uint8_t address, uint16_t len) {
@@ -252,17 +252,16 @@ bool SimpleI2C::receive(uint8_t address) {
     return receive(address, 1);
 }
 
-bool SimpleI2C::writeAndRead(uint8_t address, uint8_t *const writeSrc, uint16_t writeLen, uint16_t readLen) {
-    if(transmit(address, writeSrc, writeLen)){
+bool SimpleI2C::sendAndReceive(uint8_t address, uint8_t *const writeSrc, uint16_t writeLen, uint16_t readLen) {
+    if(send(address, writeSrc, writeLen)){
         return receive(address, readLen);
     }
     return false;
 }
 
-bool SimpleI2C::writeAndRead(uint8_t address, uint16_t writeValue, uint16_t readLen) {
-    if(transmit(address, writeValue)){
+bool SimpleI2C::sendAndReceive(uint8_t address, uint16_t writeValue, uint16_t readLen) {
+    if(send(address, writeValue)){
         return receive(address, readLen);
     }
     return false;
 }
-

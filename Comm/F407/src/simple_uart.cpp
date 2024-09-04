@@ -32,7 +32,7 @@ SimpleUART::SimpleUART(volatile USART_TypeDef *uart, GPIO_Info RxGPIO, GPIO_Info
         irqType = USART1_IRQn;
     }
     NVIC_EnableIRQ(irqType);
-    NVIC_SetPriority(irqType, 10);
+    NVIC_SetPriority(irqType, 3);
     //define alternate function code
     uint8_t AFcode;
     if(uart == USART1 || uart == USART2 || uart == USART3){

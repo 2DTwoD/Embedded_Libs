@@ -9,11 +9,9 @@ bool Coil::isActive(){
 void Coil::setValue(bool value){
 	ProgrammCoil::setValue(value);
 	if(value){
-		//if(isNotActive()) 
 		gpio->BSRR |= (1 << pin);
 		return;
 	}
-	//if(isActive())
 	gpio->BSRR |= (1 << (pin + 16));
 }
 Coil& Coil::operator=(bool value){

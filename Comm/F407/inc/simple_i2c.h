@@ -42,12 +42,12 @@ public:
     void update1ms() override;
     bool slaveIsExist(uint8_t address);
     void getSlaves(uint8_t* const dst, uint8_t len);
-    bool transmit(uint8_t address, uint8_t *const src, uint16_t len);
-    bool transmit(uint8_t address, uint8_t value);
+    bool send(uint8_t address, uint8_t *const src, uint16_t len);
+    bool send(uint8_t address, uint8_t value);
     bool receive(uint8_t address, uint16_t len);
     bool receive(uint8_t address);
-    bool writeAndRead(uint8_t address, uint8_t *const writeSrc, uint16_t writeLen, uint16_t readLen);
-    bool writeAndRead(uint8_t address, uint16_t writeValue, uint16_t readLen);
+    bool sendAndReceive(uint8_t address, uint8_t *const writeSrc, uint16_t writeLen, uint16_t readLen);
+    bool sendAndReceive(uint8_t address, uint16_t writeValue, uint16_t readLen);
 };
 
 #endif //SIMPLE_I2C_H

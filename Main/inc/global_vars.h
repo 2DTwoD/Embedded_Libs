@@ -8,6 +8,7 @@
 #include "main.h"
 #include "simple_uart.h"
 #include "simple_i2c.h"
+#include "simple_spi.h"
 
 CoilOffDelay led1({GPIOE, 13}, 1000);
 Coil led2({GPIOE, 14});
@@ -31,13 +32,28 @@ SimpleI2C i2c(I2C1,
               _2_1,
               128,
               10);
+Coil spiNSS({GPIOE, 3});
+SimpleSPI spi(SPI2,
+              {GPIOC, 3},
+              {GPIOC, 2},
+              {GPIOB, 10},
+              2,
+              42,
+              POLPHA_0,
+              POLPHA_0,
+              _8BIT,
+              MSB,
+              spiNSS,
+              128,
+              10);
 
 IUpdated1ms *updateObjects[] = {
         &button,
         &led1,
         &delay,
         &uart,
-        &i2c
+        &i2c,
+        &spi
 };
 
 uint8_t updateObjectsSize = sizeof(updateObjects) / sizeof(*updateObjects);

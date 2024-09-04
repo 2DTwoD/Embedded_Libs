@@ -13,7 +13,7 @@ extern uint8_t updateObjectsSize;
 extern "C"{
     //include this function name in startup_stm32x.s after Reset_Handler, for floating point operations in global code(line 62)
     void enableFPU(){
-        SCB->CPACR |= ((3UL << 10*2)|(3UL << 11*2));
+        SCB->CPACR |= ((3UL << 10 * 2)|(3UL << 11 * 2));
     }
 
 	void vApplicationIdleHook ( void ){
@@ -42,7 +42,6 @@ extern "C"{
     void USART1_IRQHandler(void) {
         uart.IRQhandler();
     }
-
     /*void ADC1_2_IRQHandler(void){
         if(ADC1->SR & ADC_SR_EOC){
             uint16_t val = ADC1->DR;

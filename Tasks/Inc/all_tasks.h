@@ -22,6 +22,7 @@
 #include "sequence.h"
 #include "simple_uart.h"
 #include "simple_i2c.h"
+#include "simple_spi.h"
 #include "logger.h"
 
 void ledTask(void *pvParameters);
