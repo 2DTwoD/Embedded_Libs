@@ -2,8 +2,8 @@
 
 SimpleSPI::SimpleSPI(SPI_TypeDef *spi, GPIO_Info mosi, GPIO_Info miso, GPIO_Info clk,
                      uint16_t SPIfreqMHz, uint16_t busFreqMHz, POLPHA pol, POLPHA pha,
-                     SPI_data dataFormat, SPI_frame frameFormat, Coil& nss, uint16_t bufferSize,
-                     uint32_t errorDelay): spi(spi), Buffer(bufferSize), OnDelayCommon(errorDelay), nss(nss) {
+                     SPI_data dataFormat, SPI_frame frameFormat, Coil& nss, uint16_t bufferSize, uint32_t errorDelay):
+                     spi(spi), Buffer(bufferSize), OnDelayCommon(errorDelay), nss(nss), dataFormat(dataFormat) {
     nss = true;
     uint8_t AFcode = 0b101;
     //Включить тактирование SPI
@@ -97,7 +97,26 @@ void SimpleSPI::newNss(Coil &newNss) {
     nss = newNss;
 }
 
-bool SimpleSPI::write(uint8_t *data, uint16_t len) {
+bool SimpleSPI::write(uint8_t *const data, uint16_t len) {
+    if(bitIsZero(spi->SR, SPI_SR_BSY)){
+        for(uint16_t i = 0; i < len; i++){
+            spi->DR = data[i];
+            OnDelayCommon::again();
+            while(bitIsZero(spi->SR, SPI_SR_TXE)){
+                if(OnDelayCommon::get()) return false;
+            }
+        }
+        OnDelayCommon::again();
+        while(bitIsOne(spi->SR, SPI_SR_BSY)){
+            if(OnDelayCommon::get()) return false;
+        }
+        return true;
+    }
+    return false;
+}
+
+
+bool SimpleSPI::write(uint16_t *const data, uint16_t len) {
     if(bitIsZero(spi->SR, SPI_SR_BSY)){
         for(uint16_t i = 0; i < len; i++){
             spi->DR = data[i];
@@ -129,7 +148,13 @@ bool SimpleSPI::read(uint16_t len) {
                 if(OnDelayCommon::get()) return false;
             }
             //Копируем данные в буфер
-            Buffer::addByte(spi->DR);
+            if(dataFormat == _16BIT){
+                uint16_t data = spi->DR;
+                Buffer::addByte(data & 0xFF);
+                Buffer::addByte(data >> 8);
+            } else {
+                Buffer::addByte(spi->DR);
+            }
         }
         //Ожидание пока шина занята
         OnDelayCommon::again();
@@ -141,7 +166,7 @@ bool SimpleSPI::read(uint16_t len) {
     return false;
 }
 
-bool SimpleSPI::send(uint8_t *src, uint16_t srcLen) {
+bool SimpleSPI::send(uint8_t *const src, uint16_t srcLen) {
     nss = false;
     bool result = write(src, srcLen);
     nss = true;
@@ -152,6 +177,20 @@ bool SimpleSPI::send(uint8_t value) {
     uint8_t container[1] = {value};
     return send(container, 1);
 }
+
+bool SimpleSPI::send(uint16_t *const src, uint16_t srcLen) {
+    nss = false;
+    bool result = write(src, srcLen);
+    nss = true;
+    return result;
+}
+
+bool SimpleSPI::send(uint16_t value) {
+    uint16_t container[1] = {value};
+    return send(container, 1);
+}
+
+
 bool SimpleSPI::receive(uint16_t readLen) {
     nss = false;
     bool result = read(readLen);
@@ -163,7 +202,7 @@ bool SimpleSPI::receive() {
     return receive(1);
 }
 
-bool SimpleSPI::sendAndReceive(uint8_t* src, uint16_t srcLen, uint16_t readLen) {
+bool SimpleSPI::sendAndReceive(uint8_t *const src, uint16_t srcLen, uint16_t readLen) {
     nss = false;
     bool result = write(src, srcLen);
     if(result){
@@ -175,5 +214,20 @@ bool SimpleSPI::sendAndReceive(uint8_t* src, uint16_t srcLen, uint16_t readLen) 
 
 bool SimpleSPI::sendAndReceive(uint8_t value, uint16_t readLen) {
     uint8_t container[1] = {value};
+    return sendAndReceive(container, 1, readLen);
+}
+
+bool SimpleSPI::sendAndReceive(uint16_t *const src, uint16_t srcLen, uint16_t readLen) {
+    nss = false;
+    bool result = write(src, srcLen);
+    if(result){
+        result = read(readLen);
+    }
+    nss = true;
+    return result;
+}
+
+bool SimpleSPI::sendAndReceive(uint16_t value, uint16_t readLen) {
+    uint16_t container[1] = {value};
     return sendAndReceive(container, 1, readLen);
 }

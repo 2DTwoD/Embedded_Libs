@@ -4,34 +4,73 @@
 #include "array_fun.h"
 #include "math_fun.h"
 
+template <typename T>
+T getX(uint16_t index, uint8_t *const bytes, uint16_t len){
+    T result = 0;
+    uint8_t size = sizeof(T);
+    if(index >= len) return 0;
+    for(uint16_t i = 0; i < size; i++){
+        if(i + index >= len) break;
+        result |= (bytes[i + index] << (8 * (size - i - 1)));
+    }
+    return result;
+}
+
 class Buffer{
 private:
     uint8_t* buffer{nullptr};
     uint16_t bufferSize{0};
     uint16_t bufferIndex{0};
+    void limIndex(uint16_t& index) const;
+    void limQuan(uint16_t& quantity, uint16_t shift) const;
+    void clearXBytes(uint16_t start, uint16_t quantity, uint8_t size);
 protected:
-    void addByte(uint8_t value);
-    void addBytes(const uint8_t *const src, uint16_t start, uint16_t quantity);
-    void addBytes(const uint8_t *const src, uint16_t len);
+
+    void addByte(const uint8_t *const src, uint16_t start, uint16_t quantity);
+    void addByte(const uint8_t *const src, uint16_t len);
 public:
+    void addByte(uint8_t value);
     Buffer(uint16_t bufferSize);
-    bool bufferOverFlow() const;
+    ~Buffer();
+    //buffer info
+    bool bufferIsOverFlow() const;
     bool bufferIsEmpty() const;
     bool bufferIsNotEmpty() const;
     uint16_t getBufferSize() const;
     uint16_t getBufferIndex() const;
-    void getBytes(uint8_t *const dst, uint16_t start, uint16_t quantity);
+    //get
     uint8_t getByte(uint16_t index);
     uint8_t getByte();
-    void clearBytes(uint16_t start, uint16_t quantity);
+    void getByte(uint8_t *const dst, uint16_t start, uint16_t quantity);
+    uint16_t getWord(uint16_t index);
+    uint16_t getWord();
+    void getWord(uint16_t *const dst, uint16_t start, uint16_t quantity);
+    uint32_t getDWord(uint16_t index);
+    uint32_t getDWord();
+    void getDWord(uint32_t *const dst, uint16_t start, uint16_t quantity);
+    //clear
+    void clearByte(uint16_t start, uint16_t quantity);
     void clearByte(uint16_t index);
     void clearByte();
+    void clearWord(uint16_t start, uint16_t quantity);
+    void clearWord(uint16_t index);
+    void clearWord();
+    void clearDWord(uint16_t start, uint16_t quantity);
+    void clearDWord(uint16_t index);
+    void clearDWord();
+    //getAndClear
     uint8_t getAndClearByte(uint16_t index);
     uint8_t getAndClearByte();
-    void getAndClearBytes(uint8_t *const dst, uint16_t start, uint16_t quantity);
+    void getAndClearByte(uint8_t *const dst, uint16_t start, uint16_t quantity);
+    uint16_t getAndClearWord(uint16_t index);
+    uint16_t getAndClearWord();
+    void getAndClearWord(uint16_t *dst, uint16_t start, uint16_t quantity);
+    uint32_t getAndClearDWord(uint16_t index);
+    uint32_t getAndClearDWord();
+    void getAndClearDWord(uint32_t *const dst, uint16_t start, uint16_t quantity);
+    //all
     void getAll(uint8_t *const dst);
     void clearALl();
-    ~Buffer();
 };
 
 #endif //BUFFER_H
