@@ -150,8 +150,8 @@ bool SimpleSPI::read(uint16_t len) {
             //Копируем данные в буфер
             if(dataFormat == _16BIT){
                 uint16_t data = spi->DR;
-                Buffer::addByte(data & 0xFF);
                 Buffer::addByte(data >> 8);
+                Buffer::addByte(data & 0xFF);
             } else {
                 Buffer::addByte(spi->DR);
             }

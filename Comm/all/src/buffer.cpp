@@ -96,6 +96,18 @@ void Buffer::getDWord(uint32_t *const dst, uint16_t start, uint16_t quantity) {
     }
 }
 
+float Buffer::getFloat(uint16_t index) {
+    return dWordToFloat(getDWord(index));
+}
+float Buffer::getFloat() {
+    return getFloat(0);
+}
+void Buffer::getFloat(float *const dst, uint16_t start, uint16_t quantity) {
+    for(uint16_t i = 0; i < quantity; i++){
+        dst[i] = dWordToFloat(getDWord(4 * i + start));
+    }
+}
+
 //clear
 void Buffer::clearByte(uint16_t start, uint16_t quantity){
     clearXBytes(start, quantity, 1);
@@ -127,6 +139,16 @@ void Buffer::clearDWord(uint16_t index) {
 }
 void Buffer::clearDWord() {
     clearDWord(0);
+}
+
+void Buffer::clearFloat(uint16_t start, uint16_t quantity) {
+    clearDWord(start, quantity);
+}
+void Buffer::clearFloat(uint16_t index) {
+    clearFloat(index, 1);
+}
+void Buffer::clearFloat() {
+    clearFloat(0);
 }
 
 //getAndClear
@@ -168,6 +190,20 @@ void Buffer::getAndClearDWord(uint32_t *const dst, uint16_t start, uint16_t quan
     getDWord(dst, start, quantity);
     clearDWord(start, quantity);
 }
+
+float Buffer::getAndClearFloat(uint16_t index) {
+    float res = getFloat(index);
+    clearFloat(index);
+    return res;
+}
+float Buffer::getAndClearFloat() {
+    return getAndClearFloat(0);
+}
+void Buffer::getAndClearFloat(float *const dst, uint16_t start, uint16_t quantity) {
+    getFloat(dst, start, quantity);
+    clearFloat(start, quantity);
+}
+
 
 //all
 void Buffer::getAll(uint8_t *const dst) {

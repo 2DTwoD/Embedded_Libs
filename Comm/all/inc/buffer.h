@@ -26,9 +26,10 @@ private:
     void clearXBytes(uint16_t start, uint16_t quantity, uint8_t size);
 protected:
 
+
+public:
     void addByte(const uint8_t *const src, uint16_t start, uint16_t quantity);
     void addByte(const uint8_t *const src, uint16_t len);
-public:
     void addByte(uint8_t value);
     Buffer(uint16_t bufferSize);
     ~Buffer();
@@ -48,6 +49,9 @@ public:
     uint32_t getDWord(uint16_t index);
     uint32_t getDWord();
     void getDWord(uint32_t *const dst, uint16_t start, uint16_t quantity);
+    float getFloat(uint16_t index);
+    float getFloat();
+    void getFloat(float *const dst, uint16_t start, uint16_t quantity);
     //clear
     void clearByte(uint16_t start, uint16_t quantity);
     void clearByte(uint16_t index);
@@ -58,6 +62,9 @@ public:
     void clearDWord(uint16_t start, uint16_t quantity);
     void clearDWord(uint16_t index);
     void clearDWord();
+    void clearFloat(uint16_t start, uint16_t quantity);
+    void clearFloat(uint16_t index);
+    void clearFloat();
     //getAndClear
     uint8_t getAndClearByte(uint16_t index);
     uint8_t getAndClearByte();
@@ -68,6 +75,9 @@ public:
     uint32_t getAndClearDWord(uint16_t index);
     uint32_t getAndClearDWord();
     void getAndClearDWord(uint32_t *const dst, uint16_t start, uint16_t quantity);
+    float getAndClearFloat(uint16_t index);
+    float getAndClearFloat();
+    void getAndClearFloat(float *const dst, uint16_t start, uint16_t quantity);
     //all
     void getAll(uint8_t *const dst);
     void clearALl();
