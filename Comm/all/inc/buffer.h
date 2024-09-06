@@ -25,12 +25,11 @@ private:
     void limQuan(uint16_t& quantity, uint16_t shift) const;
     void clearXBytes(uint16_t start, uint16_t quantity, uint8_t size);
 protected:
-
-
-public:
+    //add
+    void addByte(uint8_t value);
     void addByte(const uint8_t *const src, uint16_t start, uint16_t quantity);
     void addByte(const uint8_t *const src, uint16_t len);
-    void addByte(uint8_t value);
+public:
     Buffer(uint16_t bufferSize);
     ~Buffer();
     //buffer info

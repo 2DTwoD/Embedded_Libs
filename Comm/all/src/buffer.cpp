@@ -26,6 +26,7 @@ void Buffer::clearXBytes(uint16_t start, uint16_t quantity, uint8_t size) {
     bufferIndex -= quantity;
 }
 
+//add
 void Buffer::addByte(uint8_t value) {
     if(bufferIndex < bufferSize) {
         buffer[bufferIndex] = value;
