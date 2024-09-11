@@ -3,7 +3,7 @@
 SimpleSPI::SimpleSPI(SPI_TypeDef *spi, GPIO_Info mosi, GPIO_Info miso, GPIO_Info clk,
                      uint16_t SPIfreqMHz, uint16_t busFreqMHz, POLPHA pol, POLPHA pha,
                      SPI_data dataFormat, SPI_frame frameFormat, Coil& nss, uint16_t bufferSize, uint32_t errorDelay):
-                     spi(spi), Buffer(bufferSize), OnDelayCommon(errorDelay), nss(nss), dataFormat(dataFormat) {
+        spi(spi), InternalBuffer(bufferSize), OnDelayCommon(errorDelay), nss(nss), dataFormat(dataFormat) {
     nss = true;
     uint8_t AFcode = 0b101;
     //Включить тактирование SPI
@@ -150,10 +150,10 @@ bool SimpleSPI::read(uint16_t len) {
             //Копируем данные в буфер
             if(dataFormat == _16BIT){
                 uint16_t data = spi->DR;
-                Buffer::addByte(data >> 8);
-                Buffer::addByte(data & 0xFF);
+                InternalBuffer::addByte(data >> 8);
+                InternalBuffer::addByte(data & 0xFF);
             } else {
-                Buffer::addByte(spi->DR);
+                InternalBuffer::addByte(spi->DR);
             }
         }
         //Ожидание пока шина занята

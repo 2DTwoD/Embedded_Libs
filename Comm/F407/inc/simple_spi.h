@@ -21,7 +21,7 @@ enum SPI_frame{
     MSB = 0, LSB = 1
 };
 
-class SimpleSPI: private OnDelayCommon, public IUpdated1ms, public Buffer{
+class SimpleSPI: private OnDelayCommon, public IUpdated1ms, public InternalBuffer{
 private:
     SPI_TypeDef* spi;
     Coil& nss;

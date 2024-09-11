@@ -2,6 +2,7 @@
 #define ARRAY_WORK_H
 
 #include <cstdint>
+#include "math_fun.h"
 
 float bytesToFloat(const uint8_t *src);
 void floatToBytes(float value, uint8_t *dst);
@@ -25,11 +26,24 @@ void fillArray(T *const array, uint32_t len, T fillValue){
 
 template<typename T, typename X>
 void insertElementInArray(T *const array, X len, X index, T value){
-    if(index > len) return;
+    if(index >= len) return;
     for(int i = len - 1; i > index; i--){
         array[i] = array[i - 1];
     }
     array[index] = value;
+}
+
+template<typename T, typename X>
+void insertElementsInArray(T *const dst, X len, X index, const T *const src, X start, X quantity){
+    if(index >= len) return;
+    quantity = min(quantity, len - index);
+    int i;
+    for(i = len - 1; i >= index + quantity; i--){
+        dst[i] = dst[i - quantity];
+    }
+    for(i = 0; i < quantity; i++){
+        dst[index + i] = src[start + i];
+    }
 }
 
 template<typename T, typename X>

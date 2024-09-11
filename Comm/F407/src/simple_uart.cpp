@@ -3,7 +3,7 @@
 SimpleUART::SimpleUART(volatile USART_TypeDef *uart, GPIO_Info RxGPIO, GPIO_Info TxGPIO, uint32_t busFreqMHz,
                        USARTbaudRate baudRate, USARTparity parity, USARTstopBits stopBits, uint16_t bufferSize,
                        uint32_t errorDelay)
-        : OnDelayCommon(errorDelay), uart(uart), Buffer(bufferSize){
+        : OnDelayCommon(errorDelay), uart(uart), InternalBuffer(bufferSize){
     //Сбросить все
     uart->CR1 = 0;
     uart->CR2 = 0;
@@ -137,7 +137,7 @@ void SimpleUART::click() {
 
 void SimpleUART::IRQhandler() {
     if(uart->SR & USART_SR_RXNE) {
-        Buffer::addByte(uart->DR);
+        InternalBuffer::addByte(uart->DR);
     }
 }
 

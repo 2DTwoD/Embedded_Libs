@@ -29,7 +29,7 @@ enum USARTstopBits {
     _2
 };
 
-class SimpleUART: private OnDelayCommon, public IUpdated1ms, public Buffer {
+class SimpleUART: private OnDelayCommon, public IUpdated1ms, public InternalBuffer {
 private:
     volatile USART_TypeDef* uart;
     uint16_t clickCount{0};

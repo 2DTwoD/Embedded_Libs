@@ -22,7 +22,7 @@ enum I2C_RW{
     WRITE = 0, READ = 1
 };
 
-class SimpleI2C: private OnDelayCommon, public IUpdated1ms, public Buffer {
+class SimpleI2C: private OnDelayCommon, public IUpdated1ms, public InternalBuffer {
 private:
     I2C_TypeDef* i2c;
     GPIO_Info sda;

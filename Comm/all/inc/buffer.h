@@ -16,22 +16,22 @@ T getX(uint16_t index, uint8_t *const bytes, uint16_t len){
     return result;
 }
 
-class Buffer{
+class InternalBuffer{
 private:
-    uint8_t* buffer{nullptr};
     uint16_t bufferSize{0};
     uint16_t bufferIndex{0};
     void limIndex(uint16_t& index) const;
     void limQuan(uint16_t& quantity, uint16_t shift) const;
     void clearXBytes(uint16_t start, uint16_t quantity, uint8_t size);
 protected:
+    uint8_t* buffer{nullptr};
     //add
-    void addByte(uint8_t value);
-    void addByte(const uint8_t *const src, uint16_t start, uint16_t quantity);
-    void addByte(const uint8_t *const src, uint16_t len);
+    virtual void addByte(uint8_t value);
+    virtual void addByte(const uint8_t *const src, uint16_t start, uint16_t quantity);
+    virtual void addByte(const uint8_t *const src, uint16_t len);
 public:
-    Buffer(uint16_t bufferSize);
-    ~Buffer();
+    InternalBuffer(uint16_t bufferSize);
+    ~InternalBuffer();
     //buffer info
     bool bufferIsOverFlow() const;
     bool bufferIsEmpty() const;
@@ -80,6 +80,27 @@ public:
     //all
     void getAll(uint8_t *const dst);
     void clearALl();
+};
+
+class Buffer: public InternalBuffer{
+public:
+    explicit Buffer(uint16_t bufferSize);
+    //add
+    void addByte(uint8_t value) override;
+    void addByte(const uint8_t *src, uint16_t start, uint16_t quantity) override;
+    void addByte(const uint8_t *src, uint16_t len) override;
+    void addWord(uint16_t value);
+    void addWord(const uint16_t *src, uint16_t start, uint16_t quantity);
+    void addWord(const uint16_t *src, uint16_t len);
+    void addDWord(uint32_t value);
+    void addDWord(const uint32_t *src, uint16_t start, uint16_t quantity);
+    void addDWord(const uint32_t *src, uint16_t len);
+    void addFloat(float value);
+    void addFloat(const float *src, uint16_t start, uint16_t quantity);
+    void addFloat(const float *src, uint16_t len);
+    //insert
+    void insertByte(uint16_t index, uint8_t value);
+    void insertByte(uint8_t value);
 };
 
 #endif //BUFFER_H

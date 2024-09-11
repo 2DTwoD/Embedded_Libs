@@ -12721,7 +12721,7 @@
             </field>
             <field>
               <name>ITBUFEN</name>
-              <description>Buffer interrupt enable</description>
+              <description>InternalBuffer interrupt enable</description>
               <bitOffset>10</bitOffset>
               <bitWidth>1</bitWidth>
             <enumeratedValues><name>ITBUFEN</name><usage>read-write</usage><enumeratedValue><name>Disabled</name><description>TxE=1 or RxNE=1 does not generate any interrupt</description><value>0</value></enumeratedValue><enumeratedValue><name>Enabled</name><description>TxE=1 or RxNE=1 generates Event interrupt</description><value>1</value></enumeratedValue></enumeratedValues>
@@ -36688,7 +36688,7 @@
             </field>
             <field>
               <name>BNA</name>
-              <description>Buffer not available
+              <description>InternalBuffer not available
               interrupt</description>
               <bitOffset>9</bitOffset>
               <bitWidth>1</bitWidth>
@@ -38921,7 +38921,7 @@
         <register>
           <name>CFBAR</name>
           <displayName>L1CFBAR</displayName>
-          <description>Layerx Color Frame Buffer Address
+          <description>Layerx Color Frame InternalBuffer Address
           Register</description>
           <addressOffset>0x28</addressOffset>
           <size>0x20</size>
@@ -38930,7 +38930,7 @@
           <fields>
             <field>
               <name>CFBADD</name>
-              <description>Color Frame Buffer Start
+              <description>Color Frame InternalBuffer Start
               Address</description>
               <bitOffset>0</bitOffset>
               <bitWidth>32</bitWidth>
@@ -38941,7 +38941,7 @@
         <register>
           <name>CFBLR</name>
           <displayName>L1CFBLR</displayName>
-          <description>Layerx Color Frame Buffer Length
+          <description>Layerx Color Frame InternalBuffer Length
           Register</description>
           <addressOffset>0x2c</addressOffset>
           <size>0x20</size>
@@ -38950,7 +38950,7 @@
           <fields>
             <field>
               <name>CFBP</name>
-              <description>Color Frame Buffer Pitch in
+              <description>Color Frame InternalBuffer Pitch in
               bytes</description>
               <bitOffset>16</bitOffset>
               <bitWidth>13</bitWidth>
@@ -38958,7 +38958,7 @@
             </field>
             <field>
               <name>CFBLL</name>
-              <description>Color Frame Buffer Line
+              <description>Color Frame InternalBuffer Line
               Length</description>
               <bitOffset>0</bitOffset>
               <bitWidth>13</bitWidth>
@@ -38969,7 +38969,7 @@
         <register>
           <name>CFBLNR</name>
           <displayName>L1CFBLNR</displayName>
-          <description>Layerx ColorFrame Buffer Line Number
+          <description>Layerx ColorFrame InternalBuffer Line Number
           Register</description>
           <addressOffset>0x30</addressOffset>
           <size>0x20</size>
@@ -38978,7 +38978,7 @@
           <fields>
             <field>
               <name>CFBLNBR</name>
-              <description>Frame Buffer Line Number</description>
+              <description>Frame InternalBuffer Line Number</description>
               <bitOffset>0</bitOffset>
               <bitWidth>11</bitWidth>
             <writeConstraint><range><minimum>0</minimum><maximum>2047</maximum></range></writeConstraint>

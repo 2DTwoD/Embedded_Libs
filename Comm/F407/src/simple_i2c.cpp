@@ -2,7 +2,7 @@
 
 SimpleI2C::SimpleI2C(I2C_TypeDef *i2c, GPIO_Info sda, GPIO_Info scl, uint8_t busFreqMHz,
                      I2C_Mode mode, I2C_Duty duty, uint16_t bufferSize, uint32_t errorDelay):
-                     OnDelayCommon(errorDelay), Buffer(bufferSize), i2c(i2c), sda(sda), scl(scl) {
+        OnDelayCommon(errorDelay), InternalBuffer(bufferSize), i2c(i2c), sda(sda), scl(scl) {
     if(i2c == I2C2){
         setBit(RCC->APB1ENR, RCC_APB1ENR_I2C2EN);
     } else if(i2c == I2C3){
@@ -206,7 +206,7 @@ bool SimpleI2C::read(uint8_t address, uint16_t len) {
             }
         }
         //Считать данные в буфер
-        Buffer::addByte(i2c->DR);
+        InternalBuffer::addByte(i2c->DR);
     }
     return true;
 }
