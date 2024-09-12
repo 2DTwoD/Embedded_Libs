@@ -30,7 +30,7 @@ protected:
     virtual void addByte(const uint8_t *const src, uint16_t start, uint16_t quantity);
     virtual void addByte(const uint8_t *const src, uint16_t len);
 public:
-    InternalBuffer(uint16_t bufferSize);
+    explicit InternalBuffer(uint16_t bufferSize);
     ~InternalBuffer();
     //buffer info
     bool bufferIsOverFlow() const;
@@ -89,18 +89,46 @@ public:
     void addByte(uint8_t value) override;
     void addByte(const uint8_t *src, uint16_t start, uint16_t quantity) override;
     void addByte(const uint8_t *src, uint16_t len) override;
+
     void addWord(uint16_t value);
     void addWord(const uint16_t *src, uint16_t start, uint16_t quantity);
     void addWord(const uint16_t *src, uint16_t len);
+
     void addDWord(uint32_t value);
     void addDWord(const uint32_t *src, uint16_t start, uint16_t quantity);
     void addDWord(const uint32_t *src, uint16_t len);
+
     void addFloat(float value);
     void addFloat(const float *src, uint16_t start, uint16_t quantity);
     void addFloat(const float *src, uint16_t len);
     //insert
     void insertByte(uint16_t index, uint8_t value);
     void insertByte(uint8_t value);
+    void insertByte(uint16_t index, const uint8_t *src, uint16_t start, uint16_t quantity);
+    void insertByte(const uint8_t *src, uint16_t start, uint16_t quantity);
+    void insertByte(uint16_t index, const uint8_t *src, uint16_t len);
+    void insertByte(const uint8_t *src, uint16_t len);
+
+    void insertWord(uint16_t index, uint16_t value);
+    void insertWord(uint16_t value);
+    void insertWord(uint16_t index, const uint16_t *src, uint16_t start, uint16_t quantity);
+    void insertWord(const uint16_t *src, uint16_t start, uint16_t quantity);
+    void insertWord(uint16_t index, const uint16_t *src, uint16_t len);
+    void insertWord(const uint16_t *src, uint16_t len);
+
+    void insertDWord(uint16_t index, uint32_t value);
+    void insertDWord(uint32_t value);
+    void insertDWord(uint16_t index, const uint32_t *src, uint16_t start, uint16_t quantity);
+    void insertDWord(const uint32_t *src, uint16_t start, uint16_t quantity);
+    void insertDWord(uint16_t index, const uint32_t *src, uint16_t len);
+    void insertDWord(const uint32_t *src, uint16_t len);
+
+    void insertFloat(uint16_t index, float value);
+    void insertFloat(float value);
+    void insertFloat(uint16_t index, const float *src, uint16_t start, uint16_t quantity);
+    void insertFloat(const float *src, uint16_t start, uint16_t quantity);
+    void insertFloat(uint16_t index, const float *src, uint16_t len);
+    void insertFloat(const float *src, uint16_t len);
 };
 
 #endif //BUFFER_H

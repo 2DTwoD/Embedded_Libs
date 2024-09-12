@@ -36,7 +36,7 @@ void insertElementInArray(T *const array, X len, X index, T value){
 template<typename T, typename X>
 void insertElementsInArray(T *const dst, X len, X index, const T *const src, X start, X quantity){
     if(index >= len) return;
-    quantity = min(quantity, len - index);
+    quantity = min(quantity, (X)(len - index));
     int i;
     for(i = len - 1; i >= index + quantity; i--){
         dst[i] = dst[i - quantity];

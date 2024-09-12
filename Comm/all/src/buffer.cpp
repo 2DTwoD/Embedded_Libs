@@ -278,11 +278,98 @@ void Buffer::addFloat(const float *src, uint16_t len) {
     addFloat(src, 0, len);
 }
 
+//insert
 void Buffer::insertByte(uint16_t index, uint8_t value) {
-    if(index > getBufferSize() - 1) return;
+    if(index >= getBufferSize()) return;
     insertElementInArray(buffer, getBufferSize(), index, value);
 }
-
 void Buffer::insertByte(uint8_t value) {
     insertByte(0, value);
+}
+void Buffer::insertByte(uint16_t index, const uint8_t *src, uint16_t start, uint16_t quantity) {
+    if(index >= getBufferSize()) return;
+    insertElementsInArray(buffer, getBufferSize(), index, src, start, quantity);
+}
+void Buffer::insertByte(const uint8_t *src, uint16_t start, uint16_t quantity) {
+    insertByte(0, src, start, quantity);
+}
+void Buffer::insertByte(uint16_t index, const uint8_t *src, uint16_t len) {
+    insertByte(index, src, 0, len);
+}
+void Buffer::insertByte(const uint8_t *src, uint16_t len) {
+    insertByte(0, src, len);
+}
+
+void Buffer::insertWord(uint16_t index, uint16_t value) {
+    insertByte(index, (uint8_t) (value >> 8));
+    insertByte(index + 1, (uint8_t) (value & 0xFF));
+}
+void Buffer::insertWord(uint16_t value) {
+    insertWord((uint16_t)0, value);
+}
+void Buffer::insertWord(uint16_t index, const uint16_t *src, uint16_t start, uint16_t quantity) {
+    for(uint16_t i = start; i < start + quantity; i++){
+        insertWord(index + (i - start) * 2, src[i]);
+    }
+}
+void Buffer::insertWord(const uint16_t *src, uint16_t start, uint16_t quantity) {
+    insertWord(0, src, start, quantity);
+}
+void Buffer::insertWord(uint16_t index, const uint16_t *src, uint16_t len) {
+    insertWord(index, src, 0, len);
+}
+void Buffer::insertWord(const uint16_t *src, uint16_t len) {
+    insertWord(0, src, len);
+}
+
+void Buffer::insertDWord(uint16_t index, uint32_t value) {
+    insertByte(index,(uint8_t) (value >> 24));
+    insertByte(index + 1, (uint8_t) ((value >> 16) & 0xFF));
+    insertByte(index + 2, (uint8_t) ((value >> 8) & 0xFF));
+    insertByte(index + 3, (uint8_t) (value & 0xFF));
+}
+void Buffer::insertDWord(uint32_t value) {
+    insertDWord(0, value);
+}
+void Buffer::insertDWord(uint16_t index, const uint32_t *src, uint16_t start, uint16_t quantity) {
+    for(uint16_t i = start; i < start + quantity; i++){
+        insertDWord(index + (i - start) * 4, src[i]);
+    }
+}
+void Buffer::insertDWord(const uint32_t *src, uint16_t start, uint16_t quantity) {
+    insertDWord(0, src, start, quantity);
+}
+void Buffer::insertDWord(uint16_t index, const uint32_t *src, uint16_t len) {
+    insertDWord(index, src, 0, len);
+}
+void Buffer::insertDWord(const uint32_t *src, uint16_t len) {
+    insertDWord(0, src, len);
+}
+
+void Buffer::insertFloat(uint16_t index, float value) {
+    insertDWord(floatToDWord(value));
+}
+
+void Buffer::insertFloat(float value) {
+    insertFloat(0, value);
+}
+
+void Buffer::insertFloat(uint16_t index, const float *src, uint16_t start, uint16_t quantity) {
+    uint32_t dwords[quantity];
+    for(uint16_t i = 0; i < quantity; i++){
+        dwords[i] = floatToDWord(src[i + start]);
+    }
+    insertDWord(index, dwords, quantity);
+}
+
+void Buffer::insertFloat(const float *src, uint16_t start, uint16_t quantity) {
+    insertFloat(0, src, start, quantity);
+}
+
+void Buffer::insertFloat(uint16_t index, const float *src, uint16_t len) {
+    insertFloat(index, src, 0, len);
+}
+
+void Buffer::insertFloat(const float *src, uint16_t len) {
+    insertFloat(0, src, len);
 }
