@@ -24,6 +24,7 @@
 #include "simple_i2c.h"
 #include "simple_spi.h"
 #include "logger.h"
+#include "linked_list.h"
 
 void ledTask(void *pvParameters);
 void pidTask(void *pvParameters);
