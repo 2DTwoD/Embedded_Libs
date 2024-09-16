@@ -47,18 +47,37 @@ private:
     LLEntity<T>* first{nullptr};
     LLEntity<T>* last{nullptr};
     uint16_t lastIndex{0};
-    LLEntity<T>* newEntity(LLEntity<T>* prev, LLEntity<T>* next, T value){
+    void newEntity(LLEntity<T>* prev, LLEntity<T>* next, T value){
         lastIndex++;
         LLEntity<T>* entity = new LLEntity<T>(prev, next, value);
-        if(prev == nullptr || next == nullptr){
-            last = entity;
+        if(prev == nullptr){
+            first = entity;
+        } else {
+            prev->setNext(entity);
         }
-        return entity;
+        if(next == nullptr){
+            last = entity;
+        } else {
+            next->setPrev(entity);
+        }
     }
     void deleteEntity(LLEntity<T>* entity){
         if(entity == nullptr) return;
+        if(entity->getPrev() == nullptr){
+            first = entity->getNext();
+            if(first != nullptr) {
+                first->setPrev(nullptr);
+            }
+        } else {
+            entity->getPrev()->setNext(entity->getNext());
+        }
         if(entity->getNext() == nullptr){
             last = entity->getPrev();
+            if(last != nullptr){
+                last->setNext(nullptr);
+            }
+        } else {
+            entity->getNext()->setPrev(entity->getPrev());
         }
         delete entity;
         lastIndex--;
@@ -99,17 +118,20 @@ public:
 
     void add(uint16_t index, T value) override {
         if(first == nullptr){
-            first = newEntity(nullptr, nullptr, value);
+            newEntity(nullptr, nullptr, value);
             return;
         }
         LLEntity<T>* cur = first;
         uint16_t count = 0;
-        do{
-            if(cur->getNext() == nullptr || count == index) break;
+        while(cur->hasNext()){
+            if(count == index){
+                newEntity(cur->getPrev(), cur, value);
+                return;
+            }
             count++;
             cur = cur->getNext();
-        } while(cur->hasNext());
-        cur->setNext(newEntity(cur, cur->getNext(), value));
+        }
+        newEntity(cur, nullptr, value);
     }
 
     void remove(uint16_t index, uint16_t quantity) override {
@@ -118,19 +140,20 @@ public:
         }
         LLEntity<T>* cur = first;
         uint16_t count = 0;
-        do{
+        while (cur->hasNext() || count == lastIndex - 1){
             if(count == index){
+                LLEntity<T>* next;
                 for(uint16_t i = 0; i < quantity; i++){
-                    if(cur == nullptr) return;
-                    LLEntity<T>* next = cur->getNext();
+                    next = cur->getNext();
                     deleteEntity(cur);
+                    if(next == nullptr) return;
                     cur = next;
                 }
                 break;
             }
             count++;
             cur = cur->getNext();
-        } while (cur != nullptr || cur->hasNext());
+        }
     }
 
     int32_t firstIndexOf(T value) const override {
