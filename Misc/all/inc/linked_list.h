@@ -195,7 +195,7 @@ public:
         }
         LLEntity<T>* cur = first;
         uint16_t count = 0;
-        while (cur->hasNext() || count == lastIndex - 1){
+        while (cur != nullptr){
             if(count == index){
                 LLEntity<T>* next;
                 for(uint16_t i = 0; i < quantity; i++){

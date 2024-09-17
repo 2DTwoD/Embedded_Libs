@@ -47,7 +47,7 @@ void insertElementsInArray(T *const dst, X len, X index, const T *const src, X s
 }
 
 template<typename T, typename X>
-void deleteElementInArray(T *const array, X len, X start, X quantity, T endValue){
+void deleteElementsInArray(T *const array, X len, X start, X quantity, T endValue){
     if(start + quantity >= len) return;
     for(int i = start; i < len; i++){
         if(i + quantity < len) {

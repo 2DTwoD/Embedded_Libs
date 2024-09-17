@@ -22,7 +22,7 @@ void InternalBuffer::clearXBytes(uint16_t start, uint16_t quantity, uint8_t size
     quantity *= size;
     limIndex(start);
     limQuan(quantity, start);
-    deleteElementInArray(buffer, bufferSize, start, quantity, (uint8_t)0);
+    deleteElementsInArray(buffer, bufferSize, start, quantity, (uint8_t) 0);
     quantity = min(bufferIndex, quantity);
     bufferIndex -= quantity;
 }

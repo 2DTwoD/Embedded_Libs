@@ -75,7 +75,7 @@ public:
     void remove(uint16_t index, uint16_t quantity) override {
         if(index >= size()) return;
         quantity = min(quantity, (uint16_t )(size() - index));
-        deleteElementInArray(array, size(), index, quantity, (T)0);
+        deleteElementsInArray(array, size(), index, quantity, (T) 0);
         curIndex -= quantity;
     }
 
