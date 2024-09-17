@@ -1,8 +1,6 @@
 #ifndef LINKED_LIST_H
 #define LINKED_LIST_H
 
-#include <cstdarg>
-
 #include "ilist.h"
 #include "math_fun.h"
 
@@ -40,15 +38,13 @@ public:
     }
 };
 
-template<typename Callable>
-void DoSomething(Callable c) { c(); }
-
 template<typename T>
 class LinkedList: public IList<T>{
 private:
     LLEntity<T>* first{nullptr};
     LLEntity<T>* last{nullptr};
     uint16_t lastIndex{0};
+
     void newEntity(LLEntity<T>* prev, LLEntity<T>* next, T value){
         lastIndex++;
         LLEntity<T>* entity = new LLEntity<T>(prev, next, value);
@@ -63,6 +59,7 @@ private:
             next->setPrev(entity);
         }
     }
+
     void deleteEntity(LLEntity<T>* entity){
         if(entity == nullptr) return;
         if(entity->getPrev() == nullptr){
@@ -84,6 +81,7 @@ private:
         delete entity;
         lastIndex--;
     }
+
 public:
     using IList<T>::get;
     using IList<T>::set;

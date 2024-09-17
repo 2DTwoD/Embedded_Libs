@@ -23,7 +23,7 @@ void testTask(void *pvParameters){
     spi.send(reset_data, 2);*/
     uint8_t check[25]{0};
     uint8_t test[] = {11,22,33,44,55,66,77,88,99};
-    LinkedList<uint8_t> list(test, 5);
+    LinkedList<uint8_t> list;
 	while(true){
         /*sprintf(mes, "first in buffer: %c; ", '1');
         uart.print(mes);*/
