@@ -8,14 +8,27 @@ public:
     virtual uint16_t size() const = 0;
     virtual bool isEmpty() const = 0;
     virtual T get(uint16_t index) const = 0;
-    virtual T get() const {
+    T get() const {
         return get(size() - 1);
+    };
+    T getFirst() const {
+        return get(0);
+    };
+    virtual void set(uint16_t index, T value) = 0;
+    void set(T value) {
+        set(size() - 1, value);
+    };
+    void setFirst(T value) {
+        set(0, value);
     };
     virtual void add(uint16_t index, T value) = 0;
     void add(T value) {
         add(size(), value);
     };
-    void add(const T* const src, uint16_t start, uint16_t quantity, uint16_t index) {
+    void addFirst(T value) {
+        add(0, value);
+    };
+    virtual void add(const T* const src, uint16_t start, uint16_t quantity, uint16_t index) {
         for(uint16_t i = 0; i < quantity; i++){
             add(index + i, src[i + start]);
         }

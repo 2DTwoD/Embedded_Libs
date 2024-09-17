@@ -24,6 +24,7 @@ private:
 
 public:
     using IList<T>::get;
+    using IList<T>::set;
     using IList<T>::add;
     using IList<T>::remove;
     using IList<T>::copyTo;
@@ -55,6 +56,12 @@ public:
         index = min(index, (uint16_t )(size() - 1));
         return array[index];
     }
+
+    void set(uint16_t index, T value) {
+        if(isEmpty()) return;
+        index = min(size() - 1, index);
+        array[index] = value;
+    };
 
     void add(uint16_t index, T value) override {
         index = min(size(), index);

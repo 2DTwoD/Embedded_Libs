@@ -1,6 +1,8 @@
 #ifndef LINKED_LIST_H
 #define LINKED_LIST_H
 
+#include <cstdarg>
+
 #include "ilist.h"
 #include "math_fun.h"
 
@@ -84,10 +86,19 @@ private:
     }
 public:
     using IList<T>::get;
+    using IList<T>::set;
     using IList<T>::add;
     using IList<T>::remove;
     using IList<T>::copyTo;
-    LinkedList(): IList<T>() {
+
+    LinkedList() = default;
+
+    explicit LinkedList(T value) {
+        add(value);
+    }
+
+    LinkedList(const T* const src, uint16_t len) {
+        add(src, len);
     }
 
     ~LinkedList() {
@@ -106,32 +117,78 @@ public:
         if(isEmpty()) return (T)0;
         LLEntity<T>* cur = first;
         uint16_t count = 0;
-        do{
+        while(cur != nullptr){
             if(count == index){
-                break;
+                return cur->getValue();
             }
             count++;
             cur = cur->getNext();
-        } while(cur != nullptr || cur->hasNext());
-        return cur->getValue();
+        }
+        return last->getValue();
     }
+
+    void set(uint16_t index, T value) override{
+        if(isEmpty() || index >= size()) return;
+        if(index < size() / 2){
+            LLEntity<T>* cur = first;
+            uint16_t count = 0;
+            while(cur != nullptr){
+                if(count == index){
+                    cur->setValue(value);
+                    return;
+                }
+                count++;
+                cur = cur->getNext();
+            }
+        } else {
+            LLEntity<T>* cur = last;
+            uint16_t count = size() - 1;
+            while(cur != nullptr){
+                if(count == index){
+                    cur->setValue(value);
+                    return;
+                }
+                count--;
+                cur = cur->getPrev();
+            }
+        }
+    };
 
     void add(uint16_t index, T value) override {
         if(first == nullptr){
             newEntity(nullptr, nullptr, value);
             return;
         }
-        LLEntity<T>* cur = first;
-        uint16_t count = 0;
-        while(cur->hasNext()){
-            if(count == index){
-                newEntity(cur->getPrev(), cur, value);
-                return;
-            }
-            count++;
-            cur = cur->getNext();
+        if(index == 0){
+            newEntity(nullptr, first, value);
+            return;
+        } else if(index >= size()){
+            newEntity(last, nullptr, value);
+            return;
         }
-        newEntity(cur, nullptr, value);
+        if(index < size() / 2){
+            LLEntity<T>* cur = first;
+            uint16_t count = 0;
+            while(cur != nullptr){
+                if(count == index){
+                    newEntity(cur->getPrev(), cur, value);
+                    return;
+                }
+                count++;
+                cur = cur->getNext();
+            }
+        } else {
+            LLEntity<T>* cur = last;
+            uint16_t count = size() - 1;
+            while(cur != nullptr){
+                if(count == index){
+                    newEntity(cur->getPrev(), cur, value);
+                    return;
+                }
+                count--;
+                cur = cur->getPrev();
+            }
+        }
     }
 
     void remove(uint16_t index, uint16_t quantity) override {
@@ -160,27 +217,27 @@ public:
         if(isEmpty()) return -1;
         LLEntity<T>* cur = first;
         uint16_t count = 0;
-        do{
+        while(cur != nullptr){
             if(cur->getValue() == value){
                 return count;
             }
             count++;
             cur = cur->getNext();
-        } while(cur != nullptr || cur->hasNext());
+        }
         return -1;
     }
 
     int32_t lastIndexOf(T value) const override {
         if(isEmpty()) return -1;
         LLEntity<T>* cur = last;
-        uint16_t count = lastIndex - 1;
-        do{
+        uint16_t count = size() - 1;
+        while(cur != nullptr){
             if(cur->getValue() == value){
                 return count;
             }
             count--;
             cur = cur->getPrev();
-        } while(cur != nullptr || cur->hasPrev());
+        }
         return -1;
     }
 
@@ -199,11 +256,11 @@ public:
         }
         LLEntity<T>* cur = first;
         LLEntity<T>* next;
-        do{
+        while(cur != nullptr){
             next = cur->getNext();
             delete cur;
             cur = next;
-        } while(cur != nullptr || cur->hasNext());
+        }
         first = nullptr;
         last = nullptr;
         lastIndex = 0;
@@ -211,10 +268,10 @@ public:
 
     void fill(T value) override {
         LLEntity<T>* cur = first;
-        do{
+        while(cur != nullptr){
             cur->setValue(value);
             cur = cur->getNext();
-        } while(cur != nullptr || cur->hasNext());
+        }
     }
 };
 

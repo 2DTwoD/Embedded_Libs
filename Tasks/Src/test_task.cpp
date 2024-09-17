@@ -22,10 +22,8 @@ void testTask(void *pvParameters){
     uint8_t send_data[] = {0x0b,0xFF, 0x0, 0x0};
     spi.send(reset_data, 2);*/
     uint8_t check[25]{0};
-    LinkedList<uint8_t> list;
-    list.add(1);
-    list.add(2);
-    list.add(3);
+    uint8_t test[] = {11,22,33,44,55,66,77,88,99};
+    LinkedList<uint8_t> list(test, 5);
 	while(true){
         /*sprintf(mes, "first in buffer: %c; ", '1');
         uart.print(mes);*/
@@ -33,7 +31,14 @@ void testTask(void *pvParameters){
         spi.sendAndReceive(send_data, 4, 11);
         taskEXIT_CRITICAL();*/
         //list.remove(1);
-        list.remove(1);
+        //list.fill(10);
+        /*if(list.size() % 2 == 0){
+            list.add(1, 11);
+        } else {
+            list.add(list.size() - 1, 21);
+        }*/
+        list.add(test, 9);
+        fillArray(check, 25, (uint8_t)0);
         list.copyTo(check, 25);
 		vTaskDelay(1000);
 	}
