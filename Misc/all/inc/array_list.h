@@ -27,6 +27,7 @@ public:
     using IList<T>::set;
     using IList<T>::add;
     using IList<T>::remove;
+    using IList<T>::grab;
     using IList<T>::copyTo;
 
     explicit ArrayList(uint8_t increaseStep): IList<T>() {
@@ -93,8 +94,8 @@ public:
         return -1;
     }
 
-    void copyTo(T* dst, uint16_t len) const override {
-        copyArrays(array, dst, len);
+    void copyTo(T* dst, uint16_t start, uint16_t quantity) const override {
+        copyPartOfArray(array, size(), start, quantity, dst);
     }
 
 

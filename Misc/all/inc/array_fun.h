@@ -59,7 +59,7 @@ void deleteElementsInArray(T *const array, X len, X start, X quantity, T endValu
 }
 
 template<typename T, typename X>
-void getPartOfArray(T *const src, X srcLen, X start, X quantity, T *const dst){
+void copyPartOfArray(T *const src, X srcLen, X start, X quantity, T *const dst){
     if(start > srcLen || start + quantity > srcLen) return;
     for(int i = 0; i < quantity; i++){
         dst[i] = src[i + start];

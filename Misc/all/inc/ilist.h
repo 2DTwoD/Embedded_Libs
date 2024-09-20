@@ -46,9 +46,35 @@ public:
     void remove() {
         remove(size() - 1);
     };
+    T grab(uint16_t index) {
+        T result = get(index);
+        remove(index);
+        return result;
+    };
+    T grab() const {
+        return grab(size() - 1);
+    };
+    T grabFirst() const {
+        return grab(0);
+    };
+    void grab(T* dst, uint16_t start, uint16_t quantity) {
+        copyTo(dst, start, quantity);
+        remove(start, quantity);
+    };
+    void grab(T* dst, uint16_t len) {
+        copyTo(dst, len);
+        remove(0, len);
+    };
+    void grab(T* dst) const {
+        copyTo(dst, size());
+        clear();
+    };
     virtual int32_t firstIndexOf(T value) const = 0;
     virtual int32_t lastIndexOf(T value) const = 0;
-    virtual void copyTo(T* dst, uint16_t len) const = 0;
+    virtual void copyTo(T* dst, uint16_t start, uint16_t quantity) const = 0;
+    void copyTo(T* dst, uint16_t len) {
+        copyTo(dst, 0, len);
+    };
     void copyTo(T* dst) const {
         copyTo(dst, size());
     };

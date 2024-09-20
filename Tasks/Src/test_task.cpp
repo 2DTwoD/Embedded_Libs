@@ -27,10 +27,10 @@ void testTask(void *pvParameters){
         if(list.isEmpty()){
             list.add(test, 9);
         }else {
-            list.remove(0, 4);
+            list.clear();
         }
         fillArray(check, 25, (uint8_t)0);
-        list.copyTo(check, 25);
+        list.grab(check, 25);
 		vTaskDelay(1000);
 	}
 }

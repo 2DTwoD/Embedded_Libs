@@ -87,6 +87,7 @@ public:
     using IList<T>::set;
     using IList<T>::add;
     using IList<T>::remove;
+    using IList<T>::grab;
     using IList<T>::copyTo;
 
     LinkedList() = default;
@@ -239,12 +240,15 @@ public:
         return -1;
     }
 
-    void copyTo(T *dst, uint16_t len) const override {
+    void copyTo(T *dst, uint16_t start, uint16_t quantity) const override {
         LLEntity<T>* cur = first;
-        for(uint16_t i = 0; i < len; i++){
-            if(cur == nullptr) return;
-            dst[i] = cur->getValue();
+        uint16_t count = 0;
+        while(cur != nullptr && count < (start + quantity)){
+            if(count >= start) {
+                dst[count - start] = cur->getValue();
+            }
             cur = cur->getNext();
+            count++;
         }
     }
 

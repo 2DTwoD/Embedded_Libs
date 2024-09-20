@@ -64,7 +64,7 @@ uint16_t InternalBuffer::getBufferIndex() const {
 void InternalBuffer::getByte(uint8_t *const dst, uint16_t start, uint16_t quantity){
     limIndex(start);
     limQuan(quantity, start);
-    getPartOfArray(buffer, bufferSize, start, quantity, dst);
+    copyPartOfArray(buffer, bufferSize, start, quantity, dst);
 }
 uint8_t InternalBuffer::getByte(uint16_t index){
     limIndex(index);
