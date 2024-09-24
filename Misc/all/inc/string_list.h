@@ -26,7 +26,7 @@ public:
     virtual ~StringList();
     //add
     void addByte(const char *name, uint8_t value);
-    void addWord(const char *name, uint16_t value);------------------
+    void addWord(const char *name, uint16_t value);
     void addDWord(const char *name, uint32_t value);
     void addFloat(const char *name, float value);
     //get
