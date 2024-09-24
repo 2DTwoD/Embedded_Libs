@@ -44,6 +44,7 @@ private:
     LLEntity<T>* first{nullptr};
     LLEntity<T>* last{nullptr};
     uint16_t lastIndex{0};
+    T zeroValue;
 
     void newEntity(LLEntity<T>* prev, LLEntity<T>* next, T value){
         lastIndex++;
@@ -90,13 +91,13 @@ public:
     using IList<T>::grab;
     using IList<T>::copyTo;
 
-    LinkedList() = default;
+    explicit LinkedList(T zeroValue): zeroValue(zeroValue){};
 
-    explicit LinkedList(T value) {
+    LinkedList(T zeroValue, T value): LinkedList(zeroValue) {
         add(value);
     }
 
-    LinkedList(const T* const src, uint16_t len) {
+    LinkedList(T zeroValue, const T* const src, uint16_t len): LinkedList(zeroValue) {
         add(src, len);
     }
 
@@ -113,7 +114,7 @@ public:
     }
 
     T get(uint16_t index) const override {
-        if(isEmpty()) return (T)0;
+        if(isEmpty()) return zeroValue;
         LLEntity<T>* cur = first;
         uint16_t count = 0;
         while(cur != nullptr){

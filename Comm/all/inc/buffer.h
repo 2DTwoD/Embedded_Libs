@@ -83,6 +83,8 @@ public:
 };
 
 class Buffer: public InternalBuffer{
+private:
+    void set(uint8_t len, uint16_t index, uint32_t value);
 public:
     explicit Buffer(uint16_t bufferSize);
     //add
@@ -129,6 +131,11 @@ public:
     void insertFloat(const float *src, uint16_t start, uint16_t quantity);
     void insertFloat(uint16_t index, const float *src, uint16_t len);
     void insertFloat(const float *src, uint16_t len);
+    //set
+    void setByte(uint16_t index, uint8_t value);
+    void setWord(uint16_t index, uint16_t value);
+    void setDWord(uint16_t index, uint32_t value);
+    void setFloat(uint16_t index, float value);
 };
 
 #endif //BUFFER_H

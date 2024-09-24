@@ -12,6 +12,7 @@ private:
     uint8_t increase;
     uint16_t totalSize;
     uint16_t curIndex{0};
+    T zeroValue;
     T* array{nullptr};
 
     void extend(){
@@ -30,19 +31,19 @@ public:
     using IList<T>::grab;
     using IList<T>::copyTo;
 
-    explicit ArrayList(uint8_t increaseStep): IList<T>() {
+    ArrayList(T zeroValue, uint8_t increaseStep): IList<T>(), zeroValue(zeroValue) {
         increase = max((uint8_t )1, increaseStep);
         totalSize = increase;
         array = new T[totalSize];
     }
 
-    ArrayList(const T* const src, uint16_t len, uint8_t increaseStep): ArrayList(increaseStep) {
+    ArrayList(T zeroValue, const T* const src, uint16_t len, uint8_t increaseStep): ArrayList(zeroValue, increaseStep) {
         IList<T>::add(src, len);
     }
 
-    ArrayList(const T* const src, uint16_t len): ArrayList(src, len, 10) {}
+    ArrayList(T zeroValue, const T* const src, uint16_t len): ArrayList(zeroValue, src, len, 10) {}
 
-    ArrayList(): ArrayList(10){}
+    explicit ArrayList(T zeroValue): ArrayList(zeroValue, 10){}
 
     uint16_t size() const override {
         return curIndex;
@@ -53,14 +54,14 @@ public:
     }
 
     T get(uint16_t index) const override {
-        if(isEmpty()) return (T)0;
-        index = min(index, (uint16_t )(size() - 1));
+        if(isEmpty()) return zeroValue;
+        index = min(index, (uint16_t)(size() - 1));
         return array[index];
     }
 
     void set(uint16_t index, T value) {
         if(isEmpty()) return;
-        index = min(size() - 1, index);
+        index = min((uint16_t)(size() - 1), index);
         array[index] = value;
     };
 
@@ -75,8 +76,8 @@ public:
 
     void remove(uint16_t index, uint16_t quantity) override {
         if(index >= size()) return;
-        quantity = min(quantity, (uint16_t )(size() - index));
-        deleteElementsInArray(array, size(), index, quantity, (T) 0);
+        quantity = min(quantity, (uint16_t)(size() - index));
+        deleteElementsInArray(array, size(), index, quantity, zeroValue);
         curIndex -= quantity;
     }
 

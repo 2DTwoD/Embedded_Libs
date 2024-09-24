@@ -206,7 +206,6 @@ void InternalBuffer::getAndClearFloat(float *const dst, uint16_t start, uint16_t
     clearFloat(start, quantity);
 }
 
-
 //all
 void InternalBuffer::getAll(uint8_t *const dst) {
     copyArrays(buffer, dst, bufferIndex);
@@ -214,6 +213,7 @@ void InternalBuffer::getAll(uint8_t *const dst) {
 void InternalBuffer::clearALl() {
     fillArray(buffer, (uint32_t)bufferSize, (uint8_t)0);
 }
+
 
 //----------------------------------------------------------------------
 //Buffer
@@ -372,4 +372,27 @@ void Buffer::insertFloat(uint16_t index, const float *src, uint16_t len) {
 
 void Buffer::insertFloat(const float *src, uint16_t len) {
     insertFloat(0, src, len);
+}
+
+//set
+void Buffer::set(uint8_t len, uint16_t index, uint32_t value) {
+    uint8_t i{0};
+    len--;
+    while(i <= len){
+        if(index + i >= getBufferSize()) break;
+        buffer[index + i] = (value >> (8 * (len - i))) & 0xFF;
+        i++;
+    }
+}
+void Buffer::setByte(uint16_t index, uint8_t value) {
+    set(1, index, value);
+}
+void Buffer::setWord(uint16_t index, uint16_t value) {
+    set(2, index, value);
+}
+void Buffer::setDWord(uint16_t index, uint32_t value) {
+    set(4, index, value);
+}
+void Buffer::setFloat(uint16_t index, float value) {
+    set(4, index, floatToDWord(value));
 }
