@@ -33,10 +33,15 @@ public:
     virtual ~StringList();
     //add
     void addBit(const char *name, bool value);
+    void addBit(const char *name);
     void addByte(const char *name, uint8_t value);
+    void addByte(const char *name);
     void addWord(const char *name, uint16_t value);
+    void addWord(const char *name);
     void addDWord(const char *name, uint32_t value);
+    void addDWord(const char *name);
     void addFloat(const char *name, float value);
+    void addFloat(const char *name);
     //get
     bool getBit(const char *name);
     uint8_t getByte(const char *name);

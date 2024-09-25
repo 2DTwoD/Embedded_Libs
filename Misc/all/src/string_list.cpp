@@ -57,25 +57,40 @@ void StringList::addBit(const char *name, bool value) {
         curBitByte = -1;
     }
 }
+void StringList::addBit(const char *name) {
+    addBit(name, false);
+}
 void StringList::addByte(const char *name, uint8_t value) {
     if(add(name, 1, currentIndex, 0, SL_BYTE)){
         data->addByte(value);
     }
+}
+void StringList::addByte(const char *name) {
+    addByte(name, 0);
 }
 void StringList::addWord(const char *name, uint16_t value) {
     if(add(name, 2, currentIndex, 0, SL_WORD)){
         data->addWord(value);
     }
 }
+void StringList::addWord(const char *name) {
+    addWord(name, 0);
+}
 void StringList::addDWord(const char *name, uint32_t value) {
     if(add(name, 4, currentIndex, 0, SL_DWORD)){
         data->addDWord(value);
     }
 }
+void StringList::addDWord(const char *name) {
+    addDWord(name, 0);
+}
 void StringList::addFloat(const char *name, float value) {
     if(add(name, 4, currentIndex, 0, SL_FLOAT)){
         data->addFloat(value);
     }
+}
+void StringList::addFloat(const char *name) {
+    addFloat(name, 0.0);
 }
 
 //get
