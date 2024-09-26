@@ -6,7 +6,7 @@ extern SimpleI2C i2c;
 extern SimpleSPI spi;
 MemoryLogger logger(10);
 StringBridge stringBridge(10);
-StringMap<uint8_t> stringMap(0);
+StringMap<uint32_t> stringMap(0);
 
 struct Test{
     uint8_t a;
@@ -40,8 +40,8 @@ void testTask(void *pvParameters){
         uint8_t a1 = stringMap.get("1");
         uint8_t a2 = stringMap.get("2");
         uint8_t a3 = stringMap.get("3");
-        bool a4 = stringMap.exist("2");
-        bool a5 = stringMap.exist("21");
+        bool a4 = stringMap.isExist("2");
+        bool a5 = stringMap.isExist("21");
         stringMap.set("2", 10);
     	vTaskDelay(1000);
 	}
