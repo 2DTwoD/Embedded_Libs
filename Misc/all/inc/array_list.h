@@ -22,7 +22,10 @@ private:
         delete[] array;
         array = newArray;
     }
-
+protected:
+    T carefulGet(uint16_t index){
+        return array[index];
+    }
 public:
     using IList<T>::get;
     using IList<T>::set;

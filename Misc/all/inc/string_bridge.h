@@ -1,5 +1,5 @@
-#ifndef STRING_LIST_H
-#define STRING_LIST_H
+#ifndef STRING_BRIDGE_H
+#define STRING_BRIDGE_H
 
 #include <cstdint>
 #include "array_list.h"
@@ -9,8 +9,8 @@ enum StringListType{
     SL_BIT, SL_BYTE, SL_WORD, SL_DWORD, SL_FLOAT
 };
 
-struct StringListIndex{
-    StringListIndex(const char *name, uint16_t byte, uint8_t bit, StringListType type);
+struct StringBridgeIndex{
+    StringBridgeIndex(const char *name, uint16_t byte, uint8_t bit, StringListType type);
 
     const char *name{""};
     uint16_t byte{0};
@@ -18,19 +18,19 @@ struct StringListIndex{
     StringListType type;
 };
 
-class StringList{
+class StringBridge{
 private:
     Buffer *data;
-    ArrayList<StringListIndex*> *keys;
+    ArrayList<StringBridgeIndex*> *keys;
     uint16_t currentIndex{0};
     int32_t curBitByte{-1};
     uint8_t curBit{0};
-    StringListIndex* getCoordinate(const char *name);
+    StringBridgeIndex* getCoordinate(const char *name);
     bool add(const char* name, uint8_t len, uint16_t byte, uint8_t bit, StringListType type);
     void dataSetBit(uint16_t byte, uint8_t pos, bool value);
 public:
-    explicit StringList(uint16_t size);
-    virtual ~StringList();
+    explicit StringBridge(uint16_t size);
+    virtual ~StringBridge();
     //add
     void addBit(const char *name, bool value);
     void addBit(const char *name);
@@ -56,4 +56,4 @@ public:
     void setFloat(const char *name, float value);
 };
 
-#endif //STRING_LIST_H
+#endif //STRING_BRIDGE_H

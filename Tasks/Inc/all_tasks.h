@@ -25,7 +25,8 @@
 #include "simple_spi.h"
 #include "logger.h"
 #include "linked_list.h"
-#include "string_list.h"
+#include "string_bridge.h"
+#include "string_map.h"
 
 void ledTask(void *pvParameters);
 void pidTask(void *pvParameters);

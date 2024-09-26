@@ -82,7 +82,6 @@ private:
         delete entity;
         lastIndex--;
     }
-
 public:
     using IList<T>::get;
     using IList<T>::set;
