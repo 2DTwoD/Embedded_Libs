@@ -60,6 +60,7 @@ void testTask(void *pvParameters){
             stringList.setBit("bit2", false);
             stringList.setBit("bit3", false);
             stringList.setFloat("float1", float1 + 0.12);
+            stringList.addByte("opa2", 22);
         }else{
             stringList.setBit("bit2", true);
             stringList.setBit("bit3", true);
