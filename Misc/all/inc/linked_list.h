@@ -275,6 +275,23 @@ public:
             cur = cur->getNext();
         }
     }
+    void forEach(std::function<void(T)> lambda) const{
+        if(isEmpty()) return;
+        LLEntity<T>* cur = first;
+        while(cur != nullptr){
+            lambda(cur->getValue());
+            cur = cur->getNext();
+        }
+    }
+
+    void forEachModify(std::function<T(T)> lambda){
+        if(isEmpty()) return;
+        LLEntity<T>* cur = first;
+        while(cur != nullptr){
+            cur->setValue(lambda(cur->getValue()));
+            cur = cur->getNext();
+        }
+    }
 };
 
 #endif //LINKED_LIST_H

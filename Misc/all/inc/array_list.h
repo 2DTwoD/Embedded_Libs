@@ -114,6 +114,18 @@ public:
     ~ArrayList(){
         delete[] array;
     }
+
+    void forEach(std::function<void(T)> lambda) const{
+        for(uint16_t i = 0; i < size(); i++){
+            lambda(array[i]);
+        }
+    }
+
+    void forEachModify(std::function<T(T)> lambda){
+        for(uint16_t i = 0; i < size(); i++){
+            array[i] = lambda(array[i]);
+        }
+    }
 };
 
 #endif //ARRAY_LIST_H

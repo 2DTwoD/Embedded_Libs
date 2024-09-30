@@ -7,6 +7,8 @@ extern SimpleSPI spi;
 MemoryLogger logger(10);
 StringBridge stringBridge(10);
 StringMap<uint32_t> stringMap(0);
+ArrayList<uint8_t> list(0);
+ArrayList<uint8_t> list2(0);
 
 struct Test{
     uint8_t a;
@@ -30,7 +32,10 @@ void testTask(void *pvParameters){
     stringMap.add("1", 3);
     stringMap.add("2", 1);
     stringMap.add("3", 2);
-
+    list.add(1);
+    list.add(2);
+    list.add(3);
+    int a = 2;
     while(true){
         /*sprintf(mes, "first in buffer: %c; ", '1');
         uart.print(mes);*/
@@ -42,6 +47,9 @@ void testTask(void *pvParameters){
         uint8_t a3 = stringMap.get("3");
         bool a4 = stringMap.isExist("2");
         bool a5 = stringMap.isExist("21");
+        list.forEachModify([=](uint8_t val) -> uint8_t {
+            return val + 1;
+        });
         stringMap.set("2", 10);
     	vTaskDelay(1000);
 	}

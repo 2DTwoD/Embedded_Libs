@@ -2,6 +2,8 @@
 #define ILIST_H
 
 #include <cstdint>
+#include <functional>
+
 template<typename T>
 class IList {
 public:
@@ -80,6 +82,9 @@ public:
     };
     virtual void clear() = 0;
     virtual void fill(T value) = 0;
+    virtual void forEach(std::function<void(T)> lambda) const = 0;
+    virtual void forEachModify(std::function<T(T)> lambda) = 0;
+
 };
 
 #endif //ILIST_H
