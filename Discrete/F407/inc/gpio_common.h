@@ -1,6 +1,7 @@
 #ifndef GPIO_COMMON_H
 #define GPIO_COMMON_H
 #include "stm32f407xx.h"
+#include "register.h"
 
 typedef struct {
     volatile GPIO_TypeDef* gpio;
@@ -14,6 +15,43 @@ class GPIOcommon{
 		volatile GPIO_TypeDef * gpio;
   public:
 		explicit GPIOcommon(GPIO_Info gpioInfo);
+};
+
+enum GPIOmoder{
+    GPIO_MODER_INPUT = 0b00,
+    GPIO_MODER_OUTPUT = 0b01,
+    GPIO_MODER_AF = 0b10,
+    GPIO_MODER_ANALOG = 0b11
+};
+
+enum GPIOotyper{
+    GPIO_OTYPER_PUSH_PULL = 0,
+    GPIO_OTYPER_OPEN_DRAIN = 1
+};
+
+enum GPIOospeedr{
+    GPIO_OSPEEDR_LOW_SPEED = 0b00,
+    GPIO_OSPEEDR_MED_SPEED = 0b01,
+    GPIO_OSPEEDR_HIGH_SPEED = 0b10,
+    GPIO_OSPEEDR_VHIGH_SPEED = 0b11
+};
+
+enum GPIOpupdr{
+    GPIO_PUPDR_NO_PULL = 0b00,
+    GPIO_PUPDR_PULL_UP = 0b01,s
+    GPIO_PUPDR_PULL_DOWN = 0b10
+};
+
+class GPIOconfig{
+private:
+    bool error{false};
+    GPIO_Info gpioInfo;
+public:
+    explicit GPIOconfig(const GPIO_Info &gpioInfo);
+    void setMODER(GPIOmoder moder) const;
+    void setOTYPER(GPIOotyper otyper) const;
+    void setOSPEEDR(GPIOospeedr ospeedr) const;
+    void setPUPDR(GPIOpupdr pupdr) const;
 };
 
 #endif //GPIO_COMMON_H
