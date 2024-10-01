@@ -9,6 +9,7 @@ StringBridge stringBridge(10);
 StringMap<uint32_t> stringMap(0);
 ArrayList<uint8_t> list1(0);
 LinkedList<uint8_t> list2(0);
+GPIOconfig gpio({GPIOE, 15});
 
 struct Test{
     uint8_t a;
@@ -40,6 +41,7 @@ void testTask(void *pvParameters){
     list2.add(3);
     uint8_t list2_ar[10];
     int a = 2;
+    gpio.setOSPEEDR(GPIO_OSPEEDR_VHIGH_SPEED).setMODER(GPIO_MODER_OUTPUT).setPUPDR(GPIO_PUPDR_PULL_DOWN).fin();
     while(true){
         /*sprintf(mes, "first in buffer: %c; ", '1');
         uart.print(mes);*/
@@ -59,6 +61,11 @@ void testTask(void *pvParameters){
         });
         list2.copyTo(list2_ar, 10);
         stringMap.set("2", 10);
+        if(gpio.getIDR()){
+            gpio.setODR(false);
+        } else {
+            gpio.setODR(true);
+        }
     	vTaskDelay(1000);
 	}
 }

@@ -44,6 +44,15 @@ void resetBit(T& reg, uint32_t mask){
 }
 
 template<typename T>
+void resetBitByVal(T& reg, uint32_t mask, bool value){
+    if(value){
+        setBit(reg, mask);
+        return;
+    }
+    resetBit(reg, mask);
+}
+
+template<typename T>
 void toggleBit(T& reg, uint32_t mask){
     if(getBit(reg, mask)){
         resetBit(reg, mask);
@@ -81,6 +90,15 @@ void setBitByPos(T& reg, uint32_t pos){
 template<typename T>
 void resetBitByPos(T& reg, uint32_t pos){
     reg &= ~(1 << pos);
+}
+
+template<typename T>
+void setBitByPosAndVal(T& reg, uint32_t pos, bool value){
+    if(value){
+        setBitByPos(reg, pos);
+        return;
+    }
+    resetBitByPos(reg, pos);
 }
 
 template<typename T>

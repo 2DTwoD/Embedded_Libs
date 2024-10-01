@@ -38,20 +38,47 @@ enum GPIOospeedr{
 
 enum GPIOpupdr{
     GPIO_PUPDR_NO_PULL = 0b00,
-    GPIO_PUPDR_PULL_UP = 0b01,s
+    GPIO_PUPDR_PULL_UP = 0b01,
     GPIO_PUPDR_PULL_DOWN = 0b10
+};
+enum GPIOafr{
+    GPIO_AFR0 = 0b0000,
+    GPIO_AFR1 = 0b0001,
+    GPIO_AFR2 = 0b0010,
+    GPIO_AFR3 = 0b0011,
+    GPIO_AFR4 = 0b0100,
+    GPIO_AFR5 = 0b0101,
+    GPIO_AFR6 = 0b0110,
+    GPIO_AFR7 = 0b0111,
+    GPIO_AFR8 = 0b1000,
+    GPIO_AFR9 = 0b1001,
+    GPIO_AFR10 = 0b1010,
+    GPIO_AFR11 = 0b1011,
+    GPIO_AFR12 = 0b1100,
+    GPIO_AFR13 = 0b1101,
+    GPIO_AFR14 = 0b1110,
+    GPIO_AFR15 = 0b1111,
 };
 
 class GPIOconfig{
 private:
-    bool error{false};
+    bool noErr{true};
     GPIO_Info gpioInfo;
 public:
     explicit GPIOconfig(const GPIO_Info &gpioInfo);
-    void setMODER(GPIOmoder moder) const;
-    void setOTYPER(GPIOotyper otyper) const;
-    void setOSPEEDR(GPIOospeedr ospeedr) const;
-    void setPUPDR(GPIOpupdr pupdr) const;
+    bool noErrors();
+    GPIOconfig& zero();
+    GPIOconfig& setMODER(GPIOmoder moder);
+    GPIOconfig& setOTYPER(GPIOotyper otyper);
+    GPIOconfig& setOSPEEDR(GPIOospeedr ospeedr);
+    GPIOconfig& setPUPDR(GPIOpupdr pupdr);
+    bool getIDR() const;
+    GPIOconfig& setODR(bool value);
+    GPIOconfig& setWithBSRR(bool value);
+    GPIOconfig& setLCK(bool value);
+    bool lockAllPortLCKK() const;
+    GPIOconfig& setAFR(GPIOafr afr);
+    void fin();
 };
 
 #endif //GPIO_COMMON_H

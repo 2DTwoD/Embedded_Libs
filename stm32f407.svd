@@ -69,7 +69,7 @@
           <fields>
             <field>
               <name>SEIS</name>
-              <description>Seed error interrupt
+              <description>Seed noErr interrupt
               status</description>
               <bitOffset>6</bitOffset>
               <bitWidth>1</bitWidth>
@@ -77,7 +77,7 @@
             </field>
             <field>
               <name>CEIS</name>
-              <description>Clock error interrupt
+              <description>Clock noErr interrupt
               status</description>
               <bitOffset>5</bitOffset>
               <bitWidth>1</bitWidth>
@@ -85,14 +85,14 @@
             </field>
             <field>
               <name>SECS</name>
-              <description>Seed error current status</description>
+              <description>Seed noErr current status</description>
               <bitOffset>2</bitOffset>
               <bitWidth>1</bitWidth>
               <access>read-only</access>
             </field>
             <field>
               <name>CECS</name>
-              <description>Clock error current status</description>
+              <description>Clock noErr current status</description>
               <bitOffset>1</bitOffset>
               <bitWidth>1</bitWidth>
               <access>read-only</access>
@@ -273,7 +273,7 @@
             </field>
             <field>
               <name>ERR_RIS</name>
-              <description>Synchronization error raw interrupt
+              <description>Synchronization noErr raw interrupt
               status</description>
               <bitOffset>2</bitOffset>
               <bitWidth>1</bitWidth>
@@ -317,7 +317,7 @@
             </field>
             <field>
               <name>ERR_IE</name>
-              <description>Synchronization error interrupt
+              <description>Synchronization noErr interrupt
               enable</description>
               <bitOffset>2</bitOffset>
               <bitWidth>1</bitWidth>
@@ -363,7 +363,7 @@
             </field>
             <field>
               <name>ERR_MIS</name>
-              <description>Synchronization error masked interrupt
+              <description>Synchronization noErr masked interrupt
               status</description>
               <bitOffset>2</bitOffset>
               <bitWidth>1</bitWidth>
@@ -409,7 +409,7 @@
             </field>
             <field>
               <name>ERR_ISC</name>
-              <description>Synchronization error interrupt status
+              <description>Synchronization noErr interrupt status
               clear</description>
               <bitOffset>2</bitOffset>
               <bitWidth>1</bitWidth>
@@ -1824,7 +1824,7 @@
             </field>
             <field>
               <name>TEIE</name>
-              <description>Transfer error interrupt
+              <description>Transfer noErr interrupt
               enable</description>
               <bitOffset>2</bitOffset>
               <bitWidth>1</bitWidth>
@@ -1832,7 +1832,7 @@
             </field>
             <field>
               <name>DMEIE</name>
-              <description>Direct mode error interrupt
+              <description>Direct mode noErr interrupt
               enable</description>
               <bitOffset>1</bitOffset>
               <bitWidth>1</bitWidth>
@@ -1933,7 +1933,7 @@
           <fields>
             <field>
               <name>FEIE</name>
-              <description>FIFO error interrupt
+              <description>FIFO noErr interrupt
               enable</description>
               <bitOffset>7</bitOffset>
               <bitWidth>1</bitWidth>
@@ -1993,7 +1993,7 @@
             </field>
             <field>
               <name>TEIF3</name>
-              <description>Stream x transfer error interrupt flag
+              <description>Stream x transfer noErr interrupt flag
               (x=3..0)</description>
               <bitOffset>25</bitOffset>
               <bitWidth>1</bitWidth>
@@ -2001,7 +2001,7 @@
             </field>
             <field>
               <name>DMEIF3</name>
-              <description>Stream x direct mode error interrupt
+              <description>Stream x direct mode noErr interrupt
               flag (x=3..0)</description>
               <bitOffset>24</bitOffset>
               <bitWidth>1</bitWidth>
@@ -2009,7 +2009,7 @@
             </field>
             <field>
               <name>FEIF3</name>
-              <description>Stream x FIFO error interrupt flag
+              <description>Stream x FIFO noErr interrupt flag
               (x=3..0)</description>
               <bitOffset>22</bitOffset>
               <bitWidth>1</bitWidth>
@@ -2033,7 +2033,7 @@
             </field>
             <field>
               <name>TEIF2</name>
-              <description>Stream x transfer error interrupt flag
+              <description>Stream x transfer noErr interrupt flag
               (x=3..0)</description>
               <bitOffset>19</bitOffset>
               <bitWidth>1</bitWidth>
@@ -2041,7 +2041,7 @@
             </field>
             <field>
               <name>DMEIF2</name>
-              <description>Stream x direct mode error interrupt
+              <description>Stream x direct mode noErr interrupt
               flag (x=3..0)</description>
               <bitOffset>18</bitOffset>
               <bitWidth>1</bitWidth>
@@ -2049,7 +2049,7 @@
             </field>
             <field>
               <name>FEIF2</name>
-              <description>Stream x FIFO error interrupt flag
+              <description>Stream x FIFO noErr interrupt flag
               (x=3..0)</description>
               <bitOffset>16</bitOffset>
               <bitWidth>1</bitWidth>
@@ -2073,7 +2073,7 @@
             </field>
             <field>
               <name>TEIF1</name>
-              <description>Stream x transfer error interrupt flag
+              <description>Stream x transfer noErr interrupt flag
               (x=3..0)</description>
               <bitOffset>9</bitOffset>
               <bitWidth>1</bitWidth>
@@ -2081,7 +2081,7 @@
             </field>
             <field>
               <name>DMEIF1</name>
-              <description>Stream x direct mode error interrupt
+              <description>Stream x direct mode noErr interrupt
               flag (x=3..0)</description>
               <bitOffset>8</bitOffset>
               <bitWidth>1</bitWidth>
@@ -2089,7 +2089,7 @@
             </field>
             <field>
               <name>FEIF1</name>
-              <description>Stream x FIFO error interrupt flag
+              <description>Stream x FIFO noErr interrupt flag
               (x=3..0)</description>
               <bitOffset>6</bitOffset>
               <bitWidth>1</bitWidth>
@@ -2113,27 +2113,27 @@
             </field>
             <field>
               <name>TEIF0</name>
-              <description>Stream x transfer error interrupt flag
+              <description>Stream x transfer noErr interrupt flag
               (x=3..0)</description>
               <bitOffset>3</bitOffset>
               <bitWidth>1</bitWidth>
-            <enumeratedValues><name>TEIF0</name><usage>read-write</usage><enumeratedValue><name>NoError</name><description>No transfer error on stream x</description><value>0</value></enumeratedValue><enumeratedValue><name>Error</name><description>A transfer error occurred on stream x</description><value>1</value></enumeratedValue></enumeratedValues>
+            <enumeratedValues><name>TEIF0</name><usage>read-write</usage><enumeratedValue><name>NoError</name><description>No transfer noErr on stream x</description><value>0</value></enumeratedValue><enumeratedValue><name>Error</name><description>A transfer noErr occurred on stream x</description><value>1</value></enumeratedValue></enumeratedValues>
             </field>
             <field>
               <name>DMEIF0</name>
-              <description>Stream x direct mode error interrupt
+              <description>Stream x direct mode noErr interrupt
               flag (x=3..0)</description>
               <bitOffset>2</bitOffset>
               <bitWidth>1</bitWidth>
-            <enumeratedValues><name>DMEIF0</name><usage>read-write</usage><enumeratedValue><name>NoError</name><description>No Direct Mode error on stream x</description><value>0</value></enumeratedValue><enumeratedValue><name>Error</name><description>A Direct Mode error occurred on stream x</description><value>1</value></enumeratedValue></enumeratedValues>
+            <enumeratedValues><name>DMEIF0</name><usage>read-write</usage><enumeratedValue><name>NoError</name><description>No Direct Mode noErr on stream x</description><value>0</value></enumeratedValue><enumeratedValue><name>Error</name><description>A Direct Mode noErr occurred on stream x</description><value>1</value></enumeratedValue></enumeratedValues>
             </field>
             <field>
               <name>FEIF0</name>
-              <description>Stream x FIFO error interrupt flag
+              <description>Stream x FIFO noErr interrupt flag
               (x=3..0)</description>
               <bitOffset>0</bitOffset>
               <bitWidth>1</bitWidth>
-            <enumeratedValues><name>FEIF0</name><usage>read-write</usage><enumeratedValue><name>NoError</name><description>No FIFO error event on stream x</description><value>0</value></enumeratedValue><enumeratedValue><name>Error</name><description>A FIFO error event occurred on stream x</description><value>1</value></enumeratedValue></enumeratedValues>
+            <enumeratedValues><name>FEIF0</name><usage>read-write</usage><enumeratedValue><name>NoError</name><description>No FIFO noErr event on stream x</description><value>0</value></enumeratedValue><enumeratedValue><name>Error</name><description>A FIFO noErr event occurred on stream x</description><value>1</value></enumeratedValue></enumeratedValues>
             </field>
           </fields>
         </register>
@@ -2164,7 +2164,7 @@
             </field>
             <field>
               <name>TEIF7</name>
-              <description>Stream x transfer error interrupt flag
+              <description>Stream x transfer noErr interrupt flag
               (x=7..4)</description>
               <bitOffset>25</bitOffset>
               <bitWidth>1</bitWidth>
@@ -2172,7 +2172,7 @@
             </field>
             <field>
               <name>DMEIF7</name>
-              <description>Stream x direct mode error interrupt
+              <description>Stream x direct mode noErr interrupt
               flag (x=7..4)</description>
               <bitOffset>24</bitOffset>
               <bitWidth>1</bitWidth>
@@ -2180,7 +2180,7 @@
             </field>
             <field>
               <name>FEIF7</name>
-              <description>Stream x FIFO error interrupt flag
+              <description>Stream x FIFO noErr interrupt flag
               (x=7..4)</description>
               <bitOffset>22</bitOffset>
               <bitWidth>1</bitWidth>
@@ -2204,7 +2204,7 @@
             </field>
             <field>
               <name>TEIF6</name>
-              <description>Stream x transfer error interrupt flag
+              <description>Stream x transfer noErr interrupt flag
               (x=7..4)</description>
               <bitOffset>19</bitOffset>
               <bitWidth>1</bitWidth>
@@ -2212,7 +2212,7 @@
             </field>
             <field>
               <name>DMEIF6</name>
-              <description>Stream x direct mode error interrupt
+              <description>Stream x direct mode noErr interrupt
               flag (x=7..4)</description>
               <bitOffset>18</bitOffset>
               <bitWidth>1</bitWidth>
@@ -2220,7 +2220,7 @@
             </field>
             <field>
               <name>FEIF6</name>
-              <description>Stream x FIFO error interrupt flag
+              <description>Stream x FIFO noErr interrupt flag
               (x=7..4)</description>
               <bitOffset>16</bitOffset>
               <bitWidth>1</bitWidth>
@@ -2244,7 +2244,7 @@
             </field>
             <field>
               <name>TEIF5</name>
-              <description>Stream x transfer error interrupt flag
+              <description>Stream x transfer noErr interrupt flag
               (x=7..4)</description>
               <bitOffset>9</bitOffset>
               <bitWidth>1</bitWidth>
@@ -2252,7 +2252,7 @@
             </field>
             <field>
               <name>DMEIF5</name>
-              <description>Stream x direct mode error interrupt
+              <description>Stream x direct mode noErr interrupt
               flag (x=7..4)</description>
               <bitOffset>8</bitOffset>
               <bitWidth>1</bitWidth>
@@ -2260,7 +2260,7 @@
             </field>
             <field>
               <name>FEIF5</name>
-              <description>Stream x FIFO error interrupt flag
+              <description>Stream x FIFO noErr interrupt flag
               (x=7..4)</description>
               <bitOffset>6</bitOffset>
               <bitWidth>1</bitWidth>
@@ -2284,27 +2284,27 @@
             </field>
             <field>
               <name>TEIF4</name>
-              <description>Stream x transfer error interrupt flag
+              <description>Stream x transfer noErr interrupt flag
               (x=7..4)</description>
               <bitOffset>3</bitOffset>
               <bitWidth>1</bitWidth>
-            <enumeratedValues><name>TEIF4</name><usage>read-write</usage><enumeratedValue><name>NoError</name><description>No transfer error on stream x</description><value>0</value></enumeratedValue><enumeratedValue><name>Error</name><description>A transfer error occurred on stream x</description><value>1</value></enumeratedValue></enumeratedValues>
+            <enumeratedValues><name>TEIF4</name><usage>read-write</usage><enumeratedValue><name>NoError</name><description>No transfer noErr on stream x</description><value>0</value></enumeratedValue><enumeratedValue><name>Error</name><description>A transfer noErr occurred on stream x</description><value>1</value></enumeratedValue></enumeratedValues>
             </field>
             <field>
               <name>DMEIF4</name>
-              <description>Stream x direct mode error interrupt
+              <description>Stream x direct mode noErr interrupt
               flag (x=7..4)</description>
               <bitOffset>2</bitOffset>
               <bitWidth>1</bitWidth>
-            <enumeratedValues><name>DMEIF4</name><usage>read-write</usage><enumeratedValue><name>NoError</name><description>No Direct Mode error on stream x</description><value>0</value></enumeratedValue><enumeratedValue><name>Error</name><description>A Direct Mode error occurred on stream x</description><value>1</value></enumeratedValue></enumeratedValues>
+            <enumeratedValues><name>DMEIF4</name><usage>read-write</usage><enumeratedValue><name>NoError</name><description>No Direct Mode noErr on stream x</description><value>0</value></enumeratedValue><enumeratedValue><name>Error</name><description>A Direct Mode noErr occurred on stream x</description><value>1</value></enumeratedValue></enumeratedValues>
             </field>
             <field>
               <name>FEIF4</name>
-              <description>Stream x FIFO error interrupt flag
+              <description>Stream x FIFO noErr interrupt flag
               (x=7..4)</description>
               <bitOffset>0</bitOffset>
               <bitWidth>1</bitWidth>
-            <enumeratedValues><name>FEIF4</name><usage>read-write</usage><enumeratedValue><name>NoError</name><description>No FIFO error event on stream x</description><value>0</value></enumeratedValue><enumeratedValue><name>Error</name><description>A FIFO error event occurred on stream x</description><value>1</value></enumeratedValue></enumeratedValues>
+            <enumeratedValues><name>FEIF4</name><usage>read-write</usage><enumeratedValue><name>NoError</name><description>No FIFO noErr event on stream x</description><value>0</value></enumeratedValue><enumeratedValue><name>Error</name><description>A FIFO noErr event occurred on stream x</description><value>1</value></enumeratedValue></enumeratedValues>
             </field>
           </fields>
         </register>
@@ -2336,7 +2336,7 @@
             </field>
             <field>
               <name>CTEIF3</name>
-              <description>Stream x clear transfer error interrupt
+              <description>Stream x clear transfer noErr interrupt
               flag (x = 3..0)</description>
               <bitOffset>25</bitOffset>
               <bitWidth>1</bitWidth>
@@ -2344,7 +2344,7 @@
             </field>
             <field>
               <name>CDMEIF3</name>
-              <description>Stream x clear direct mode error
+              <description>Stream x clear direct mode noErr
               interrupt flag (x = 3..0)</description>
               <bitOffset>24</bitOffset>
               <bitWidth>1</bitWidth>
@@ -2352,7 +2352,7 @@
             </field>
             <field>
               <name>CFEIF3</name>
-              <description>Stream x clear FIFO error interrupt flag
+              <description>Stream x clear FIFO noErr interrupt flag
               (x = 3..0)</description>
               <bitOffset>22</bitOffset>
               <bitWidth>1</bitWidth>
@@ -2376,7 +2376,7 @@
             </field>
             <field>
               <name>CTEIF2</name>
-              <description>Stream x clear transfer error interrupt
+              <description>Stream x clear transfer noErr interrupt
               flag (x = 3..0)</description>
               <bitOffset>19</bitOffset>
               <bitWidth>1</bitWidth>
@@ -2384,7 +2384,7 @@
             </field>
             <field>
               <name>CDMEIF2</name>
-              <description>Stream x clear direct mode error
+              <description>Stream x clear direct mode noErr
               interrupt flag (x = 3..0)</description>
               <bitOffset>18</bitOffset>
               <bitWidth>1</bitWidth>
@@ -2392,7 +2392,7 @@
             </field>
             <field>
               <name>CFEIF2</name>
-              <description>Stream x clear FIFO error interrupt flag
+              <description>Stream x clear FIFO noErr interrupt flag
               (x = 3..0)</description>
               <bitOffset>16</bitOffset>
               <bitWidth>1</bitWidth>
@@ -2416,7 +2416,7 @@
             </field>
             <field>
               <name>CTEIF1</name>
-              <description>Stream x clear transfer error interrupt
+              <description>Stream x clear transfer noErr interrupt
               flag (x = 3..0)</description>
               <bitOffset>9</bitOffset>
               <bitWidth>1</bitWidth>
@@ -2424,7 +2424,7 @@
             </field>
             <field>
               <name>CDMEIF1</name>
-              <description>Stream x clear direct mode error
+              <description>Stream x clear direct mode noErr
               interrupt flag (x = 3..0)</description>
               <bitOffset>8</bitOffset>
               <bitWidth>1</bitWidth>
@@ -2432,7 +2432,7 @@
             </field>
             <field>
               <name>CFEIF1</name>
-              <description>Stream x clear FIFO error interrupt flag
+              <description>Stream x clear FIFO noErr interrupt flag
               (x = 3..0)</description>
               <bitOffset>6</bitOffset>
               <bitWidth>1</bitWidth>
@@ -2456,7 +2456,7 @@
             </field>
             <field>
               <name>CTEIF0</name>
-              <description>Stream x clear transfer error interrupt
+              <description>Stream x clear transfer noErr interrupt
               flag (x = 3..0)</description>
               <bitOffset>3</bitOffset>
               <bitWidth>1</bitWidth>
@@ -2464,7 +2464,7 @@
             </field>
             <field>
               <name>CDMEIF0</name>
-              <description>Stream x clear direct mode error
+              <description>Stream x clear direct mode noErr
               interrupt flag (x = 3..0)</description>
               <bitOffset>2</bitOffset>
               <bitWidth>1</bitWidth>
@@ -2472,7 +2472,7 @@
             </field>
             <field>
               <name>CFEIF0</name>
-              <description>Stream x clear FIFO error interrupt flag
+              <description>Stream x clear FIFO noErr interrupt flag
               (x = 3..0)</description>
               <bitOffset>0</bitOffset>
               <bitWidth>1</bitWidth>
@@ -2508,7 +2508,7 @@
             </field>
             <field>
               <name>CTEIF7</name>
-              <description>Stream x clear transfer error interrupt
+              <description>Stream x clear transfer noErr interrupt
               flag (x = 7..4)</description>
               <bitOffset>25</bitOffset>
               <bitWidth>1</bitWidth>
@@ -2516,7 +2516,7 @@
             </field>
             <field>
               <name>CDMEIF7</name>
-              <description>Stream x clear direct mode error
+              <description>Stream x clear direct mode noErr
               interrupt flag (x = 7..4)</description>
               <bitOffset>24</bitOffset>
               <bitWidth>1</bitWidth>
@@ -2524,7 +2524,7 @@
             </field>
             <field>
               <name>CFEIF7</name>
-              <description>Stream x clear FIFO error interrupt flag
+              <description>Stream x clear FIFO noErr interrupt flag
               (x = 7..4)</description>
               <bitOffset>22</bitOffset>
               <bitWidth>1</bitWidth>
@@ -2548,7 +2548,7 @@
             </field>
             <field>
               <name>CTEIF6</name>
-              <description>Stream x clear transfer error interrupt
+              <description>Stream x clear transfer noErr interrupt
               flag (x = 7..4)</description>
               <bitOffset>19</bitOffset>
               <bitWidth>1</bitWidth>
@@ -2556,7 +2556,7 @@
             </field>
             <field>
               <name>CDMEIF6</name>
-              <description>Stream x clear direct mode error
+              <description>Stream x clear direct mode noErr
               interrupt flag (x = 7..4)</description>
               <bitOffset>18</bitOffset>
               <bitWidth>1</bitWidth>
@@ -2564,7 +2564,7 @@
             </field>
             <field>
               <name>CFEIF6</name>
-              <description>Stream x clear FIFO error interrupt flag
+              <description>Stream x clear FIFO noErr interrupt flag
               (x = 7..4)</description>
               <bitOffset>16</bitOffset>
               <bitWidth>1</bitWidth>
@@ -2588,7 +2588,7 @@
             </field>
             <field>
               <name>CTEIF5</name>
-              <description>Stream x clear transfer error interrupt
+              <description>Stream x clear transfer noErr interrupt
               flag (x = 7..4)</description>
               <bitOffset>9</bitOffset>
               <bitWidth>1</bitWidth>
@@ -2596,7 +2596,7 @@
             </field>
             <field>
               <name>CDMEIF5</name>
-              <description>Stream x clear direct mode error
+              <description>Stream x clear direct mode noErr
               interrupt flag (x = 7..4)</description>
               <bitOffset>8</bitOffset>
               <bitWidth>1</bitWidth>
@@ -2604,7 +2604,7 @@
             </field>
             <field>
               <name>CFEIF5</name>
-              <description>Stream x clear FIFO error interrupt flag
+              <description>Stream x clear FIFO noErr interrupt flag
               (x = 7..4)</description>
               <bitOffset>6</bitOffset>
               <bitWidth>1</bitWidth>
@@ -2628,7 +2628,7 @@
             </field>
             <field>
               <name>CTEIF4</name>
-              <description>Stream x clear transfer error interrupt
+              <description>Stream x clear transfer noErr interrupt
               flag (x = 7..4)</description>
               <bitOffset>3</bitOffset>
               <bitWidth>1</bitWidth>
@@ -2636,7 +2636,7 @@
             </field>
             <field>
               <name>CDMEIF4</name>
-              <description>Stream x clear direct mode error
+              <description>Stream x clear direct mode noErr
               interrupt flag (x = 7..4)</description>
               <bitOffset>2</bitOffset>
               <bitWidth>1</bitWidth>
@@ -2644,7 +2644,7 @@
             </field>
             <field>
               <name>CFEIF4</name>
-              <description>Stream x clear FIFO error interrupt flag
+              <description>Stream x clear FIFO noErr interrupt flag
               (x = 7..4)</description>
               <bitOffset>0</bitOffset>
               <bitWidth>1</bitWidth>
@@ -9516,11 +9516,11 @@
           <fields>
             <field>
               <name>FRE</name>
-              <description>TI frame format error</description>
+              <description>TI frame format noErr</description>
               <bitOffset>8</bitOffset>
               <bitWidth>1</bitWidth>
               <access>read-only</access>
-            <enumeratedValues><name>FRER</name><usage>read</usage><enumeratedValue><name>NoError</name><description>No frame format error</description><value>0</value></enumeratedValue><enumeratedValue><name>Error</name><description>A frame format error occurred</description><value>1</value></enumeratedValue></enumeratedValues>
+            <enumeratedValues><name>FRER</name><usage>read</usage><enumeratedValue><name>NoError</name><description>No frame format noErr</description><value>0</value></enumeratedValue><enumeratedValue><name>Error</name><description>A frame format noErr occurred</description><value>1</value></enumeratedValue></enumeratedValues>
             </field>
             <field>
               <name>BSY</name>
@@ -9548,7 +9548,7 @@
             </field>
             <field>
               <name>CRCERR</name>
-              <description>CRC error flag</description>
+              <description>CRC noErr flag</description>
               <bitOffset>4</bitOffset>
               <bitWidth>1</bitWidth>
               <access>read-write</access>
@@ -10351,7 +10351,7 @@
               signals in wide bus mode</description>
               <bitOffset>9</bitOffset>
               <bitWidth>1</bitWidth>
-            <enumeratedValues><name>STBITERR</name><usage>read-write</usage><enumeratedValue><name>Detected</name><description>No start bit detected error</description><value>0</value></enumeratedValue><enumeratedValue><name>NotDetected</name><description>Start bit not detected error</description><value>1</value></enumeratedValue></enumeratedValues>
+            <enumeratedValues><name>STBITERR</name><usage>read-write</usage><enumeratedValue><name>Detected</name><description>No start bit detected noErr</description><value>0</value></enumeratedValue><enumeratedValue><name>NotDetected</name><description>Start bit not detected noErr</description><value>1</value></enumeratedValue></enumeratedValues>
             </field>
             <field>
               <name>DATAEND</name>
@@ -10380,18 +10380,18 @@
             <field>
               <name>RXOVERR</name>
               <description>Received FIFO overrun
-              error</description>
+              noErr</description>
               <bitOffset>5</bitOffset>
               <bitWidth>1</bitWidth>
-            <enumeratedValues><name>RXOVERR</name><usage>read-write</usage><enumeratedValue><name>NoOverrun</name><description>No FIFO overrun error</description><value>0</value></enumeratedValue><enumeratedValue><name>Overrun</name><description>Receive FIFO overrun error</description><value>1</value></enumeratedValue></enumeratedValues>
+            <enumeratedValues><name>RXOVERR</name><usage>read-write</usage><enumeratedValue><name>NoOverrun</name><description>No FIFO overrun noErr</description><value>0</value></enumeratedValue><enumeratedValue><name>Overrun</name><description>Receive FIFO overrun noErr</description><value>1</value></enumeratedValue></enumeratedValues>
             </field>
             <field>
               <name>TXUNDERR</name>
               <description>Transmit FIFO underrun
-              error</description>
+              noErr</description>
               <bitOffset>4</bitOffset>
               <bitWidth>1</bitWidth>
-            <enumeratedValues><name>TXUNDERR</name><usage>read-write</usage><enumeratedValue><name>NoUnderrun</name><description>No transmit FIFO underrun error</description><value>0</value></enumeratedValue><enumeratedValue><name>Underrun</name><description>Transmit FIFO underrun error</description><value>1</value></enumeratedValue></enumeratedValues>
+            <enumeratedValues><name>TXUNDERR</name><usage>read-write</usage><enumeratedValue><name>NoUnderrun</name><description>No transmit FIFO underrun noErr</description><value>0</value></enumeratedValue><enumeratedValue><name>Underrun</name><description>Transmit FIFO underrun noErr</description><value>1</value></enumeratedValue></enumeratedValues>
             </field>
             <field>
               <name>DTIMEOUT</name>
@@ -10650,7 +10650,7 @@
             </field>
             <field>
               <name>STBITERRIE</name>
-              <description>Start bit error interrupt
+              <description>Start bit noErr interrupt
               enable</description>
               <bitOffset>9</bitOffset>
               <bitWidth>1</bitWidth>
@@ -10681,7 +10681,7 @@
             </field>
             <field>
               <name>RXOVERRIE</name>
-              <description>Rx FIFO overrun error interrupt
+              <description>Rx FIFO overrun noErr interrupt
               enable</description>
               <bitOffset>5</bitOffset>
               <bitWidth>1</bitWidth>
@@ -10689,7 +10689,7 @@
             </field>
             <field>
               <name>TXUNDERRIE</name>
-              <description>Tx FIFO underrun error interrupt
+              <description>Tx FIFO underrun noErr interrupt
               enable</description>
               <bitOffset>4</bitOffset>
               <bitWidth>1</bitWidth>
@@ -11547,7 +11547,7 @@
             </field>
             <field>
               <name>ORE</name>
-              <description>Overrun error</description>
+              <description>Overrun noErr</description>
               <bitOffset>3</bitOffset>
               <bitWidth>1</bitWidth>
               <access>read-only</access>
@@ -11561,14 +11561,14 @@
             </field>
             <field>
               <name>FE</name>
-              <description>Framing error</description>
+              <description>Framing noErr</description>
               <bitOffset>1</bitOffset>
               <bitWidth>1</bitWidth>
               <access>read-only</access>
             </field>
             <field>
               <name>PE</name>
-              <description>Parity error</description>
+              <description>Parity noErr</description>
               <bitOffset>0</bitOffset>
               <bitWidth>1</bitWidth>
               <access>read-only</access>
@@ -11873,7 +11873,7 @@
               <description>Smartcard NACK enable</description>
               <bitOffset>4</bitOffset>
               <bitWidth>1</bitWidth>
-            <enumeratedValues><name>NACK</name><usage>read-write</usage><enumeratedValue><name>Disabled</name><description>NACK transmission in case of parity error is disabled</description><value>0</value></enumeratedValue><enumeratedValue><name>Enabled</name><description>NACK transmission during parity error is enabled</description><value>1</value></enumeratedValue></enumeratedValues>
+            <enumeratedValues><name>NACK</name><usage>read-write</usage><enumeratedValue><name>Disabled</name><description>NACK transmission in case of parity noErr is disabled</description><value>0</value></enumeratedValue><enumeratedValue><name>Enabled</name><description>NACK transmission during parity noErr is enabled</description><value>1</value></enumeratedValue></enumeratedValues>
             </field>
             <field>
               <name>HDSEL</name>
@@ -11962,7 +11962,7 @@
       <interrupt>
         <name>TIM6_DAC</name>
         <description>TIM6 global interrupt, DAC1 and DAC2 underrun
-        error interrupt</description>
+        noErr interrupt</description>
         <value>54</value>
       </interrupt>
       <registers>
@@ -12389,7 +12389,7 @@
               flag</description>
               <bitOffset>13</bitOffset>
               <bitWidth>1</bitWidth>
-            <enumeratedValues><name>DMAUDR1</name><usage>read-write</usage><enumeratedValue><name>NoUnderrun</name><description>No DMA underrun error condition occurred for DAC channel X</description><value>0</value></enumeratedValue><enumeratedValue><name>Underrun</name><description>DMA underrun error condition occurred for DAC channel X</description><value>1</value></enumeratedValue></enumeratedValues>
+            <enumeratedValues><name>DMAUDR1</name><usage>read-write</usage><enumeratedValue><name>NoUnderrun</name><description>No DMA underrun noErr condition occurred for DAC channel X</description><value>0</value></enumeratedValue><enumeratedValue><name>Underrun</name><description>DMA underrun noErr condition occurred for DAC channel X</description><value>1</value></enumeratedValue></enumeratedValues>
             </field>
           </fields>
         </register>
@@ -12546,7 +12546,7 @@
       </interrupt>
       <interrupt>
         <name>I2C3_ER</name>
-        <description>I2C3 error interrupt</description>
+        <description>I2C3 noErr interrupt</description>
         <value>73</value>
       </interrupt>
     </peripheral>
@@ -12560,7 +12560,7 @@
       </interrupt>
       <interrupt>
         <name>I2C2_ER</name>
-        <description>I2C2 error interrupt</description>
+        <description>I2C2 noErr interrupt</description>
         <value>34</value>
       </interrupt>
     </peripheral>
@@ -12581,7 +12581,7 @@
       </interrupt>
       <interrupt>
         <name>I2C1_ER</name>
-        <description>I2C1 error interrupt</description>
+        <description>I2C1 noErr interrupt</description>
         <value>32</value>
       </interrupt>
       <registers>
@@ -12610,7 +12610,7 @@
             </field>
             <field>
               <name>PEC</name>
-              <description>Packet error checking</description>
+              <description>Packet noErr checking</description>
               <bitOffset>12</bitOffset>
               <bitWidth>1</bitWidth>
             <enumeratedValues><name>PEC</name><usage>read-write</usage><enumeratedValue><name>Disabled</name><description>No PEC transfer</description><value>0</value></enumeratedValue><enumeratedValue><name>Enabled</name><description>PEC transfer</description><value>1</value></enumeratedValue></enumeratedValues>
@@ -12831,11 +12831,11 @@
             </field>
             <field>
               <name>TIMEOUT</name>
-              <description>Timeout or Tlow error</description>
+              <description>Timeout or Tlow noErr</description>
               <bitOffset>14</bitOffset>
               <bitWidth>1</bitWidth>
               <access>read-write</access>
-            <enumeratedValues><name>TIMEOUT</name><usage>read-write</usage><enumeratedValue><name>NoTimeout</name><description>No Timeout error</description><value>0</value></enumeratedValue><enumeratedValue><name>Timeout</name><description>SCL remained LOW for 25 ms</description><value>1</value></enumeratedValue></enumeratedValues>
+            <enumeratedValues><name>TIMEOUT</name><usage>read-write</usage><enumeratedValue><name>NoTimeout</name><description>No Timeout noErr</description><value>0</value></enumeratedValue><enumeratedValue><name>Timeout</name><description>SCL remained LOW for 25 ms</description><value>1</value></enumeratedValue></enumeratedValues>
             </field>
             <field>
               <name>PECERR</name>
@@ -12843,7 +12843,7 @@
               <bitOffset>12</bitOffset>
               <bitWidth>1</bitWidth>
               <access>read-write</access>
-            <enumeratedValues><name>PECERR</name><usage>read-write</usage><enumeratedValue><name>NoError</name><description>no PEC error: receiver returns ACK after PEC reception (if ACK=1)</description><value>0</value></enumeratedValue><enumeratedValue><name>Error</name><description>PEC error: receiver returns NACK after PEC reception (whatever ACK)</description><value>1</value></enumeratedValue></enumeratedValues>
+            <enumeratedValues><name>PECERR</name><usage>read-write</usage><enumeratedValue><name>NoError</name><description>no PEC noErr: receiver returns ACK after PEC reception (if ACK=1)</description><value>0</value></enumeratedValue><enumeratedValue><name>Error</name><description>PEC noErr: receiver returns NACK after PEC reception (whatever ACK)</description><value>1</value></enumeratedValue></enumeratedValues>
             </field>
             <field>
               <name>OVR</name>
@@ -12872,7 +12872,7 @@
             </field>
             <field>
               <name>BERR</name>
-              <description>Bus error</description>
+              <description>Bus noErr</description>
               <bitOffset>8</bitOffset>
               <bitWidth>1</bitWidth>
               <access>read-write</access>
@@ -12951,7 +12951,7 @@
           <fields>
             <field>
               <name>PEC</name>
-              <description>acket error checking
+              <description>acket noErr checking
               register</description>
               <bitOffset>8</bitOffset>
               <bitWidth>8</bitWidth>
@@ -14410,7 +14410,7 @@
             </field>
             <field>
               <name>ORE</name>
-              <description>Overrun error</description>
+              <description>Overrun noErr</description>
               <bitOffset>3</bitOffset>
               <bitWidth>1</bitWidth>
               <access>read-only</access>
@@ -14424,14 +14424,14 @@
             </field>
             <field>
               <name>FE</name>
-              <description>Framing error</description>
+              <description>Framing noErr</description>
               <bitOffset>1</bitOffset>
               <bitWidth>1</bitWidth>
               <access>read-only</access>
             </field>
             <field>
               <name>PE</name>
-              <description>Parity error</description>
+              <description>Parity noErr</description>
               <bitOffset>0</bitOffset>
               <bitWidth>1</bitWidth>
               <access>read-only</access>
@@ -20127,7 +20127,7 @@
       <interrupt>
         <name>TIM6_DAC</name>
         <description>TIM6 global interrupt, DAC1 and DAC2 underrun
-        error interrupt</description>
+        noErr interrupt</description>
         <value>54</value>
       </interrupt>
       <registers>
@@ -20436,7 +20436,7 @@
               <description>Carrier sense disable</description>
               <bitOffset>16</bitOffset>
               <bitWidth>1</bitWidth>
-            <enumeratedValues><name>CSD</name><usage>read-write</usage><enumeratedValue><name>Enabled</name><description>Errors generated due to loss of carrier</description><value>0</value></enumeratedValue><enumeratedValue><name>Disabled</name><description>No error generated due to loss of carrier</description><value>1</value></enumeratedValue></enumeratedValues>
+            <enumeratedValues><name>CSD</name><usage>read-write</usage><enumeratedValue><name>Enabled</name><description>Errors generated due to loss of carrier</description><value>0</value></enumeratedValue><enumeratedValue><name>Disabled</name><description>No noErr generated due to loss of carrier</description><value>1</value></enumeratedValue></enumeratedValues>
             </field>
             <field>
               <name>IFG</name>
@@ -21200,13 +21200,13 @@
           <fields>
             <field>
               <name>RFCES</name>
-              <description>Received frames CRC error status</description>
+              <description>Received frames CRC noErr status</description>
               <bitOffset>5</bitOffset>
               <bitWidth>1</bitWidth>
             </field>
             <field>
               <name>RFAES</name>
-              <description>Received frames alignment error status</description>
+              <description>Received frames alignment noErr status</description>
               <bitOffset>6</bitOffset>
               <bitWidth>1</bitWidth>
             </field>
@@ -21260,17 +21260,17 @@
           <fields>
             <field>
               <name>RFCEM</name>
-              <description>Received frame CRC error mask</description>
+              <description>Received frame CRC noErr mask</description>
               <bitOffset>5</bitOffset>
               <bitWidth>1</bitWidth>
-            <enumeratedValues><name>RFCEM</name><usage>read-write</usage><enumeratedValue><name>Unmasked</name><description>Received-crc-error counter half-full interrupt enabled</description><value>0</value></enumeratedValue><enumeratedValue><name>Masked</name><description>Received-crc-error counter half-full interrupt disabled</description><value>1</value></enumeratedValue></enumeratedValues>
+            <enumeratedValues><name>RFCEM</name><usage>read-write</usage><enumeratedValue><name>Unmasked</name><description>Received-crc-noErr counter half-full interrupt enabled</description><value>0</value></enumeratedValue><enumeratedValue><name>Masked</name><description>Received-crc-noErr counter half-full interrupt disabled</description><value>1</value></enumeratedValue></enumeratedValues>
             </field>
             <field>
               <name>RFAEM</name>
-              <description>Received frames alignment error mask</description>
+              <description>Received frames alignment noErr mask</description>
               <bitOffset>6</bitOffset>
               <bitWidth>1</bitWidth>
-            <enumeratedValues><name>RFAEM</name><usage>read-write</usage><enumeratedValue><name>Unmasked</name><description>Received-alignment-error counter half-full interrupt enabled</description><value>0</value></enumeratedValue><enumeratedValue><name>Masked</name><description>Received-alignment-error counter half-full interrupt disabled</description><value>1</value></enumeratedValue></enumeratedValues>
+            <enumeratedValues><name>RFAEM</name><usage>read-write</usage><enumeratedValue><name>Unmasked</name><description>Received-alignment-noErr counter half-full interrupt enabled</description><value>0</value></enumeratedValue><enumeratedValue><name>Masked</name><description>Received-alignment-noErr counter half-full interrupt disabled</description><value>1</value></enumeratedValue></enumeratedValues>
             </field>
             <field>
               <name>RGUFM</name>
@@ -21371,7 +21371,7 @@
         <register>
           <name>MMCRFCECR</name>
           <displayName>MMCRFCECR</displayName>
-          <description>Ethernet MMC received frames with CRC error
+          <description>Ethernet MMC received frames with CRC noErr
           counter register</description>
           <addressOffset>0x94</addressOffset>
           <size>0x20</size>
@@ -21390,7 +21390,7 @@
           <name>MMCRFAECR</name>
           <displayName>MMCRFAECR</displayName>
           <description>Ethernet MMC received frames with alignment
-          error counter register</description>
+          noErr counter register</description>
           <addressOffset>0x98</addressOffset>
           <size>0x20</size>
           <access>read-only</access>
@@ -22016,7 +22016,7 @@
             </field>
             <field>
               <name>FBES</name>
-              <description>Fatal bus error status</description>
+              <description>Fatal bus noErr status</description>
               <bitOffset>13</bitOffset>
               <bitWidth>1</bitWidth>
               <access>read-write</access>
@@ -22127,10 +22127,10 @@
             </field>
             <field>
               <name>FEF</name>
-              <description>Forward error frames</description>
+              <description>Forward noErr frames</description>
               <bitOffset>7</bitOffset>
               <bitWidth>1</bitWidth>
-            <enumeratedValues><name>FEF</name><usage>read-write</usage><enumeratedValue><name>Drop</name><description>Rx FIFO drops frames with error status</description><value>0</value></enumeratedValue><enumeratedValue><name>Forward</name><description>All frames except runt error frames are forwarded to the DMA</description><value>1</value></enumeratedValue></enumeratedValues>
+            <enumeratedValues><name>FEF</name><usage>read-write</usage><enumeratedValue><name>Drop</name><description>Rx FIFO drops frames with noErr status</description><value>0</value></enumeratedValue><enumeratedValue><name>Forward</name><description>All frames except runt noErr frames are forwarded to the DMA</description><value>1</value></enumeratedValue></enumeratedValues>
             </field>
             <field>
               <name>ST</name>
@@ -22175,7 +22175,7 @@
             </field>
             <field>
               <name>DTCEFD</name>
-              <description>Dropping of TCP/IP checksum error frames disable</description>
+              <description>Dropping of TCP/IP checksum noErr frames disable</description>
               <bitOffset>26</bitOffset>
               <bitWidth>1</bitWidth>
             <enumeratedValues><name>DTCEFD</name><usage>read-write</usage><enumeratedValue><name>Enabled</name><description>Drop frames with errors only in the receive checksum offload engine</description><value>0</value></enumeratedValue><enumeratedValue><name>Disabled</name><description>Do not drop frames that only have errors in the receive checksum offload engine</description><value>1</value></enumeratedValue></enumeratedValues>
@@ -22260,7 +22260,7 @@
             </field>
             <field>
               <name>FBEIE</name>
-              <description>Fatal bus error interrupt enable</description>
+              <description>Fatal bus noErr interrupt enable</description>
               <bitOffset>13</bitOffset>
               <bitWidth>1</bitWidth>
             </field>
@@ -24370,13 +24370,13 @@
             </field>
             <field>
               <name>TXERR</name>
-              <description>Transaction error</description>
+              <description>Transaction noErr</description>
               <bitOffset>7</bitOffset>
               <bitWidth>1</bitWidth>
             </field>
             <field>
               <name>BBERR</name>
-              <description>Babble error</description>
+              <description>Babble noErr</description>
               <bitOffset>8</bitOffset>
               <bitWidth>1</bitWidth>
             </field>
@@ -24388,7 +24388,7 @@
             </field>
             <field>
               <name>DTERR</name>
-              <description>Data toggle error</description>
+              <description>Data toggle noErr</description>
               <bitOffset>10</bitOffset>
               <bitWidth>1</bitWidth>
             </field>
@@ -24439,13 +24439,13 @@
             </field>
             <field>
               <name>TXERR</name>
-              <description>Transaction error</description>
+              <description>Transaction noErr</description>
               <bitOffset>7</bitOffset>
               <bitWidth>1</bitWidth>
             </field>
             <field>
               <name>BBERR</name>
-              <description>Babble error</description>
+              <description>Babble noErr</description>
               <bitOffset>8</bitOffset>
               <bitWidth>1</bitWidth>
             </field>
@@ -24457,7 +24457,7 @@
             </field>
             <field>
               <name>DTERR</name>
-              <description>Data toggle error</description>
+              <description>Data toggle noErr</description>
               <bitOffset>10</bitOffset>
               <bitWidth>1</bitWidth>
             </field>
@@ -24508,13 +24508,13 @@
             </field>
             <field>
               <name>TXERR</name>
-              <description>Transaction error</description>
+              <description>Transaction noErr</description>
               <bitOffset>7</bitOffset>
               <bitWidth>1</bitWidth>
             </field>
             <field>
               <name>BBERR</name>
-              <description>Babble error</description>
+              <description>Babble noErr</description>
               <bitOffset>8</bitOffset>
               <bitWidth>1</bitWidth>
             </field>
@@ -24526,7 +24526,7 @@
             </field>
             <field>
               <name>DTERR</name>
-              <description>Data toggle error</description>
+              <description>Data toggle noErr</description>
               <bitOffset>10</bitOffset>
               <bitWidth>1</bitWidth>
             </field>
@@ -24577,13 +24577,13 @@
             </field>
             <field>
               <name>TXERR</name>
-              <description>Transaction error</description>
+              <description>Transaction noErr</description>
               <bitOffset>7</bitOffset>
               <bitWidth>1</bitWidth>
             </field>
             <field>
               <name>BBERR</name>
-              <description>Babble error</description>
+              <description>Babble noErr</description>
               <bitOffset>8</bitOffset>
               <bitWidth>1</bitWidth>
             </field>
@@ -24595,7 +24595,7 @@
             </field>
             <field>
               <name>DTERR</name>
-              <description>Data toggle error</description>
+              <description>Data toggle noErr</description>
               <bitOffset>10</bitOffset>
               <bitWidth>1</bitWidth>
             </field>
@@ -24646,13 +24646,13 @@
             </field>
             <field>
               <name>TXERR</name>
-              <description>Transaction error</description>
+              <description>Transaction noErr</description>
               <bitOffset>7</bitOffset>
               <bitWidth>1</bitWidth>
             </field>
             <field>
               <name>BBERR</name>
-              <description>Babble error</description>
+              <description>Babble noErr</description>
               <bitOffset>8</bitOffset>
               <bitWidth>1</bitWidth>
             </field>
@@ -24664,7 +24664,7 @@
             </field>
             <field>
               <name>DTERR</name>
-              <description>Data toggle error</description>
+              <description>Data toggle noErr</description>
               <bitOffset>10</bitOffset>
               <bitWidth>1</bitWidth>
             </field>
@@ -24715,13 +24715,13 @@
             </field>
             <field>
               <name>TXERR</name>
-              <description>Transaction error</description>
+              <description>Transaction noErr</description>
               <bitOffset>7</bitOffset>
               <bitWidth>1</bitWidth>
             </field>
             <field>
               <name>BBERR</name>
-              <description>Babble error</description>
+              <description>Babble noErr</description>
               <bitOffset>8</bitOffset>
               <bitWidth>1</bitWidth>
             </field>
@@ -24733,7 +24733,7 @@
             </field>
             <field>
               <name>DTERR</name>
-              <description>Data toggle error</description>
+              <description>Data toggle noErr</description>
               <bitOffset>10</bitOffset>
               <bitWidth>1</bitWidth>
             </field>
@@ -24784,13 +24784,13 @@
             </field>
             <field>
               <name>TXERR</name>
-              <description>Transaction error</description>
+              <description>Transaction noErr</description>
               <bitOffset>7</bitOffset>
               <bitWidth>1</bitWidth>
             </field>
             <field>
               <name>BBERR</name>
-              <description>Babble error</description>
+              <description>Babble noErr</description>
               <bitOffset>8</bitOffset>
               <bitWidth>1</bitWidth>
             </field>
@@ -24802,7 +24802,7 @@
             </field>
             <field>
               <name>DTERR</name>
-              <description>Data toggle error</description>
+              <description>Data toggle noErr</description>
               <bitOffset>10</bitOffset>
               <bitWidth>1</bitWidth>
             </field>
@@ -24853,13 +24853,13 @@
             </field>
             <field>
               <name>TXERR</name>
-              <description>Transaction error</description>
+              <description>Transaction noErr</description>
               <bitOffset>7</bitOffset>
               <bitWidth>1</bitWidth>
             </field>
             <field>
               <name>BBERR</name>
-              <description>Babble error</description>
+              <description>Babble noErr</description>
               <bitOffset>8</bitOffset>
               <bitWidth>1</bitWidth>
             </field>
@@ -24871,7 +24871,7 @@
             </field>
             <field>
               <name>DTERR</name>
-              <description>Data toggle error</description>
+              <description>Data toggle noErr</description>
               <bitOffset>10</bitOffset>
               <bitWidth>1</bitWidth>
             </field>
@@ -24929,13 +24929,13 @@
             </field>
             <field>
               <name>TXERRM</name>
-              <description>Transaction error mask</description>
+              <description>Transaction noErr mask</description>
               <bitOffset>7</bitOffset>
               <bitWidth>1</bitWidth>
             </field>
             <field>
               <name>BBERRM</name>
-              <description>Babble error mask</description>
+              <description>Babble noErr mask</description>
               <bitOffset>8</bitOffset>
               <bitWidth>1</bitWidth>
             </field>
@@ -24947,7 +24947,7 @@
             </field>
             <field>
               <name>DTERRM</name>
-              <description>Data toggle error mask</description>
+              <description>Data toggle noErr mask</description>
               <bitOffset>10</bitOffset>
               <bitWidth>1</bitWidth>
             </field>
@@ -25005,13 +25005,13 @@
             </field>
             <field>
               <name>TXERRM</name>
-              <description>Transaction error mask</description>
+              <description>Transaction noErr mask</description>
               <bitOffset>7</bitOffset>
               <bitWidth>1</bitWidth>
             </field>
             <field>
               <name>BBERRM</name>
-              <description>Babble error mask</description>
+              <description>Babble noErr mask</description>
               <bitOffset>8</bitOffset>
               <bitWidth>1</bitWidth>
             </field>
@@ -25023,7 +25023,7 @@
             </field>
             <field>
               <name>DTERRM</name>
-              <description>Data toggle error mask</description>
+              <description>Data toggle noErr mask</description>
               <bitOffset>10</bitOffset>
               <bitWidth>1</bitWidth>
             </field>
@@ -25081,13 +25081,13 @@
             </field>
             <field>
               <name>TXERRM</name>
-              <description>Transaction error mask</description>
+              <description>Transaction noErr mask</description>
               <bitOffset>7</bitOffset>
               <bitWidth>1</bitWidth>
             </field>
             <field>
               <name>BBERRM</name>
-              <description>Babble error mask</description>
+              <description>Babble noErr mask</description>
               <bitOffset>8</bitOffset>
               <bitWidth>1</bitWidth>
             </field>
@@ -25099,7 +25099,7 @@
             </field>
             <field>
               <name>DTERRM</name>
-              <description>Data toggle error mask</description>
+              <description>Data toggle noErr mask</description>
               <bitOffset>10</bitOffset>
               <bitWidth>1</bitWidth>
             </field>
@@ -25157,13 +25157,13 @@
             </field>
             <field>
               <name>TXERRM</name>
-              <description>Transaction error mask</description>
+              <description>Transaction noErr mask</description>
               <bitOffset>7</bitOffset>
               <bitWidth>1</bitWidth>
             </field>
             <field>
               <name>BBERRM</name>
-              <description>Babble error mask</description>
+              <description>Babble noErr mask</description>
               <bitOffset>8</bitOffset>
               <bitWidth>1</bitWidth>
             </field>
@@ -25175,7 +25175,7 @@
             </field>
             <field>
               <name>DTERRM</name>
-              <description>Data toggle error mask</description>
+              <description>Data toggle noErr mask</description>
               <bitOffset>10</bitOffset>
               <bitWidth>1</bitWidth>
             </field>
@@ -25233,13 +25233,13 @@
             </field>
             <field>
               <name>TXERRM</name>
-              <description>Transaction error mask</description>
+              <description>Transaction noErr mask</description>
               <bitOffset>7</bitOffset>
               <bitWidth>1</bitWidth>
             </field>
             <field>
               <name>BBERRM</name>
-              <description>Babble error mask</description>
+              <description>Babble noErr mask</description>
               <bitOffset>8</bitOffset>
               <bitWidth>1</bitWidth>
             </field>
@@ -25251,7 +25251,7 @@
             </field>
             <field>
               <name>DTERRM</name>
-              <description>Data toggle error mask</description>
+              <description>Data toggle noErr mask</description>
               <bitOffset>10</bitOffset>
               <bitWidth>1</bitWidth>
             </field>
@@ -25309,13 +25309,13 @@
             </field>
             <field>
               <name>TXERRM</name>
-              <description>Transaction error mask</description>
+              <description>Transaction noErr mask</description>
               <bitOffset>7</bitOffset>
               <bitWidth>1</bitWidth>
             </field>
             <field>
               <name>BBERRM</name>
-              <description>Babble error mask</description>
+              <description>Babble noErr mask</description>
               <bitOffset>8</bitOffset>
               <bitWidth>1</bitWidth>
             </field>
@@ -25327,7 +25327,7 @@
             </field>
             <field>
               <name>DTERRM</name>
-              <description>Data toggle error mask</description>
+              <description>Data toggle noErr mask</description>
               <bitOffset>10</bitOffset>
               <bitWidth>1</bitWidth>
             </field>
@@ -25385,13 +25385,13 @@
             </field>
             <field>
               <name>TXERRM</name>
-              <description>Transaction error mask</description>
+              <description>Transaction noErr mask</description>
               <bitOffset>7</bitOffset>
               <bitWidth>1</bitWidth>
             </field>
             <field>
               <name>BBERRM</name>
-              <description>Babble error mask</description>
+              <description>Babble noErr mask</description>
               <bitOffset>8</bitOffset>
               <bitWidth>1</bitWidth>
             </field>
@@ -25403,7 +25403,7 @@
             </field>
             <field>
               <name>DTERRM</name>
-              <description>Data toggle error mask</description>
+              <description>Data toggle noErr mask</description>
               <bitOffset>10</bitOffset>
               <bitWidth>1</bitWidth>
             </field>
@@ -25461,13 +25461,13 @@
             </field>
             <field>
               <name>TXERRM</name>
-              <description>Transaction error mask</description>
+              <description>Transaction noErr mask</description>
               <bitOffset>7</bitOffset>
               <bitWidth>1</bitWidth>
             </field>
             <field>
               <name>BBERRM</name>
-              <description>Babble error mask</description>
+              <description>Babble noErr mask</description>
               <bitOffset>8</bitOffset>
               <bitWidth>1</bitWidth>
             </field>
@@ -25479,7 +25479,7 @@
             </field>
             <field>
               <name>DTERRM</name>
-              <description>Data toggle error mask</description>
+              <description>Data toggle noErr mask</description>
               <bitOffset>10</bitOffset>
               <bitWidth>1</bitWidth>
             </field>
@@ -25880,7 +25880,7 @@
             </field>
             <field>
               <name>EERR</name>
-              <description>Erratic error</description>
+              <description>Erratic noErr</description>
               <bitOffset>3</bitOffset>
               <bitWidth>1</bitWidth>
             </field>
@@ -27915,14 +27915,14 @@
               <description>ERRIE</description>
               <bitOffset>15</bitOffset>
               <bitWidth>1</bitWidth>
-            <enumeratedValues><name>ERRIE</name><usage>read-write</usage><enumeratedValue><name>Disabled</name><description>No interrupt will be generated when an error condition is pending in the CAN_ESR</description><value>0</value></enumeratedValue><enumeratedValue><name>Enabled</name><description>An interrupt will be generation when an error condition is pending in the CAN_ESR</description><value>1</value></enumeratedValue></enumeratedValues>
+            <enumeratedValues><name>ERRIE</name><usage>read-write</usage><enumeratedValue><name>Disabled</name><description>No interrupt will be generated when an noErr condition is pending in the CAN_ESR</description><value>0</value></enumeratedValue><enumeratedValue><name>Enabled</name><description>An interrupt will be generation when an noErr condition is pending in the CAN_ESR</description><value>1</value></enumeratedValue></enumeratedValues>
             </field>
             <field>
               <name>LECIE</name>
               <description>LECIE</description>
               <bitOffset>11</bitOffset>
               <bitWidth>1</bitWidth>
-            <enumeratedValues><name>LECIE</name><usage>read-write</usage><enumeratedValue><name>Disabled</name><description>ERRI bit will not be set when the error code in LEC[2:0] is set by hardware on error detection</description><value>0</value></enumeratedValue><enumeratedValue><name>Enabled</name><description>ERRI bit will be set when the error code in LEC[2:0] is set by hardware on error detection</description><value>1</value></enumeratedValue></enumeratedValues>
+            <enumeratedValues><name>LECIE</name><usage>read-write</usage><enumeratedValue><name>Disabled</name><description>ERRI bit will not be set when the noErr code in LEC[2:0] is set by hardware on noErr detection</description><value>0</value></enumeratedValue><enumeratedValue><name>Enabled</name><description>ERRI bit will be set when the noErr code in LEC[2:0] is set by hardware on noErr detection</description><value>1</value></enumeratedValue></enumeratedValues>
             </field>
             <field>
               <name>BOFIE</name>
@@ -29014,14 +29014,14 @@
             </field>
             <field>
               <name>OPERR</name>
-              <description>Operation error</description>
+              <description>Operation noErr</description>
               <bitOffset>1</bitOffset>
               <bitWidth>1</bitWidth>
               <access>read-write</access>
             </field>
             <field>
               <name>WRPERR</name>
-              <description>Write protection error</description>
+              <description>Write protection noErr</description>
               <bitOffset>4</bitOffset>
               <bitWidth>1</bitWidth>
               <access>read-write</access>
@@ -29029,7 +29029,7 @@
             <field>
               <name>PGAERR</name>
               <description>Programming alignment
-              error</description>
+              noErr</description>
               <bitOffset>5</bitOffset>
               <bitWidth>1</bitWidth>
               <access>read-write</access>
@@ -29037,14 +29037,14 @@
             <field>
               <name>PGPERR</name>
               <description>Programming parallelism
-              error</description>
+              noErr</description>
               <bitOffset>6</bitOffset>
               <bitWidth>1</bitWidth>
               <access>read-write</access>
             </field>
             <field>
               <name>PGSERR</name>
-              <description>Programming sequence error</description>
+              <description>Programming sequence noErr</description>
               <bitOffset>7</bitOffset>
               <bitWidth>1</bitWidth>
               <access>read-write</access>
@@ -33242,7 +33242,7 @@
             </field>
             <field>
               <name>AHBERR</name>
-              <description>AHB error</description>
+              <description>AHB noErr</description>
               <bitOffset>2</bitOffset>
               <bitWidth>1</bitWidth>
             </field>
@@ -33276,13 +33276,13 @@
             </field>
             <field>
               <name>TXERR</name>
-              <description>Transaction error</description>
+              <description>Transaction noErr</description>
               <bitOffset>7</bitOffset>
               <bitWidth>1</bitWidth>
             </field>
             <field>
               <name>BBERR</name>
-              <description>Babble error</description>
+              <description>Babble noErr</description>
               <bitOffset>8</bitOffset>
               <bitWidth>1</bitWidth>
             </field>
@@ -33294,7 +33294,7 @@
             </field>
             <field>
               <name>DTERR</name>
-              <description>Data toggle error</description>
+              <description>Data toggle noErr</description>
               <bitOffset>10</bitOffset>
               <bitWidth>1</bitWidth>
             </field>
@@ -33324,7 +33324,7 @@
             </field>
             <field>
               <name>AHBERR</name>
-              <description>AHB error</description>
+              <description>AHB noErr</description>
               <bitOffset>2</bitOffset>
               <bitWidth>1</bitWidth>
             </field>
@@ -33358,13 +33358,13 @@
             </field>
             <field>
               <name>TXERR</name>
-              <description>Transaction error</description>
+              <description>Transaction noErr</description>
               <bitOffset>7</bitOffset>
               <bitWidth>1</bitWidth>
             </field>
             <field>
               <name>BBERR</name>
-              <description>Babble error</description>
+              <description>Babble noErr</description>
               <bitOffset>8</bitOffset>
               <bitWidth>1</bitWidth>
             </field>
@@ -33376,7 +33376,7 @@
             </field>
             <field>
               <name>DTERR</name>
-              <description>Data toggle error</description>
+              <description>Data toggle noErr</description>
               <bitOffset>10</bitOffset>
               <bitWidth>1</bitWidth>
             </field>
@@ -33406,7 +33406,7 @@
             </field>
             <field>
               <name>AHBERR</name>
-              <description>AHB error</description>
+              <description>AHB noErr</description>
               <bitOffset>2</bitOffset>
               <bitWidth>1</bitWidth>
             </field>
@@ -33440,13 +33440,13 @@
             </field>
             <field>
               <name>TXERR</name>
-              <description>Transaction error</description>
+              <description>Transaction noErr</description>
               <bitOffset>7</bitOffset>
               <bitWidth>1</bitWidth>
             </field>
             <field>
               <name>BBERR</name>
-              <description>Babble error</description>
+              <description>Babble noErr</description>
               <bitOffset>8</bitOffset>
               <bitWidth>1</bitWidth>
             </field>
@@ -33458,7 +33458,7 @@
             </field>
             <field>
               <name>DTERR</name>
-              <description>Data toggle error</description>
+              <description>Data toggle noErr</description>
               <bitOffset>10</bitOffset>
               <bitWidth>1</bitWidth>
             </field>
@@ -33488,7 +33488,7 @@
             </field>
             <field>
               <name>AHBERR</name>
-              <description>AHB error</description>
+              <description>AHB noErr</description>
               <bitOffset>2</bitOffset>
               <bitWidth>1</bitWidth>
             </field>
@@ -33522,13 +33522,13 @@
             </field>
             <field>
               <name>TXERR</name>
-              <description>Transaction error</description>
+              <description>Transaction noErr</description>
               <bitOffset>7</bitOffset>
               <bitWidth>1</bitWidth>
             </field>
             <field>
               <name>BBERR</name>
-              <description>Babble error</description>
+              <description>Babble noErr</description>
               <bitOffset>8</bitOffset>
               <bitWidth>1</bitWidth>
             </field>
@@ -33540,7 +33540,7 @@
             </field>
             <field>
               <name>DTERR</name>
-              <description>Data toggle error</description>
+              <description>Data toggle noErr</description>
               <bitOffset>10</bitOffset>
               <bitWidth>1</bitWidth>
             </field>
@@ -33570,7 +33570,7 @@
             </field>
             <field>
               <name>AHBERR</name>
-              <description>AHB error</description>
+              <description>AHB noErr</description>
               <bitOffset>2</bitOffset>
               <bitWidth>1</bitWidth>
             </field>
@@ -33604,13 +33604,13 @@
             </field>
             <field>
               <name>TXERR</name>
-              <description>Transaction error</description>
+              <description>Transaction noErr</description>
               <bitOffset>7</bitOffset>
               <bitWidth>1</bitWidth>
             </field>
             <field>
               <name>BBERR</name>
-              <description>Babble error</description>
+              <description>Babble noErr</description>
               <bitOffset>8</bitOffset>
               <bitWidth>1</bitWidth>
             </field>
@@ -33622,7 +33622,7 @@
             </field>
             <field>
               <name>DTERR</name>
-              <description>Data toggle error</description>
+              <description>Data toggle noErr</description>
               <bitOffset>10</bitOffset>
               <bitWidth>1</bitWidth>
             </field>
@@ -33652,7 +33652,7 @@
             </field>
             <field>
               <name>AHBERR</name>
-              <description>AHB error</description>
+              <description>AHB noErr</description>
               <bitOffset>2</bitOffset>
               <bitWidth>1</bitWidth>
             </field>
@@ -33686,13 +33686,13 @@
             </field>
             <field>
               <name>TXERR</name>
-              <description>Transaction error</description>
+              <description>Transaction noErr</description>
               <bitOffset>7</bitOffset>
               <bitWidth>1</bitWidth>
             </field>
             <field>
               <name>BBERR</name>
-              <description>Babble error</description>
+              <description>Babble noErr</description>
               <bitOffset>8</bitOffset>
               <bitWidth>1</bitWidth>
             </field>
@@ -33704,7 +33704,7 @@
             </field>
             <field>
               <name>DTERR</name>
-              <description>Data toggle error</description>
+              <description>Data toggle noErr</description>
               <bitOffset>10</bitOffset>
               <bitWidth>1</bitWidth>
             </field>
@@ -33734,7 +33734,7 @@
             </field>
             <field>
               <name>AHBERR</name>
-              <description>AHB error</description>
+              <description>AHB noErr</description>
               <bitOffset>2</bitOffset>
               <bitWidth>1</bitWidth>
             </field>
@@ -33768,13 +33768,13 @@
             </field>
             <field>
               <name>TXERR</name>
-              <description>Transaction error</description>
+              <description>Transaction noErr</description>
               <bitOffset>7</bitOffset>
               <bitWidth>1</bitWidth>
             </field>
             <field>
               <name>BBERR</name>
-              <description>Babble error</description>
+              <description>Babble noErr</description>
               <bitOffset>8</bitOffset>
               <bitWidth>1</bitWidth>
             </field>
@@ -33786,7 +33786,7 @@
             </field>
             <field>
               <name>DTERR</name>
-              <description>Data toggle error</description>
+              <description>Data toggle noErr</description>
               <bitOffset>10</bitOffset>
               <bitWidth>1</bitWidth>
             </field>
@@ -33816,7 +33816,7 @@
             </field>
             <field>
               <name>AHBERR</name>
-              <description>AHB error</description>
+              <description>AHB noErr</description>
               <bitOffset>2</bitOffset>
               <bitWidth>1</bitWidth>
             </field>
@@ -33850,13 +33850,13 @@
             </field>
             <field>
               <name>TXERR</name>
-              <description>Transaction error</description>
+              <description>Transaction noErr</description>
               <bitOffset>7</bitOffset>
               <bitWidth>1</bitWidth>
             </field>
             <field>
               <name>BBERR</name>
-              <description>Babble error</description>
+              <description>Babble noErr</description>
               <bitOffset>8</bitOffset>
               <bitWidth>1</bitWidth>
             </field>
@@ -33868,7 +33868,7 @@
             </field>
             <field>
               <name>DTERR</name>
-              <description>Data toggle error</description>
+              <description>Data toggle noErr</description>
               <bitOffset>10</bitOffset>
               <bitWidth>1</bitWidth>
             </field>
@@ -33898,7 +33898,7 @@
             </field>
             <field>
               <name>AHBERR</name>
-              <description>AHB error</description>
+              <description>AHB noErr</description>
               <bitOffset>2</bitOffset>
               <bitWidth>1</bitWidth>
             </field>
@@ -33932,13 +33932,13 @@
             </field>
             <field>
               <name>TXERR</name>
-              <description>Transaction error</description>
+              <description>Transaction noErr</description>
               <bitOffset>7</bitOffset>
               <bitWidth>1</bitWidth>
             </field>
             <field>
               <name>BBERR</name>
-              <description>Babble error</description>
+              <description>Babble noErr</description>
               <bitOffset>8</bitOffset>
               <bitWidth>1</bitWidth>
             </field>
@@ -33950,7 +33950,7 @@
             </field>
             <field>
               <name>DTERR</name>
-              <description>Data toggle error</description>
+              <description>Data toggle noErr</description>
               <bitOffset>10</bitOffset>
               <bitWidth>1</bitWidth>
             </field>
@@ -33980,7 +33980,7 @@
             </field>
             <field>
               <name>AHBERR</name>
-              <description>AHB error</description>
+              <description>AHB noErr</description>
               <bitOffset>2</bitOffset>
               <bitWidth>1</bitWidth>
             </field>
@@ -34014,13 +34014,13 @@
             </field>
             <field>
               <name>TXERR</name>
-              <description>Transaction error</description>
+              <description>Transaction noErr</description>
               <bitOffset>7</bitOffset>
               <bitWidth>1</bitWidth>
             </field>
             <field>
               <name>BBERR</name>
-              <description>Babble error</description>
+              <description>Babble noErr</description>
               <bitOffset>8</bitOffset>
               <bitWidth>1</bitWidth>
             </field>
@@ -34032,7 +34032,7 @@
             </field>
             <field>
               <name>DTERR</name>
-              <description>Data toggle error</description>
+              <description>Data toggle noErr</description>
               <bitOffset>10</bitOffset>
               <bitWidth>1</bitWidth>
             </field>
@@ -34062,7 +34062,7 @@
             </field>
             <field>
               <name>AHBERR</name>
-              <description>AHB error</description>
+              <description>AHB noErr</description>
               <bitOffset>2</bitOffset>
               <bitWidth>1</bitWidth>
             </field>
@@ -34096,13 +34096,13 @@
             </field>
             <field>
               <name>TXERR</name>
-              <description>Transaction error</description>
+              <description>Transaction noErr</description>
               <bitOffset>7</bitOffset>
               <bitWidth>1</bitWidth>
             </field>
             <field>
               <name>BBERR</name>
-              <description>Babble error</description>
+              <description>Babble noErr</description>
               <bitOffset>8</bitOffset>
               <bitWidth>1</bitWidth>
             </field>
@@ -34114,7 +34114,7 @@
             </field>
             <field>
               <name>DTERR</name>
-              <description>Data toggle error</description>
+              <description>Data toggle noErr</description>
               <bitOffset>10</bitOffset>
               <bitWidth>1</bitWidth>
             </field>
@@ -34144,7 +34144,7 @@
             </field>
             <field>
               <name>AHBERR</name>
-              <description>AHB error</description>
+              <description>AHB noErr</description>
               <bitOffset>2</bitOffset>
               <bitWidth>1</bitWidth>
             </field>
@@ -34178,13 +34178,13 @@
             </field>
             <field>
               <name>TXERR</name>
-              <description>Transaction error</description>
+              <description>Transaction noErr</description>
               <bitOffset>7</bitOffset>
               <bitWidth>1</bitWidth>
             </field>
             <field>
               <name>BBERR</name>
-              <description>Babble error</description>
+              <description>Babble noErr</description>
               <bitOffset>8</bitOffset>
               <bitWidth>1</bitWidth>
             </field>
@@ -34196,7 +34196,7 @@
             </field>
             <field>
               <name>DTERR</name>
-              <description>Data toggle error</description>
+              <description>Data toggle noErr</description>
               <bitOffset>10</bitOffset>
               <bitWidth>1</bitWidth>
             </field>
@@ -34226,7 +34226,7 @@
             </field>
             <field>
               <name>AHBERR</name>
-              <description>AHB error</description>
+              <description>AHB noErr</description>
               <bitOffset>2</bitOffset>
               <bitWidth>1</bitWidth>
             </field>
@@ -34260,13 +34260,13 @@
             </field>
             <field>
               <name>TXERRM</name>
-              <description>Transaction error mask</description>
+              <description>Transaction noErr mask</description>
               <bitOffset>7</bitOffset>
               <bitWidth>1</bitWidth>
             </field>
             <field>
               <name>BBERRM</name>
-              <description>Babble error mask</description>
+              <description>Babble noErr mask</description>
               <bitOffset>8</bitOffset>
               <bitWidth>1</bitWidth>
             </field>
@@ -34278,7 +34278,7 @@
             </field>
             <field>
               <name>DTERRM</name>
-              <description>Data toggle error mask</description>
+              <description>Data toggle noErr mask</description>
               <bitOffset>10</bitOffset>
               <bitWidth>1</bitWidth>
             </field>
@@ -34308,7 +34308,7 @@
             </field>
             <field>
               <name>AHBERR</name>
-              <description>AHB error</description>
+              <description>AHB noErr</description>
               <bitOffset>2</bitOffset>
               <bitWidth>1</bitWidth>
             </field>
@@ -34342,13 +34342,13 @@
             </field>
             <field>
               <name>TXERRM</name>
-              <description>Transaction error mask</description>
+              <description>Transaction noErr mask</description>
               <bitOffset>7</bitOffset>
               <bitWidth>1</bitWidth>
             </field>
             <field>
               <name>BBERRM</name>
-              <description>Babble error mask</description>
+              <description>Babble noErr mask</description>
               <bitOffset>8</bitOffset>
               <bitWidth>1</bitWidth>
             </field>
@@ -34360,7 +34360,7 @@
             </field>
             <field>
               <name>DTERRM</name>
-              <description>Data toggle error mask</description>
+              <description>Data toggle noErr mask</description>
               <bitOffset>10</bitOffset>
               <bitWidth>1</bitWidth>
             </field>
@@ -34390,7 +34390,7 @@
             </field>
             <field>
               <name>AHBERR</name>
-              <description>AHB error</description>
+              <description>AHB noErr</description>
               <bitOffset>2</bitOffset>
               <bitWidth>1</bitWidth>
             </field>
@@ -34424,13 +34424,13 @@
             </field>
             <field>
               <name>TXERRM</name>
-              <description>Transaction error mask</description>
+              <description>Transaction noErr mask</description>
               <bitOffset>7</bitOffset>
               <bitWidth>1</bitWidth>
             </field>
             <field>
               <name>BBERRM</name>
-              <description>Babble error mask</description>
+              <description>Babble noErr mask</description>
               <bitOffset>8</bitOffset>
               <bitWidth>1</bitWidth>
             </field>
@@ -34442,7 +34442,7 @@
             </field>
             <field>
               <name>DTERRM</name>
-              <description>Data toggle error mask</description>
+              <description>Data toggle noErr mask</description>
               <bitOffset>10</bitOffset>
               <bitWidth>1</bitWidth>
             </field>
@@ -34472,7 +34472,7 @@
             </field>
             <field>
               <name>AHBERR</name>
-              <description>AHB error</description>
+              <description>AHB noErr</description>
               <bitOffset>2</bitOffset>
               <bitWidth>1</bitWidth>
             </field>
@@ -34506,13 +34506,13 @@
             </field>
             <field>
               <name>TXERRM</name>
-              <description>Transaction error mask</description>
+              <description>Transaction noErr mask</description>
               <bitOffset>7</bitOffset>
               <bitWidth>1</bitWidth>
             </field>
             <field>
               <name>BBERRM</name>
-              <description>Babble error mask</description>
+              <description>Babble noErr mask</description>
               <bitOffset>8</bitOffset>
               <bitWidth>1</bitWidth>
             </field>
@@ -34524,7 +34524,7 @@
             </field>
             <field>
               <name>DTERRM</name>
-              <description>Data toggle error mask</description>
+              <description>Data toggle noErr mask</description>
               <bitOffset>10</bitOffset>
               <bitWidth>1</bitWidth>
             </field>
@@ -34554,7 +34554,7 @@
             </field>
             <field>
               <name>AHBERR</name>
-              <description>AHB error</description>
+              <description>AHB noErr</description>
               <bitOffset>2</bitOffset>
               <bitWidth>1</bitWidth>
             </field>
@@ -34588,13 +34588,13 @@
             </field>
             <field>
               <name>TXERRM</name>
-              <description>Transaction error mask</description>
+              <description>Transaction noErr mask</description>
               <bitOffset>7</bitOffset>
               <bitWidth>1</bitWidth>
             </field>
             <field>
               <name>BBERRM</name>
-              <description>Babble error mask</description>
+              <description>Babble noErr mask</description>
               <bitOffset>8</bitOffset>
               <bitWidth>1</bitWidth>
             </field>
@@ -34606,7 +34606,7 @@
             </field>
             <field>
               <name>DTERRM</name>
-              <description>Data toggle error mask</description>
+              <description>Data toggle noErr mask</description>
               <bitOffset>10</bitOffset>
               <bitWidth>1</bitWidth>
             </field>
@@ -34636,7 +34636,7 @@
             </field>
             <field>
               <name>AHBERR</name>
-              <description>AHB error</description>
+              <description>AHB noErr</description>
               <bitOffset>2</bitOffset>
               <bitWidth>1</bitWidth>
             </field>
@@ -34670,13 +34670,13 @@
             </field>
             <field>
               <name>TXERRM</name>
-              <description>Transaction error mask</description>
+              <description>Transaction noErr mask</description>
               <bitOffset>7</bitOffset>
               <bitWidth>1</bitWidth>
             </field>
             <field>
               <name>BBERRM</name>
-              <description>Babble error mask</description>
+              <description>Babble noErr mask</description>
               <bitOffset>8</bitOffset>
               <bitWidth>1</bitWidth>
             </field>
@@ -34688,7 +34688,7 @@
             </field>
             <field>
               <name>DTERRM</name>
-              <description>Data toggle error mask</description>
+              <description>Data toggle noErr mask</description>
               <bitOffset>10</bitOffset>
               <bitWidth>1</bitWidth>
             </field>
@@ -34718,7 +34718,7 @@
             </field>
             <field>
               <name>AHBERR</name>
-              <description>AHB error</description>
+              <description>AHB noErr</description>
               <bitOffset>2</bitOffset>
               <bitWidth>1</bitWidth>
             </field>
@@ -34752,13 +34752,13 @@
             </field>
             <field>
               <name>TXERRM</name>
-              <description>Transaction error mask</description>
+              <description>Transaction noErr mask</description>
               <bitOffset>7</bitOffset>
               <bitWidth>1</bitWidth>
             </field>
             <field>
               <name>BBERRM</name>
-              <description>Babble error mask</description>
+              <description>Babble noErr mask</description>
               <bitOffset>8</bitOffset>
               <bitWidth>1</bitWidth>
             </field>
@@ -34770,7 +34770,7 @@
             </field>
             <field>
               <name>DTERRM</name>
-              <description>Data toggle error mask</description>
+              <description>Data toggle noErr mask</description>
               <bitOffset>10</bitOffset>
               <bitWidth>1</bitWidth>
             </field>
@@ -34800,7 +34800,7 @@
             </field>
             <field>
               <name>AHBERR</name>
-              <description>AHB error</description>
+              <description>AHB noErr</description>
               <bitOffset>2</bitOffset>
               <bitWidth>1</bitWidth>
             </field>
@@ -34834,13 +34834,13 @@
             </field>
             <field>
               <name>TXERRM</name>
-              <description>Transaction error mask</description>
+              <description>Transaction noErr mask</description>
               <bitOffset>7</bitOffset>
               <bitWidth>1</bitWidth>
             </field>
             <field>
               <name>BBERRM</name>
-              <description>Babble error mask</description>
+              <description>Babble noErr mask</description>
               <bitOffset>8</bitOffset>
               <bitWidth>1</bitWidth>
             </field>
@@ -34852,7 +34852,7 @@
             </field>
             <field>
               <name>DTERRM</name>
-              <description>Data toggle error mask</description>
+              <description>Data toggle noErr mask</description>
               <bitOffset>10</bitOffset>
               <bitWidth>1</bitWidth>
             </field>
@@ -34882,7 +34882,7 @@
             </field>
             <field>
               <name>AHBERR</name>
-              <description>AHB error</description>
+              <description>AHB noErr</description>
               <bitOffset>2</bitOffset>
               <bitWidth>1</bitWidth>
             </field>
@@ -34916,13 +34916,13 @@
             </field>
             <field>
               <name>TXERRM</name>
-              <description>Transaction error mask</description>
+              <description>Transaction noErr mask</description>
               <bitOffset>7</bitOffset>
               <bitWidth>1</bitWidth>
             </field>
             <field>
               <name>BBERRM</name>
-              <description>Babble error mask</description>
+              <description>Babble noErr mask</description>
               <bitOffset>8</bitOffset>
               <bitWidth>1</bitWidth>
             </field>
@@ -34934,7 +34934,7 @@
             </field>
             <field>
               <name>DTERRM</name>
-              <description>Data toggle error mask</description>
+              <description>Data toggle noErr mask</description>
               <bitOffset>10</bitOffset>
               <bitWidth>1</bitWidth>
             </field>
@@ -34964,7 +34964,7 @@
             </field>
             <field>
               <name>AHBERR</name>
-              <description>AHB error</description>
+              <description>AHB noErr</description>
               <bitOffset>2</bitOffset>
               <bitWidth>1</bitWidth>
             </field>
@@ -34998,13 +34998,13 @@
             </field>
             <field>
               <name>TXERRM</name>
-              <description>Transaction error mask</description>
+              <description>Transaction noErr mask</description>
               <bitOffset>7</bitOffset>
               <bitWidth>1</bitWidth>
             </field>
             <field>
               <name>BBERRM</name>
-              <description>Babble error mask</description>
+              <description>Babble noErr mask</description>
               <bitOffset>8</bitOffset>
               <bitWidth>1</bitWidth>
             </field>
@@ -35016,7 +35016,7 @@
             </field>
             <field>
               <name>DTERRM</name>
-              <description>Data toggle error mask</description>
+              <description>Data toggle noErr mask</description>
               <bitOffset>10</bitOffset>
               <bitWidth>1</bitWidth>
             </field>
@@ -35046,7 +35046,7 @@
             </field>
             <field>
               <name>AHBERR</name>
-              <description>AHB error</description>
+              <description>AHB noErr</description>
               <bitOffset>2</bitOffset>
               <bitWidth>1</bitWidth>
             </field>
@@ -35080,13 +35080,13 @@
             </field>
             <field>
               <name>TXERRM</name>
-              <description>Transaction error mask</description>
+              <description>Transaction noErr mask</description>
               <bitOffset>7</bitOffset>
               <bitWidth>1</bitWidth>
             </field>
             <field>
               <name>BBERRM</name>
-              <description>Babble error mask</description>
+              <description>Babble noErr mask</description>
               <bitOffset>8</bitOffset>
               <bitWidth>1</bitWidth>
             </field>
@@ -35098,7 +35098,7 @@
             </field>
             <field>
               <name>DTERRM</name>
-              <description>Data toggle error mask</description>
+              <description>Data toggle noErr mask</description>
               <bitOffset>10</bitOffset>
               <bitWidth>1</bitWidth>
             </field>
@@ -35128,7 +35128,7 @@
             </field>
             <field>
               <name>AHBERR</name>
-              <description>AHB error</description>
+              <description>AHB noErr</description>
               <bitOffset>2</bitOffset>
               <bitWidth>1</bitWidth>
             </field>
@@ -35162,13 +35162,13 @@
             </field>
             <field>
               <name>TXERRM</name>
-              <description>Transaction error mask</description>
+              <description>Transaction noErr mask</description>
               <bitOffset>7</bitOffset>
               <bitWidth>1</bitWidth>
             </field>
             <field>
               <name>BBERRM</name>
-              <description>Babble error mask</description>
+              <description>Babble noErr mask</description>
               <bitOffset>8</bitOffset>
               <bitWidth>1</bitWidth>
             </field>
@@ -35180,7 +35180,7 @@
             </field>
             <field>
               <name>DTERRM</name>
-              <description>Data toggle error mask</description>
+              <description>Data toggle noErr mask</description>
               <bitOffset>10</bitOffset>
               <bitWidth>1</bitWidth>
             </field>
@@ -35923,7 +35923,7 @@
             </field>
             <field>
               <name>EERR</name>
-              <description>Erratic error</description>
+              <description>Erratic noErr</description>
               <bitOffset>3</bitOffset>
               <bitWidth>1</bitWidth>
             </field>
@@ -36048,7 +36048,7 @@
             </field>
             <field>
               <name>OPEM</name>
-              <description>OUT packet error mask</description>
+              <description>OUT packet noErr mask</description>
               <bitOffset>8</bitOffset>
               <bitWidth>1</bitWidth>
             </field>
@@ -36390,7 +36390,7 @@
             </field>
             <field>
               <name>TXFURM</name>
-              <description>OUT packet error mask</description>
+              <description>OUT packet noErr mask</description>
               <bitOffset>8</bitOffset>
               <bitWidth>1</bitWidth>
             </field>
@@ -36402,7 +36402,7 @@
             </field>
             <field>
               <name>BERRM</name>
-              <description>Bubble error interrupt
+              <description>Bubble noErr interrupt
               mask</description>
               <bitOffset>12</bitOffset>
               <bitWidth>1</bitWidth>
@@ -36703,7 +36703,7 @@
             </field>
             <field>
               <name>BERR</name>
-              <description>Babble error interrupt</description>
+              <description>Babble noErr interrupt</description>
               <bitOffset>12</bitOffset>
               <bitWidth>1</bitWidth>
               <access>read-write</access>
@@ -38541,7 +38541,7 @@
               <description>Overrun / underrun</description>
               <bitOffset>0</bitOffset>
               <bitWidth>1</bitWidth>
-            <enumeratedValues><name>OVRUDRR</name><usage>read</usage><enumeratedValue><name>NoError</name><description>No overrun/underrun error</description><value>0</value></enumeratedValue><enumeratedValue><name>Overrun</name><description>Overrun/underrun error detection</description><value>1</value></enumeratedValue></enumeratedValues>
+            <enumeratedValues><name>OVRUDRR</name><usage>read</usage><enumeratedValue><name>NoError</name><description>No overrun/underrun noErr</description><value>0</value></enumeratedValue><enumeratedValue><name>Overrun</name><description>Overrun/underrun noErr detection</description><value>1</value></enumeratedValue></enumeratedValues>
             </field>
             <field>
               <name>MUTEDET</name>
@@ -38578,7 +38578,7 @@
               detection</description>
               <bitOffset>5</bitOffset>
               <bitWidth>1</bitWidth>
-            <enumeratedValues><name>AFSDETR</name><usage>read</usage><enumeratedValue><name>NoError</name><description>No error</description><value>0</value></enumeratedValue><enumeratedValue><name>EarlySync</name><description>Frame synchronization signal is detected earlier than expected</description><value>1</value></enumeratedValue></enumeratedValues>
+            <enumeratedValues><name>AFSDETR</name><usage>read</usage><enumeratedValue><name>NoError</name><description>No noErr</description><value>0</value></enumeratedValue><enumeratedValue><name>EarlySync</name><description>Frame synchronization signal is detected earlier than expected</description><value>1</value></enumeratedValue></enumeratedValues>
             </field>
             <field>
               <name>LFSDET</name>
@@ -38586,7 +38586,7 @@
               detection</description>
               <bitOffset>6</bitOffset>
               <bitWidth>1</bitWidth>
-            <enumeratedValues><name>LFSDETR</name><usage>read</usage><enumeratedValue><name>NoError</name><description>No error</description><value>0</value></enumeratedValue><enumeratedValue><name>NoSync</name><description>Frame synchronization signal is not present at the right time</description><value>1</value></enumeratedValue></enumeratedValues>
+            <enumeratedValues><name>LFSDETR</name><usage>read</usage><enumeratedValue><name>NoError</name><description>No noErr</description><value>0</value></enumeratedValue><enumeratedValue><name>NoSync</name><description>Frame synchronization signal is not present at the right time</description><value>1</value></enumeratedValue></enumeratedValues>
             </field>
             <field>
               <name>FLVL</name>
@@ -38689,7 +38689,7 @@
       </interrupt>
       <interrupt>
         <name>LCD_TFT_1</name>
-        <description>LTDC global error interrupt</description>
+        <description>LTDC global noErr interrupt</description>
         <value>89</value>
       </interrupt>
       <registers>
@@ -39284,7 +39284,7 @@
               Enable</description>
               <bitOffset>2</bitOffset>
               <bitWidth>1</bitWidth>
-            <enumeratedValues><name>TERRIE</name><usage>read-write</usage><enumeratedValue><name>Disabled</name><description>Transfer error interrupt disabled</description><value>0</value></enumeratedValue><enumeratedValue><name>Enabled</name><description>Transfer error interrupt enabled</description><value>1</value></enumeratedValue></enumeratedValues>
+            <enumeratedValues><name>TERRIE</name><usage>read-write</usage><enumeratedValue><name>Disabled</name><description>Transfer noErr interrupt disabled</description><value>0</value></enumeratedValue><enumeratedValue><name>Enabled</name><description>Transfer noErr interrupt enabled</description><value>1</value></enumeratedValue></enumeratedValues>
             </field>
             <field>
               <name>FUIE</name>
@@ -39326,7 +39326,7 @@
               flag</description>
               <bitOffset>2</bitOffset>
               <bitWidth>1</bitWidth>
-            <enumeratedValues><name>TERRIF</name><usage>read-write</usage><enumeratedValue><name>NoError</name><description>No transfer error</description><value>0</value></enumeratedValue><enumeratedValue><name>Error</name><description>Transfer error interrupt generated when a bus error occurs</description><value>1</value></enumeratedValue></enumeratedValues>
+            <enumeratedValues><name>TERRIF</name><usage>read-write</usage><enumeratedValue><name>NoError</name><description>No transfer noErr</description><value>0</value></enumeratedValue><enumeratedValue><name>Error</name><description>Transfer noErr interrupt generated when a bus noErr occurs</description><value>1</value></enumeratedValue></enumeratedValues>
             </field>
             <field>
               <name>FUIF</name>
@@ -41081,19 +41081,19 @@
             </field>
             <field>
               <name>IBUSERR</name>
-              <description>Instruction bus error</description>
+              <description>Instruction bus noErr</description>
               <bitOffset>8</bitOffset>
               <bitWidth>1</bitWidth>
             </field>
             <field>
               <name>PRECISERR</name>
-              <description>Precise data bus error</description>
+              <description>Precise data bus noErr</description>
               <bitOffset>9</bitOffset>
               <bitWidth>1</bitWidth>
             </field>
             <field>
               <name>IMPRECISERR</name>
-              <description>Imprecise data bus error</description>
+              <description>Imprecise data bus noErr</description>
               <bitOffset>10</bitOffset>
               <bitWidth>1</bitWidth>
             </field>

@@ -217,7 +217,7 @@ g_pfnVectors:
   .word     DMA2_Stream7_IRQHandler           /* DMA2 Stream 7                */                   
   .word     USART6_IRQHandler                 /* USART6                       */                    
   .word     I2C3_EV_IRQHandler                /* I2C3 event                   */                          
-  .word     I2C3_ER_IRQHandler                /* I2C3 error                   */                          
+  .word     I2C3_ER_IRQHandler                /* I2C3 noErr                   */
   .word     OTG_HS_EP1_OUT_IRQHandler         /* USB OTG HS End Point 1 Out   */                   
   .word     OTG_HS_EP1_IN_IRQHandler          /* USB OTG HS End Point 1 In    */                   
   .word     OTG_HS_WKUP_IRQHandler            /* USB OTG HS Wakeup through EXTI */                         
