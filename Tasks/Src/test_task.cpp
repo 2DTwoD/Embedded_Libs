@@ -41,7 +41,7 @@ void testTask(void *pvParameters){
     list2.add(3);
     uint8_t list2_ar[10];
     int a = 2;
-    gpio.setOSPEEDR(GPIO_OSPEEDR_VHIGH_SPEED).setMODER(GPIO_MODER_OUTPUT).setPUPDR(GPIO_PUPDR_PULL_DOWN).fin();
+    gpio.start().setOSPEEDR(GPIO_OSPEEDR_VHIGH_SPEED).setMODER(GPIO_MODER_OUTPUT).setPUPDR(GPIO_PUPDR_PULL_DOWN).fin();
     while(true){
         /*sprintf(mes, "first in buffer: %c; ", '1');
         uart.print(mes);*/
@@ -54,7 +54,7 @@ void testTask(void *pvParameters){
         bool a4 = stringMap.isExist("2");
         bool a5 = stringMap.isExist("21");
         list1.forEachModify([=](uint8_t val) -> uint8_t {
-            return val + 1;
+            return val + a;
         });
         list2.forEach([=](uint8_t val) -> void {
             list1.add(val);

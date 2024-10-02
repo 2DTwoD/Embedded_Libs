@@ -26,8 +26,14 @@ GPIOcommon::GPIOcommon(GPIO_Info gpioInfo){
 		RCC->AHB1ENR |= RCC_AHB1ENR_GPIOIEN;
 	}
 }
+
 //GPIOconfig
 GPIOconfig::GPIOconfig(const GPIO_Info &gpioInfo) : gpioInfo(gpioInfo) {
+    init();
+}
+
+void GPIOconfig::init() {
+    noErr = true;
     if(gpioInfo.pin > 15) noErr = false;
     if(gpioInfo.gpio == GPIOA){
         RCC->AHB1ENR |= RCC_AHB1ENR_GPIOAEN;
@@ -56,9 +62,15 @@ bool GPIOconfig::noErrors() {
     return noErr;
 }
 
-GPIOconfig &GPIOconfig::zero() {
+GPIOconfig &GPIOconfig::start() {
     if(noErr) setMODER(GPIO_MODER_INPUT).setOTYPER(GPIO_OTYPER_PUSH_PULL).setOSPEEDR(GPIO_OSPEEDR_LOW_SPEED).
                 setPUPDR(GPIO_PUPDR_NO_PULL).setAFR(GPIO_AFR0).setODR(false).setLCK(false);
+    return *this;
+}
+
+GPIOconfig &GPIOconfig::focus(GPIO_Info newGpioInfo) {
+    gpioInfo = newGpioInfo;
+    init();
     return *this;
 }
 
@@ -125,4 +137,5 @@ GPIOconfig &GPIOconfig::setAFR(GPIOafr afr) {
 }
 
 void GPIOconfig::fin() {
+    //No code, only for finalize (without return)
 }

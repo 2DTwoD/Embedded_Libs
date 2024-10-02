@@ -10,11 +10,11 @@ typedef struct {
 
 
 class GPIOcommon{
-	protected:
-		uint8_t pin;
-		volatile GPIO_TypeDef * gpio;
-  public:
-		explicit GPIOcommon(GPIO_Info gpioInfo);
+protected:
+    uint8_t pin;
+    volatile GPIO_TypeDef * gpio;
+public:
+    explicit GPIOcommon(GPIO_Info gpioInfo);
 };
 
 enum GPIOmoder{
@@ -64,10 +64,12 @@ class GPIOconfig{
 private:
     bool noErr{true};
     GPIO_Info gpioInfo;
+    void init();
 public:
     explicit GPIOconfig(const GPIO_Info &gpioInfo);
     bool noErrors();
-    GPIOconfig& zero();
+    GPIOconfig& start();
+    GPIOconfig& focus(GPIO_Info newGpioInfo);
     GPIOconfig& setMODER(GPIOmoder moder);
     GPIOconfig& setOTYPER(GPIOotyper otyper);
     GPIOconfig& setOSPEEDR(GPIOospeedr ospeedr);
