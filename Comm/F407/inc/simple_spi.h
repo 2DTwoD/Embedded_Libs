@@ -26,7 +26,7 @@ private:
     SPI_TypeDef* spi;
     Coil& nss;
     SPI_data dataFormat;
-    void adjustGPIO(GPIO_Info gpioInfo, uint8_t AFcode);
+    void adjustGPIO(GPIO_Info gpioInfo, GPIOafr AFcode);
     bool write(uint8_t *const data, uint16_t len);
     bool write(uint16_t *const data, uint16_t len);
     bool read(uint16_t len);

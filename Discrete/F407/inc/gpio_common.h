@@ -2,20 +2,13 @@
 #define GPIO_COMMON_H
 #include "stm32f407xx.h"
 #include "register.h"
+#include "init.h"
+#include "math_fun.h"
 
 typedef struct {
     volatile GPIO_TypeDef* gpio;
     uint8_t pin;
 } GPIO_Info;
-
-
-class GPIOcommon{
-protected:
-    uint8_t pin;
-    volatile GPIO_TypeDef * gpio;
-public:
-    explicit GPIOcommon(GPIO_Info gpioInfo);
-};
 
 enum GPIOmoder{
     GPIO_MODER_INPUT = 0b00,
@@ -76,11 +69,19 @@ public:
     GPIOconfig& setPUPDR(GPIOpupdr pupdr);
     bool getIDR() const;
     GPIOconfig& setODR(bool value);
+    bool getODR() const;
     GPIOconfig& setWithBSRR(bool value);
     GPIOconfig& setLCK(bool value);
     bool lockAllPortLCKK() const;
     GPIOconfig& setAFR(GPIOafr afr);
     void fin();
+};
+
+class GPIOcommon{
+protected:
+    GPIOconfig gpio;
+public:
+    explicit GPIOcommon(GPIO_Info gpioInfo);
 };
 
 #endif //GPIO_COMMON_H

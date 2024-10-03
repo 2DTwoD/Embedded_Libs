@@ -1,5 +1,14 @@
 #include "result.h"
+//Result
+bool Result::operator==(ResultLabel lb) const{
+    return label == lb;
+}
 
+bool Result::operator!=(ResultLabel lb) const{
+    return label != lb;
+}
+
+//ResultBuilder
 Result ResultBuilder::getResult(ResultLabel label, uint8_t id, const char *const description) {
     return {label, id, description};
 }

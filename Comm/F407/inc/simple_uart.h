@@ -33,14 +33,14 @@ class SimpleUART: private OnDelayCommon, public IUpdated1ms, public InternalBuff
 private:
     volatile USART_TypeDef* uart;
     uint16_t clickCount{0};
-    static void adjustGPIO(GPIO_Info& uartGPIO, uint8_t AFcode);
+    static void adjustGPIO(GPIO_Info& uartGPIO, GPIOafr AFcode);
 public:
     SimpleUART(volatile USART_TypeDef *uart, GPIO_Info RxGPIO, GPIO_Info TxGPIO,
                uint32_t busFreqMHz, USARTbaudRate baudRate, USARTparity parity, USARTstopBits stopBits,
                uint16_t bufferSize, uint32_t errorDelay);
     void sendByte(uint8_t byte);
     void send(uint8_t* bytes, uint16_t len);
-    void print(char* message);
+    void print(const char* message);
     void click();
     void IRQhandler();
     void update1ms() override;

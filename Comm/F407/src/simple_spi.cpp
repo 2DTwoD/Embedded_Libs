@@ -5,16 +5,10 @@ SimpleSPI::SimpleSPI(SPI_TypeDef *spi, GPIO_Info mosi, GPIO_Info miso, GPIO_Info
                      SPI_data dataFormat, SPI_frame frameFormat, Coil& nss, uint16_t bufferSize, uint32_t errorDelay):
         spi(spi), InternalBuffer(bufferSize), OnDelayCommon(errorDelay), nss(nss), dataFormat(dataFormat) {
     nss = true;
-    uint8_t AFcode = 0b101;
+    //Номер AF
+    GPIOafr AFcode = (spi == SPI3)? GPIO_AFR6: GPIO_AFR5;
     //Включить тактирование SPI
-    if(spi == SPI2) {
-        setBit(RCC->APB1ENR, RCC_APB1ENR_SPI2EN);
-    } else if(spi == SPI3) {
-        AFcode = 0b110;
-        setBit(RCC->APB1ENR, RCC_APB1ENR_SPI3EN);
-    } else {
-        setBit(RCC->APB2ENR, RCC_APB2ENR_SPI1EN);
-    }
+    enableRCC(spi);
     //Настройка mosi miso clk
     adjustGPIO(mosi, AFcode);
     adjustGPIO(miso, AFcode);
@@ -29,7 +23,7 @@ SimpleSPI::SimpleSPI(SPI_TypeDef *spi, GPIO_Info mosi, GPIO_Info miso, GPIO_Info
             break;
         }
     }
-    //сброс регистров
+    //Сброс регистров
     spi->CR1 = 0;
     spi->CR2 = 0;
     spi->I2SCFGR = 0;
@@ -43,49 +37,20 @@ SimpleSPI::SimpleSPI(SPI_TypeDef *spi, GPIO_Info mosi, GPIO_Info miso, GPIO_Info
     setRegValShift(spi->CR1, SPI_CR1_DFF_Msk, dataFormat);
     //Frame format
     setRegValShift(spi->CR1, SPI_CR1_LSBFIRST_Msk, frameFormat);
-
     //SSM SSI установить, т.к. NSS меняется программно
     setBit(spi->CR1, SPI_CR1_SSM);
     setBit(spi->CR1, SPI_CR1_SSI);
     //Режим мастера
     setBit(spi->CR1, SPI_CR1_MSTR);
     //Включение прерываний
-    setBit(spi->CR2, SPI_CR2_RXNEIE);
+    //setBit(spi->CR2, SPI_CR2_RXNEIE);
     //Включить шину
     setBit(spi->CR1, SPI_CR1_SPE);
 }
 
-void SimpleSPI::adjustGPIO(GPIO_Info gpioInfo, uint8_t AFcode) {
-    //Включить тактирование порта
-    if(gpioInfo.gpio == GPIOA){
-        setBit(RCC->AHB1ENR, RCC_AHB1ENR_GPIOAEN);
-    } else if(gpioInfo.gpio == GPIOB){
-        setBit(RCC->AHB1ENR, RCC_AHB1ENR_GPIOBEN);
-    } else if(gpioInfo.gpio == GPIOC){
-        setBit(RCC->AHB1ENR, RCC_AHB1ENR_GPIOCEN);
-    } else if(gpioInfo.gpio == GPIOD){
-        setBit(RCC->AHB1ENR, RCC_AHB1ENR_GPIODEN);
-    } else if(gpioInfo.gpio == GPIOE){
-        setBit(RCC->AHB1ENR, RCC_AHB1ENR_GPIOEEN);
-    } else if(gpioInfo.gpio == GPIOF){
-        setBit(RCC->AHB1ENR, RCC_AHB1ENR_GPIOFEN);
-    } else if(gpioInfo.gpio == GPIOG){
-        setBit(RCC->AHB1ENR, RCC_AHB1ENR_GPIOGEN);
-    } else if(gpioInfo.gpio == GPIOH){
-        setBit(RCC->AHB1ENR, RCC_AHB1ENR_GPIOHEN);
-    } else if(gpioInfo.gpio == GPIOI){
-        setBit(RCC->AHB1ENR, RCC_AHB1ENR_GPIOIEN);
-    }
-    //В режиме AF
-    setRegValShift(gpioInfo.gpio->MODER, 0b11 << (gpioInfo.pin * 2), 0b10);
-    //Скорость пинов very high
-    setRegValShift(gpioInfo.gpio->OSPEEDR, 0b11 << (gpioInfo.pin * 2), 0b11);
-    //Режим альтернативной функции AF5
-    if(gpioInfo.pin < 8){
-        setRegValShift(gpioInfo.gpio->AFR[0], 0b1111 << (gpioInfo.pin * 4), AFcode);
-    } else {
-        setRegValShift(gpioInfo.gpio->AFR[1], 0b1111 << ((gpioInfo.pin - 8) * 4), AFcode);
-    }
+void SimpleSPI::adjustGPIO(GPIO_Info gpioInfo, GPIOafr AFcode) {
+    GPIOconfig gpio(gpioInfo);
+    gpio.start().setMODER(GPIO_MODER_AF).setOSPEEDR(GPIO_OSPEEDR_VHIGH_SPEED).setAFR(AFcode).fin();
 }
 
 void SimpleSPI::update1ms() {

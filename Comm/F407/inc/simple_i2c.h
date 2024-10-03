@@ -9,6 +9,7 @@
 #include "simple_input.h"
 #include "on_delay.h"
 #include "buffer.h"
+#include "init.h"
 
 enum I2C_Mode{
     FM, SM

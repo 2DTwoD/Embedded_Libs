@@ -1,18 +1,14 @@
 #include "coil.h"
 
 Coil::Coil(GPIO_Info gpioInfo): GPIOcommon(gpioInfo) {
-    setRegValShift(gpio->MODER, 0b11 << (2 * pin), 0b01);
+    gpio.start().setMODER(GPIO_MODER_OUTPUT).fin();
 }
 bool Coil::isActive(){
-	return (gpio->ODR & (1 << pin)) > 0;
+	return gpio.getODR() > 0;
 }
 void Coil::setValue(bool value){
 	ProgrammCoil::setValue(value);
-	if(value){
-		gpio->BSRR |= (1 << pin);
-		return;
-	}
-	gpio->BSRR |= (1 << (pin + 16));
+    gpio.setWithBSRR(value);
 }
 Coil& Coil::operator=(bool value){
 	setValue(value);

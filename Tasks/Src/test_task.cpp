@@ -66,6 +66,7 @@ void testTask(void *pvParameters){
         } else {
             gpio.setODR(true);
         }
+        uart.print("op1");
     	vTaskDelay(1000);
 	}
 }

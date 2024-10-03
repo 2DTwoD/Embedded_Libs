@@ -2,11 +2,30 @@
 #define MISC_INIT_H
 #include "stm32f407xx.h"
 #include "common.h"
+#include "result.h"
+
+enum RCC_Module{
+    CLOCK_GPIOA = 0,
+    CLOCK_GPIOB, CLOCK_GPIOC, CLOCK_GPIOD, CLOCK_GPIOE, CLOCK_GPIOF, CLOCK_GPIOG, CLOCK_GPIOH, CLOCK_GPIOI,
+    CLOCK_CRC, CLOCK_BKPSRAM, CLOCK_CCMDATARAM, CLOCK_DMA1, CLOCK_DMA2, CLOCK_ETHMAC, CLOCK_ETHMACTX, CLOCK_ETHMACRX,
+    CLOCK_ETHMACPTP, CLOCK_OTGHS, CLOCK_OTGHSULPI, CLOCK_DCMI, CLOCK_RNG, CLOCK_OTGFS, CLOCK_FSMC, CLOCK_TIM2,
+    CLOCK_TIM3, CLOCK_TIM4, CLOCK_TIM5, CLOCK_TIM6, CLOCK_TIM7, CLOCK_TIM12, CLOCK_TIM13, CLOCK_TIM14, CLOCK_WWDG,
+    CLOCK_SPI2, CLOCK_SPI3, CLOCK_USART2, CLOCK_USART3, CLOCK_UART4, CLOCK_UART5, CLOCK_I2C1, CLOCK_I2C2, CLOCK_I2C3,
+    CLOCK_CAN1, CLOCK_CAN2, CLOCK_PWR, CLOCK_DAC, CLOCK_TIM1, CLOCK_TIM8, CLOCK_USART1, CLOCK_USART6, CLOCK_ADC1,
+    CLOCK_ADC2, CLOCK_ADC3, CLOCK_SDIO, CLOCK_SPI1, CLOCK_SYSCFG, CLOCK_TIM9, CLOCK_TIM10, CLOCK_TIM11
+};
 
 void commonInit();
 void rccInit();
 void tickInit(TIM_TypeDef* tim, uint16_t busFreqMHz);
-void spiInit();
-void i2cInit();
+//enableRCC
+Result enableRCC(RCC_Module module);
+Result enableRCC(volatile GPIO_TypeDef *gpio);
+Result enableRCC(volatile TIM_TypeDef *tim);
+Result enableRCC(volatile USART_TypeDef *usart);
+Result enableRCC(volatile SPI_TypeDef *spi);
+//getIRQ
+ResultV<IRQn_Type> getIRQ(volatile TIM_TypeDef *tim);
+ResultV<IRQn_Type> getIRQ(volatile USART_TypeDef *usart);
 
 #endif //MISC_INIT_H

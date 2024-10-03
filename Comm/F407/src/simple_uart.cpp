@@ -11,36 +11,16 @@ SimpleUART::SimpleUART(volatile USART_TypeDef *uart, GPIO_Info RxGPIO, GPIO_Info
     uart->BRR = 0;
     uart->GTPR = 0;
     //RCC, IRQ set
-    IRQn_Type irqType;
-    if(uart == USART2){
-        RCC->APB2ENR |= RCC_APB1ENR_USART2EN;
-        irqType = USART2_IRQn;
-    } else if(uart == USART3){
-        RCC->APB2ENR |= RCC_APB1ENR_USART3EN;
-        irqType = USART3_IRQn;
-    } else if(uart == UART4){
-        RCC->APB2ENR |= RCC_APB1ENR_UART4EN;
-        irqType = UART4_IRQn;
-    } else if(uart == UART5){
-        RCC->APB2ENR |= RCC_APB1ENR_UART5EN;
-        irqType = UART5_IRQn;
-    } else if(uart == USART6){
-        RCC->APB2ENR |= RCC_APB2ENR_USART6EN;
-        irqType = USART6_IRQn;
-    } else {
-        RCC->APB2ENR |= RCC_APB2ENR_USART1EN;
-        irqType = USART1_IRQn;
+    enableRCC(uart);
+    ResultV<IRQn_Type> irqRes = getIRQ(uart);
+    if(irqRes == rOK){
+        NVIC_EnableIRQ(irqRes.getValue());
+        NVIC_SetPriority(irqRes.getValue(), 3);
     }
-    NVIC_EnableIRQ(irqType);
-    NVIC_SetPriority(irqType, 3);
     //define alternate function code
-    uint8_t AFcode;
+    GPIOafr AFcode = GPIO_AFR8;
     if(uart == USART1 || uart == USART2 || uart == USART3){
-        //AF7
-        AFcode = 0b0111;
-    } else {
-        //AF8
-        AFcode = 0b1000;
+        AFcode = GPIO_AFR7;
     }
     //set GPIO
     adjustGPIO(RxGPIO, AFcode);
@@ -53,10 +33,10 @@ SimpleUART::SimpleUART(volatile USART_TypeDef *uart, GPIO_Info RxGPIO, GPIO_Info
     setRegValShift(uart->BRR, USART_BRR_DIV_Fraction_Msk, fraction);
     //parity
     if(parity != NO_PARITY){
-        uart->CR1 |= USART_CR1_PCE;
-        uart->CR1 |= USART_CR1_M;
+        setBit(uart->CR1, USART_CR1_PCE);
+        setBit(uart->CR1, USART_CR1_M);
         if(parity == ODD){
-            uart->CR1 |= USART_CR1_PS;
+            setBit(uart->CR1, USART_CR1_PS);
         }
     }
     //stop bits
@@ -71,42 +51,16 @@ SimpleUART::SimpleUART(volatile USART_TypeDef *uart, GPIO_Info RxGPIO, GPIO_Info
             break;
     }
     //uart settings
-    uart->CR1 |= USART_CR1_UE;
-    uart->CR1 |= USART_CR1_RXNEIE;
-    uart->CR1 |= USART_CR1_TE;
-    uart->CR1 |= USART_CR1_RE;
+    setBit(uart->CR1, USART_CR1_UE);
+    setBit(uart->CR1, USART_CR1_RXNEIE);
+    setBit(uart->CR1, USART_CR1_TE);
+    setBit(uart->CR1, USART_CR1_RE);
 }
 
-void SimpleUART::adjustGPIO(GPIO_Info &uartGPIO, uint8_t AFcode) {
-    //RCC
-    if(uartGPIO.gpio == GPIOA){
-        RCC->AHB1ENR |= RCC_AHB1ENR_GPIOAEN;
-    } else if(uartGPIO.gpio == GPIOB){
-        RCC->AHB1ENR |= RCC_AHB1ENR_GPIOBEN;
-    } else if(uartGPIO.gpio == GPIOC){
-        RCC->AHB1ENR |= RCC_AHB1ENR_GPIOCEN;
-    } else if(uartGPIO.gpio == GPIOD){
-        RCC->AHB1ENR |= RCC_AHB1ENR_GPIODEN;
-    } else if(uartGPIO.gpio == GPIOE){
-        RCC->AHB1ENR |= RCC_AHB1ENR_GPIOEEN;
-    } else if(uartGPIO.gpio == GPIOF){
-        RCC->AHB1ENR |= RCC_AHB1ENR_GPIOFEN;
-    } else if(uartGPIO.gpio == GPIOG){
-        RCC->AHB1ENR |= RCC_AHB1ENR_GPIOGEN;
-    } else if(uartGPIO.gpio == GPIOH){
-        RCC->AHB1ENR |= RCC_AHB1ENR_GPIOHEN;
-    } else if(uartGPIO.gpio == GPIOI){
-        RCC->AHB1ENR |= RCC_AHB1ENR_GPIOIEN;
-    }
-    //GPIO
+void SimpleUART::adjustGPIO(GPIO_Info &uartGPIO, GPIOafr AFcode) {
     uartGPIO.pin = min((uint8_t )15, uartGPIO.pin);
-    setRegValShift(uartGPIO.gpio->MODER, 0b11 << (uartGPIO.pin * 2), 0b10);
-    setRegValShift(uartGPIO.gpio->OSPEEDR, 0b11 << (uartGPIO.pin * 2), 0b11);
-    if(uartGPIO.pin < 8){
-        setRegValShift(uartGPIO.gpio->AFR[0], 0b1111 << (uartGPIO.pin * 4), AFcode);
-    } else {
-        setRegValShift(uartGPIO.gpio->AFR[1], 0b1111 << ((uartGPIO.pin - 8) * 4), AFcode);
-    }
+    GPIOconfig gpio(uartGPIO);
+    gpio.start().setMODER(GPIO_MODER_AF).setOSPEEDR(GPIO_OSPEEDR_VHIGH_SPEED).setAFR(AFcode).fin();
 }
 
 void SimpleUART::sendByte(uint8_t byte) {
@@ -117,7 +71,7 @@ void SimpleUART::sendByte(uint8_t byte) {
     uart->DR = byte;
 }
 
-void SimpleUART::print(char* message) {
+void SimpleUART::print(const char* message) {
     while(*message != '\0'){
         sendByte(*message);
         message++;
