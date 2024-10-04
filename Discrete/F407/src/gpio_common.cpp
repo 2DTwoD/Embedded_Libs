@@ -23,7 +23,7 @@ GPIOconfig &GPIOconfig::start() {
     return *this;
 }
 
-GPIOconfig &GPIOconfig::focus(GPIO_Info newGpioInfo) {
+GPIOconfig &GPIOconfig::focus(GPIO_Info& newGpioInfo) {
     gpioInfo = newGpioInfo;
     init();
     return *this;

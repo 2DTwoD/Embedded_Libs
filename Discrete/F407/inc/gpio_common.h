@@ -62,7 +62,7 @@ public:
     explicit GPIOconfig(const GPIO_Info &gpioInfo);
     bool noErrors();
     GPIOconfig& start();
-    GPIOconfig& focus(GPIO_Info newGpioInfo);
+    GPIOconfig& focus(GPIO_Info& newGpioInfo);
     GPIOconfig& setMODER(GPIOmoder moder);
     GPIOconfig& setOTYPER(GPIOotyper otyper);
     GPIOconfig& setOSPEEDR(GPIOospeedr ospeedr);

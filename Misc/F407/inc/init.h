@@ -24,6 +24,7 @@ Result enableRCC(volatile GPIO_TypeDef *gpio);
 Result enableRCC(volatile TIM_TypeDef *tim);
 Result enableRCC(volatile USART_TypeDef *usart);
 Result enableRCC(volatile SPI_TypeDef *spi);
+Result enableRCC(volatile I2C_TypeDef *i2c);
 //getIRQ
 ResultV<IRQn_Type> getIRQ(volatile TIM_TypeDef *tim);
 ResultV<IRQn_Type> getIRQ(volatile USART_TypeDef *usart);

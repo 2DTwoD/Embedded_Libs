@@ -57,6 +57,14 @@ void tickInit(TIM_TypeDef* tim, uint16_t busFreqMHz){
 }
 
 //enableRCC
+static Result setRegMask(volatile uint32_t& reg, uint32_t mask){
+    setBit(reg, mask);
+    if(getBit(reg, mask)){
+        return ResultBuilder::getOK();
+    }
+    return ResultBuilder::getError("RCC bit not set");
+}
+
 Result enableRCC(RCC_Module module){
     volatile uint32_t* reg = nullptr;
     uint32_t mask;
@@ -303,19 +311,7 @@ Result enableRCC(RCC_Module module){
             break;
     }
     if(reg == nullptr) return ResultBuilder::getError("Wrong module");
-    setBit(*reg, mask);
-    if(getBit(*reg, mask)){
-        return ResultBuilder::getOK();
-    }
-    return ResultBuilder::getError("RCC bit not set");
-}
-
-static Result setRegMask(volatile uint32_t& reg, uint32_t mask){
-    setBit(reg, mask);
-    if(getBit(reg, mask)){
-        return ResultBuilder::getOK();
-    }
-    return ResultBuilder::getError("RCC bit not set");
+    return setRegMask(*reg, mask);
 }
 
 Result enableRCC(volatile GPIO_TypeDef *gpio){
@@ -439,6 +435,21 @@ Result enableRCC(volatile SPI_TypeDef *spi){
         return ResultBuilder::getError("Wrong SPI_Typedef");
     }
     return setRegMask(*reg, mask);
+}
+
+Result enableRCC(volatile I2C_TypeDef *i2c){
+    volatile uint32_t& reg = RCC->APB1ENR;
+    uint32_t mask;
+    if(i2c == I2C1){
+        mask = RCC_APB1ENR_I2C1EN;
+    } else if(i2c == I2C2){
+        mask = RCC_APB1ENR_I2C2EN;
+    } else if(i2c == I2C3){
+        mask = RCC_APB1ENR_I2C3EN;
+    } else {
+        return ResultBuilder::getError("Wrong I2C_Typedef");
+    }
+    return setRegMask(reg, mask);
 }
 
 //getIRQ

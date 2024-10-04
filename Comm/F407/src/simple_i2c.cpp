@@ -3,14 +3,9 @@
 SimpleI2C::SimpleI2C(I2C_TypeDef *i2c, GPIO_Info sda, GPIO_Info scl, uint8_t busFreqMHz,
                      I2C_Mode mode, I2C_Duty duty, uint16_t bufferSize, uint32_t errorDelay):
         OnDelayCommon(errorDelay), InternalBuffer(bufferSize), i2c(i2c), sda(sda), scl(scl) {
-    if(i2c == I2C2){
-        setBit(RCC->APB1ENR, RCC_APB1ENR_I2C2EN);
-    } else if(i2c == I2C3){
-        setBit(RCC->APB1ENR, RCC_APB1ENR_I2C3EN);
-    } else {
-        setBit(RCC->APB1ENR, RCC_APB1ENR_I2C1EN);
-    }
-    //GPIO
+    //Настройка тактирования (RCC)
+    enableRCC(i2c);
+    //Настройка GPIO
     adjustGPIO(sda);
     adjustGPIO(scl);
     //Сброс I2C
@@ -40,7 +35,6 @@ SimpleI2C::SimpleI2C(I2C_TypeDef *i2c, GPIO_Info sda, GPIO_Info scl, uint8_t bus
             resetBit(i2c->CCR, I2C_CCR_DUTY);
             ccr = (busFreqMHz * 10) / 12;
         }
-
     } else {
         resetBit(i2c->CCR, I2C_CCR_FS);
         ccr = busFreqMHz * 5;
@@ -55,40 +49,10 @@ SimpleI2C::SimpleI2C(I2C_TypeDef *i2c, GPIO_Info sda, GPIO_Info scl, uint8_t bus
 }
 
 void SimpleI2C::adjustGPIO(GPIO_Info gpioInfo) {
-    //Включить тактирование порта
-    if(gpioInfo.gpio == GPIOA){
-        setBit(RCC->AHB1ENR, RCC_AHB1ENR_GPIOAEN);
-    } else if(gpioInfo.gpio == GPIOB){
-        setBit(RCC->AHB1ENR, RCC_AHB1ENR_GPIOBEN);
-    } else if(gpioInfo.gpio == GPIOC){
-        setBit(RCC->AHB1ENR, RCC_AHB1ENR_GPIOCEN);
-    } else if(gpioInfo.gpio == GPIOD){
-        setBit(RCC->AHB1ENR, RCC_AHB1ENR_GPIODEN);
-    } else if(gpioInfo.gpio == GPIOE){
-        setBit(RCC->AHB1ENR, RCC_AHB1ENR_GPIOEEN);
-    } else if(gpioInfo.gpio == GPIOF){
-        setBit(RCC->AHB1ENR, RCC_AHB1ENR_GPIOFEN);
-    } else if(gpioInfo.gpio == GPIOG){
-        setBit(RCC->AHB1ENR, RCC_AHB1ENR_GPIOGEN);
-    } else if(gpioInfo.gpio == GPIOH){
-        setBit(RCC->AHB1ENR, RCC_AHB1ENR_GPIOHEN);
-    } else if(gpioInfo.gpio == GPIOI){
-        setBit(RCC->AHB1ENR, RCC_AHB1ENR_GPIOIEN);
-    }
-    //В режиме AF
-    setRegValShift(gpioInfo.gpio->MODER, (0b11 << (gpioInfo.pin * 2)), 0b10);
-    //Выход Open-drain
-    setBitByPos(gpioInfo.gpio->OTYPER, gpioInfo.pin);
-    //Very high speed
-    setRegValShift(gpioInfo.gpio->OSPEEDR, (0b11 << (gpioInfo.pin * 2)), 0b11);
-    //Pull up
-    //setRegValShift(gpioInfo.gpio->PUPDR, (0b11 << (gpioInfo.pin * 2)), 0b01);
-    //AF4
-    if(gpioInfo.pin < 8) {
-        setRegValShift(gpioInfo.gpio->AFR[0], (0b1111 << (gpioInfo.pin * 4)), 0b100);
-    } else {
-        setRegValShift(gpioInfo.gpio->AFR[1], (0b1111 << ((gpioInfo.pin - 8) * 4)), 0b100);
-    }
+    GPIOconfig gpio(gpioInfo);
+    gpio.start().setMODER(GPIO_MODER_AF).setOTYPER(GPIO_OTYPER_OPEN_DRAIN).setOSPEEDR(GPIO_OSPEEDR_VHIGH_SPEED)
+    //.setPUPDR(GPIO_PUPDR_PULL_UP)
+    .setAFR(GPIO_AFR4).fin();
 }
 
 void SimpleI2C::resetI2C() {
