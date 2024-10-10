@@ -141,6 +141,13 @@ void setRegValShift(T& reg, MaskVal<T> maskVal){
 }
 
 template<typename T>
+T getValFromReg(T reg, uint32_t mask){
+    int8_t pos = getPosition(mask);
+    if(pos < 0) return 0;
+    return (reg & mask) >> pos;
+}
+
+template<typename T>
 class Register {
 private:
     volatile T& reg;
