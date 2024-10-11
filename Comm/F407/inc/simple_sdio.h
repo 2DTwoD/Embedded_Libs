@@ -35,29 +35,53 @@ enum SDIO_WideBus{
     SDIO_4BIT = 0b01
 };
 
-enum SDIO_RESP{
+enum SDIO_RESP_LEN{
     SDIO_RESP_NONE = 0b00,
     SDIO_RESP_SHORT = 0b01,
     SDIO_RESP_LONG = 0b11
 };
 
+enum SDIO_RESP_TYPE{
+    SDIO_RESP_SD_R1,
+    SDIO_RESP_SD_R1b,
+    SDIO_RESP_SD_R2,
+    SDIO_RESP_SD_R3,
+    SDIO_RESP_SD_R6,
+    SDIO_RESP_SD_R7,
+};
+
+// SD card description
+struct SDCard_TypeDef{
+    uint8_t     Type;            // Card type (detected by SD_Init())
+    uint32_t    Capacity;        // Card capacity (MBytes for SDHC/SDXC, bytes otherwise)
+    uint32_t    BlockCount;      // SD card blocks count
+    uint32_t    BlockSize;       // SD card block size (bytes), determined in SD_ReadCSD()
+    uint32_t    MaxBusClkFreq;   // Maximum card bus frequency (MHz)
+    uint8_t     CSDVer;          // SD card CSD register version
+    uint16_t    RCA;             // SD card RCA address (only for SDIO)
+    uint8_t     MID;             // SD card manufacturer ID
+    uint16_t    OID;             // SD card OEM/Application ID
+    uint8_t     PNM[5];          // SD card product name (5-character ASCII string)
+    uint8_t     PRV;             // SD card product revision (two BCD digits: '6.2' will be 01100010b)
+    uint32_t    PSN;             // SD card serial number
+    uint16_t    MDT;             // SD card manufacturing date
+    uint8_t     CSD[16];         // SD card CSD register (card structure data)
+    uint8_t     CID[16];         // SD card CID register (card identification number)
+    uint8_t     SCR[8];          // SD card SCR register (SD card configuration)
+};
+
 class SimpleSDIO: private OnDelayCommon, public IUpdated1ms{
 private:
+    SDCard_TypeDef sd;
     void adjustGPIO(GPIO_Info gpioInfo);
-    Result sendCmd(uint8_t cmd, uint32_t arg, SDIO_RESP respType);
+    Result sendCmd(uint8_t cmd, uint32_t arg, SDIO_RESP_LEN respType);
+    Result recvResp(SDIO_RESP_TYPE resp_type, uint32_t *pResp);
     Result getError(uint32_t cardStatus);
-    void SD_SetBusClock(uint32_t clk_div);
-    Result SD_SetBlockSize(uint32_t block_size);
-    Result SD_SetBusWidth(uint32_t BW);
+    Result getSCR(uint32_t *pSCR);
 public:
     SimpleSDIO(SDIO_WideBus sdioWideBus, uint8_t clkDiv, uint32_t errorDelay);
     void update1ms() override;
-    Result SD_Init(void);
-    void SD_GetCardInfo(void);
-    Result SD_StopTransfer(void);
-    Result SD_GetCardState(uint8_t *pStatus);
-    Result SD_ReadBlock(uint32_t addr, uint32_t *pBuf, uint32_t len);
-    Result SD_WriteBlock(uint32_t addr, uint32_t *pBuf, uint32_t length);
+
 };
 
 #endif //SIMPLE_SDIO_H

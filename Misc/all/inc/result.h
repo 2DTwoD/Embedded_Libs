@@ -2,6 +2,7 @@
 #define RESULT_H
 
 #include <cstdint>
+#include <cstring>
 
 enum  ResultLabel{
     rOK = 0, rERROR = 1, rINFO = 2, rDUMMY = 3
@@ -10,10 +11,11 @@ enum  ResultLabel{
 struct Result{
     ResultLabel label;
     uint8_t id;
-    const char *const description;
+    char *const description;
 
     bool operator==(ResultLabel lb) const;
     bool operator!=(ResultLabel lb) const;
+    Result& operator=(Result lb);
 };
 
 template<typename T>
@@ -44,7 +46,7 @@ namespace ResultBuilder{
     //VResult
     template <typename T>
     ResultV<T> getResultV(ResultLabel label, uint8_t id, const char *const description, T value){
-        return ResultV<T>(getResult(label, id, description), value);
+        return ResultV<T>(getResult(label, id, (char*)description), value);
     }
     template <typename T>
     ResultV<T> getOKv(T value){

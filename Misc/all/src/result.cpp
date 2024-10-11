@@ -8,9 +8,15 @@ bool Result::operator!=(ResultLabel lb) const{
     return label != lb;
 }
 
+Result& Result::operator=(Result res) {
+    this->label = res.label;
+    strcpy(this->description, res.description);
+    return *this;
+}
+
 //ResultBuilder
 Result ResultBuilder::getResult(ResultLabel label, uint8_t id, const char *const description) {
-    return {label, id, description};
+    return {label, id, (char*)description};
 }
 
 Result ResultBuilder::getOK() {

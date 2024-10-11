@@ -32,7 +32,7 @@ void SimpleSDIO::adjustGPIO(GPIO_Info gpioInfo) {
     .setPUPDR(GPIO_PUPDR_PULL_UP).setAFR(GPIO_AFR12).fin();
 }
 
-Result SimpleSDIO::sendCmd(uint8_t cmd, uint32_t arg, SDIO_RESP respType) {
+Result SimpleSDIO::sendCmd(uint8_t cmd, uint32_t arg, SDIO_RESP_LEN respType) {
     // Clear the command flags
     setBit(SDIO->ICR, SDIO_ICR_CCRCFAILC);
     setBit(SDIO->ICR, SDIO_ICR_CTIMEOUTC);
@@ -91,4 +91,47 @@ Result SimpleSDIO::getError(uint32_t cardStatus) {
         if (cardStatus & SD_CS_AKE_SEQ_ERROR) return ResultBuilder::getError("SDR AKESeqError");
     }
     return ResultBuilder::getOK("SDR Success");
+}
+
+Result SimpleSDIO::recvResp(SDIO_RESP_TYPE resp_type, uint32_t *pResp) {
+    // Get first 32-bit value, it similar for all types of response except R2
+    *pResp = SDIO->RESP1;
+    switch (resp_type) {
+        case SDIO_RESP_SD_R1:
+        case SDIO_RESP_SD_R1b:
+            // RESP1 contains card status information
+            // Check for error bits in card status
+            return getError(*pResp);
+        case SDIO_RESP_SD_R2:
+            *pResp++ = __builtin_bswap32(SDIO->RESP1);
+            *pResp++ = __builtin_bswap32(SDIO->RESP2);
+            *pResp++ = __builtin_bswap32(SDIO->RESP3);
+            *pResp   = __builtin_bswap32(SDIO->RESP4);
+            break;
+        case SDIO_RESP_SD_R3:
+            // RESP1 contains the OCR register value
+            // Check for correct OCR header
+            if (SDIO->RESPCMD != 0x3f) {
+                return ResultBuilder::getError("Bad response");
+            }
+            break;
+        case SDIO_RESP_SD_R6:
+            // RESP1 contains the RCA response value
+            // Only CMD3 generates R6 response, so RESPCMD must be 0x03
+            if (SDIO->RESPCMD != 0x03) {
+                return ResultBuilder::getError("Bad response");
+            }
+            break;
+        case SDIO_RESP_SD_R7:
+            // RESP1 contains 'Voltage accepted' and echo-back of check pattern
+            // Only CMD8 generates R7 response, so RESPCMD must be 0x08
+            if (SDIO->RESPCMD != 0x08) {
+                return ResultBuilder::getError("Bad response");
+            }
+            break;
+        default:
+            // Unknown response
+            return ResultBuilder::getError("Unknown type");
+    }
+    return ResultBuilder::getOK();
 }
