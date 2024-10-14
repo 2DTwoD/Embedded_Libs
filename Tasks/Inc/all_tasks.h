@@ -23,6 +23,7 @@
 #include "simple_uart.h"
 #include "simple_i2c.h"
 #include "simple_spi.h"
+#include "simple_sdio.h"
 #include "logger.h"
 #include "linked_list.h"
 #include "string_bridge.h"

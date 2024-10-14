@@ -36,3 +36,11 @@ uint32_t floatToDWord(float value){
     }
     return result;
 }
+
+void copyStr(char *dst, const char* src){
+    while(*src != 0){
+        *dst = *src;
+        dst++;
+        src++;
+    }
+}

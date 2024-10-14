@@ -10,6 +10,8 @@ void floatToBytes(float value, uint8_t *dst);
 float dWordToFloat(uint32_t dword);
 uint32_t floatToDWord(float value);
 
+void copyStr(char *dst, const char* src);
+
 template<typename T>
 void copyArrays(const T *const src, T *const dst, uint8_t len){
     for(int i = 0; i < len; i++){

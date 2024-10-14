@@ -9,6 +9,7 @@
 #include "simple_uart.h"
 #include "simple_i2c.h"
 #include "simple_spi.h"
+#include "simple_sdio.h"
 
 CoilOffDelay led1({GPIOE, 13}, 1000);
 Coil led2({GPIOE, 14});
@@ -47,13 +48,19 @@ SimpleSPI spi(SPI2,
               128,
               10);
 
+SimpleSDIO sdio(SDIO_4BIT,
+                2,
+                84000000,
+                10);
+
 IUpdated1ms *updateObjects[] = {
         &button,
         &led1,
         &delay,
         &uart,
         &i2c,
-        &spi
+        &spi,
+        &sdio
 };
 
 uint8_t updateObjectsSize = sizeof(updateObjects) / sizeof(*updateObjects);

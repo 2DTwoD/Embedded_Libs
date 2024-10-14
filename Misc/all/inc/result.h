@@ -11,7 +11,7 @@ enum  ResultLabel{
 struct Result{
     ResultLabel label;
     uint8_t id;
-    char *const description;
+    char description[10];
 
     bool operator==(ResultLabel lb) const;
     bool operator!=(ResultLabel lb) const;
@@ -29,23 +29,23 @@ struct ResultV: public Result{
 };
 
 namespace ResultBuilder{
-    Result getResult(ResultLabel label, uint8_t id, const char *const description);
+    Result getResult(ResultLabel label, uint8_t id, const char* description);
     Result getOK();
     Result getOK(uint8_t id);
-    Result getOK(const char *const text);
-    Result getOK(uint8_t id, const char *const text);
+    Result getOK(const char* text);
+    Result getOK(uint8_t id, const char* text);
     Result getError();
     Result getError(uint8_t id);
-    Result getError(const char *const text);
-    Result getError(uint8_t id, const char *const text);
+    Result getError(const char* text);
+    Result getError(uint8_t id, const char* text);
     Result getInfo();
     Result getInfo(uint8_t id);
-    Result getInfo(const char *const text);
-    Result getInfo(uint8_t id, const char *const text);
+    Result getInfo(const char* text);
+    Result getInfo(uint8_t id, const char* text);
 
     //VResult
     template <typename T>
-    ResultV<T> getResultV(ResultLabel label, uint8_t id, const char *const description, T value){
+    ResultV<T> getResultV(ResultLabel label, uint8_t id, const char* description, T value){
         return ResultV<T>(getResult(label, id, (char*)description), value);
     }
     template <typename T>

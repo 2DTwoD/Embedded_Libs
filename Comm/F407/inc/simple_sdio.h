@@ -30,6 +30,34 @@
 #define SD_CS_ERASE_RESET             ((uint32_t)0x00002000) // An erase sequence was cleared before executing
 #define SD_CS_AKE_SEQ_ERROR           ((uint32_t)0x00000008) // Error in the sequence of the authentication process
 
+// Mask for ACMD41
+#define SD_STD_CAPACITY               ((uint32_t)0x00000000)
+#define SD_HIGH_CAPACITY              ((uint32_t)0x40000000)
+
+// Pattern for R6 response
+#define SD_CHECK_PATTERN              ((uint32_t)0x000001AA)
+
+// Argument for ACMD41 to select voltage window
+#define SD_OCR_VOLTAGE                ((uint32_t)0x80100000)
+
+// Bitmap to clear the SDIO static flags (command and data)
+#define SDIO_ICR_STATIC               ((uint32_t)(SDIO_ICR_CCRCFAILC | SDIO_ICR_DCRCFAILC | SDIO_ICR_CTIMEOUTC | \
+                                                  SDIO_ICR_DTIMEOUTC | SDIO_ICR_TXUNDERRC | SDIO_ICR_RXOVERRC  | \
+                                                  SDIO_ICR_CMDRENDC  | SDIO_ICR_CMDSENTC  | SDIO_ICR_DATAENDC  | \
+                                                  SDIO_ICR_DBCKENDC))
+
+// Card state (OCR[12:9] bits CURRENT_STATE)
+#define SD_STATE_IDLE                 ((uint8_t)0x00) // Idle
+#define SD_STATE_READY                ((uint8_t)0x01) // Ready
+#define SD_STATE_IDENT                ((uint8_t)0x02) // Identification
+#define SD_STATE_STBY                 ((uint8_t)0x03) // Stand-by
+#define SD_STATE_TRAN                 ((uint8_t)0x04) // Transfer
+#define SD_STATE_DATA                 ((uint8_t)0x05) // Sending data
+#define SD_STATE_RCV                  ((uint8_t)0x06) // Receive data
+#define SD_STATE_PRG                  ((uint8_t)0x07) // Programming
+#define SD_STATE_DIS                  ((uint8_t)0x08) // Disconnect
+#define SD_STATE_ERROR                ((uint8_t)0xFF) // Error or unknown state
+
 enum SDIO_WideBus{
     SDIO_1BIT = 0b00,
     SDIO_4BIT = 0b01
@@ -48,6 +76,14 @@ enum SDIO_RESP_TYPE{
     SDIO_RESP_SD_R3,
     SDIO_RESP_SD_R6,
     SDIO_RESP_SD_R7,
+};
+
+enum SD_CARD_TYPE{
+    SDCT_UNKNOWN            = 0x00,
+    SDCT_SDSC_V1            = 0x01,  // Standard capacity SD card v1.0
+    SDCT_SDSC_V2            = 0x02,  // Standard capacity SD card v2.0
+    SDCT_MMC                = 0x03,  // MMC
+    SDCT_SDHC               = 0x04   // High capacity SD card (SDHC or SDXC)
 };
 
 // SD card description
@@ -73,15 +109,22 @@ struct SDCard_TypeDef{
 class SimpleSDIO: private OnDelayCommon, public IUpdated1ms{
 private:
     SDCard_TypeDef sd;
+    SDIO_WideBus sdioWideBus;
+    uint32_t busFreq;
+    uint8_t clkDiv;
     void adjustGPIO(GPIO_Info gpioInfo);
     Result sendCmd(uint8_t cmd, uint32_t arg, SDIO_RESP_LEN respType);
     Result recvResp(SDIO_RESP_TYPE resp_type, uint32_t *pResp);
     Result getError(uint32_t cardStatus);
-    Result getSCR(uint32_t *pSCR);
+    Result stopTransfer();
+    Result getCardState(uint8_t *pStatus);
+    void parseCardInfo();
 public:
-    SimpleSDIO(SDIO_WideBus sdioWideBus, uint8_t clkDiv, uint32_t errorDelay);
+    SimpleSDIO(SDIO_WideBus sdioWideBus, uint8_t clkDiv, uint32_t busFreq, uint32_t errorDelay);
     void update1ms() override;
-
+    Result init();
+    Result readBlock(uint32_t addr, uint32_t *pBuf, uint32_t length);
+    Result writeBlock(uint32_t addr, uint32_t *pBuf, uint32_t length);
 };
 
 #endif //SIMPLE_SDIO_H
