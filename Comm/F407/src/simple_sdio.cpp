@@ -18,24 +18,23 @@ SimpleSDIO::SimpleSDIO(SDIO_WideBus sdioWideBus, uint8_t clkDiv, uint32_t busFre
     adjustGPIO({GPIOC, 12});
     //RCC GPIO
     enableRCC(CLOCK_SDIO);
-    //Configure SDIO clock control register
-    /*setRegValShift(SDIO->CLKCR, SDIO_CLKCR_WIDBUS, sdioWideBus);
+    //Configure SDIO clock control registers
+    setRegValShift(SDIO->CLKCR, SDIO_CLKCR_WIDBUS, sdioWideBus);
     setRegValShift(SDIO->CLKCR, SDIO_CLKCR_CLKDIV, clkDiv);
-    setBit(SDIO->CLKCR, SDIO_CLKCR_CLKEN);
-    setBit(SDIO->CLKCR, SDIO_CLKCR_PWRSAV);*/
+    setBit(SDIO->CLKCR, SDIO_CLKCR_CLKEN | SDIO_CLKCR_PWRSAV);
     //Configure SDIO power control register
-    //setRegValShift(SDIO->POWER, SDIO_POWER_PWRCTRL, 0b00);
+    setRegValShift(SDIO->POWER, SDIO_POWER_PWRCTRL, 0b00);
 }
 
 void SimpleSDIO::adjustGPIO(GPIO_Info gpioInfo) {
     GPIOconfig gpio(gpioInfo);
-    gpio.start().setMODER(GPIO_MODER_AF).setOTYPER(GPIO_OTYPER_PUSH_PULL).setOSPEEDR(GPIO_OSPEEDR_HIGH_SPEED)
+    gpio.start().setMODER(GPIO_MODER_AF).setOTYPER(GPIO_OTYPER_PUSH_PULL).setOSPEEDR(GPIO_OSPEEDR_VHIGH_SPEED)
     .setPUPDR(GPIO_PUPDR_PULL_UP).setAFR(GPIO_AFR12).fin();
 }
 
 Result SimpleSDIO::sendCmd(uint8_t cmd, uint32_t arg, SDIO_RESP_LEN respType) {
     // Clear the command flags
-    setBit(SDIO->ICR, SDIO_ICR_CCRCFAILC | SDIO_ICR_CTIMEOUTC | SDIO_ICR_CMDRENDC | SDIO_ICR_CMDSENTC);
+    SDIO->ICR = SDIO_ICR_CCRCFAILC | SDIO_ICR_CTIMEOUTC | SDIO_ICR_CMDRENDC | SDIO_ICR_CMDSENTC;
     // Command argument value
     SDIO->ARG = arg;
     // Write to SDIO CMD
@@ -228,7 +227,7 @@ Result SimpleSDIO::init() {
 
     setRegValShift(SDIO->POWER, SDIO_POWER_PWRCTRL, 0b11); // Enable SDIO clock
 
-    sendCmd(0,0x00,SDIO_RESP_NONE);
+    cmdRes = sendCmd(0,0x00,SDIO_RESP_NONE);
 
     // CMD8: SEND_IF_COND. Send this command to verify SD card interface operating condition
     // Argument: - [31:12]: Reserved (shall be set to '0')
@@ -419,7 +418,7 @@ Result SimpleSDIO::readBlock(uint32_t addr, uint32_t *pBuf, uint32_t length) {
     cmdRes = recvResp(SDIO_RESP_SD_R1, &response);
     if (cmdRes != rOK) return cmdRes;
     // Configure the SDIO data transfer
-    SDIO->DTIMER = (168000000 / (clkDiv + 2) / 1000) * 100; // Data read timeout
+    SDIO->DTIMER = (busFreq / (clkDiv + 2) / 1000) * 100; // Data read timeout
     SDIO->DLEN = length; // Data length
     // Data transfer: block, card -> controller, size: 2^9 = 512bytes, enable transfer
     SDIO->DCTRL  = SDIO_DCTRL_DTDIR | (9 << 4) | SDIO_DCTRL_DTEN;
@@ -492,7 +491,7 @@ Result SimpleSDIO::writeBlock(uint32_t addr, uint32_t *pBuf, uint32_t length) {
     SDIO->ICR = SDIO_ICR_STATIC;
 
     // Configure the SDIO data transfer
-    SDIO->DTIMER = (48000000 / (clkDiv + 2) / 1000) * 250; // Data write timeout
+    SDIO->DTIMER = (busFreq / (clkDiv + 2) / 1000) * 250; // Data write timeout
     SDIO->DLEN   = length; // Data length
     // Data transfer: block, controller -> card, size: 2^9 = 512bytes, enable transfer
     SDIO->DCTRL  = (9 << 4) | SDIO_DCTRL_DTEN;

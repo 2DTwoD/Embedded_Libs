@@ -4,6 +4,8 @@
 #include <cstdint>
 #include <cstring>
 
+#define RESULT_DESC_SIZE 20
+
 enum  ResultLabel{
     rOK = 0, rERROR = 1, rINFO = 2, rDUMMY = 3
 };
@@ -11,7 +13,9 @@ enum  ResultLabel{
 struct Result{
     ResultLabel label;
     uint8_t id;
-    char description[10];
+    char description[RESULT_DESC_SIZE]{};
+
+    Result(ResultLabel label, uint8_t id, const char* description);
 
     bool operator==(ResultLabel lb) const;
     bool operator!=(ResultLabel lb) const;

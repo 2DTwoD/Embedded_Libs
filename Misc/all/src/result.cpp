@@ -1,5 +1,4 @@
 #include "result.h"
-#include "array_fun.h"
 
 //Result
 bool Result::operator==(ResultLabel lb) const{
@@ -12,10 +11,13 @@ bool Result::operator!=(ResultLabel lb) const{
 
 Result& Result::operator=(Result res) {
     this->label = res.label;
-    //strcpy(this->description, res.description);
-    copyStr(this->description, res.description);
+    strncpy(this->description, res.description, RESULT_DESC_SIZE);
     this->id = res.id;
     return *this;
+}
+
+Result::Result(ResultLabel label, uint8_t id, const char* description) : label(label), id(id){
+    strncpy(this->description, description, RESULT_DESC_SIZE);
 }
 
 //ResultBuilder

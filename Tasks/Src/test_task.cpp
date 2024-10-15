@@ -14,11 +14,6 @@ extern SimpleSDIO sdio;
 
 void testTask(void *pvParameters){
     Result res = sdio.init();
-    Result res2 = ResultBuilder::getError("Errror");
-    Result res3 = ResultBuilder::getOK();
-    res3 = res2;
-    char mes[] = "111";
-    copyStr(mes, "222");
     while(true){
         vTaskDelay(1000);
 	}
