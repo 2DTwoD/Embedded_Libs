@@ -18,12 +18,6 @@ SimpleSDIO::SimpleSDIO(SDIO_WideBus sdioWideBus, uint8_t clkDiv, uint32_t busFre
     adjustGPIO({GPIOC, 12});
     //RCC GPIO
     enableRCC(CLOCK_SDIO);
-    //Configure SDIO clock control registers
-    setRegValShift(SDIO->CLKCR, SDIO_CLKCR_WIDBUS, sdioWideBus);
-    setRegValShift(SDIO->CLKCR, SDIO_CLKCR_CLKDIV, clkDiv);
-    setBit(SDIO->CLKCR, SDIO_CLKCR_CLKEN | SDIO_CLKCR_PWRSAV);
-    //Configure SDIO power control register
-    setRegValShift(SDIO->POWER, SDIO_POWER_PWRCTRL, 0b00);
 }
 
 void SimpleSDIO::adjustGPIO(GPIO_Info gpioInfo) {
@@ -34,13 +28,13 @@ void SimpleSDIO::adjustGPIO(GPIO_Info gpioInfo) {
 
 Result SimpleSDIO::sendCmd(uint8_t cmd, uint32_t arg, SDIO_RESP_LEN respType) {
     // Clear the command flags
-    SDIO->ICR = SDIO_ICR_CCRCFAILC | SDIO_ICR_CTIMEOUTC | SDIO_ICR_CMDRENDC | SDIO_ICR_CMDSENTC;
+    setBit(SDIO->ICR, SDIO_ICR_CCRCFAILC | SDIO_ICR_CTIMEOUTC | SDIO_ICR_CMDRENDC | SDIO_ICR_CMDSENTC);
     // Command argument value
     SDIO->ARG = arg;
     // Write to SDIO CMD
-    setRegValShift(SDIO->CMD, SDIO_CMD_WAITRESP, respType);
     setRegValShift(SDIO->CMD, SDIO_CMD_CMDINDEX, cmd);
-    setBit(SDIO->CMD, SDIO_CMD_CPSMEN);
+    setRegValShift(SDIO->CMD, SDIO_CMD_WAITRESP, respType);
+    setBit(SDIO->CMD,SDIO_CMD_CPSMEN);
     // Block till get a response
     OnDelayCommon::again();
     if (respType == SDIO_RESP_NONE) {
@@ -225,6 +219,13 @@ Result SimpleSDIO::init() {
     sd.Type = 0;
     sd.RCA = 0;
 
+    //Configure SDIO clock control registers
+    setRegValShift(SDIO->CLKCR, SDIO_CLKCR_WIDBUS, sdioWideBus);
+    setRegValShift(SDIO->CLKCR, SDIO_CLKCR_CLKDIV, clkDiv);
+    setBit(SDIO->CLKCR, SDIO_CLKCR_CLKEN | SDIO_CLKCR_PWRSAV);
+    //Configure SDIO power control register
+    setRegValShift(SDIO->POWER, SDIO_POWER_PWRCTRL, 0b00);
+
     setRegValShift(SDIO->POWER, SDIO_POWER_PWRCTRL, 0b11); // Enable SDIO clock
 
     cmdRes = sendCmd(0,0x00,SDIO_RESP_NONE);
@@ -267,12 +268,12 @@ Result SimpleSDIO::init() {
         // SD v1.x or MMC
 
         // Issue CMD55 to reset 'Illegal command' bit of the SD card
-        sendCmd(55, 0, SDIO_RESP_SHORT); // CMD55 with RCA 0
+        cmdRes = sendCmd(55, 0, SDIO_RESP_SHORT); // CMD55 with RCA 0
 
         // Issue ACMD41 command with zero argument
         while (true) {
             // Send leading command for ACMD<n> command
-            sendCmd(55,0,SDIO_RESP_SHORT); // CMD55 with RCA 0
+            cmdRes = sendCmd(55,0,SDIO_RESP_SHORT); // CMD55 with RCA 0
             if (recvResp(SDIO_RESP_SD_R1,response) != rOK) return ResultBuilder::getError("SDR BadResponse");
             // ACMD41 - initiate initialization process (bit HCS = 0)
             // R3 response do not protected with CRC and here will be CRC error
