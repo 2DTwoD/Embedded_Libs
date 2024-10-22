@@ -49,9 +49,9 @@ SimpleSPI spi(SPI2,
               10);
 
 SimpleSDIO sdio(SDIO_4BIT,
-                0,
+                2,
                 84000000,
-                1000);
+                10);
 
 IUpdated1ms *updateObjects[] = {
         &button,

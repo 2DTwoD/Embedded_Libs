@@ -14,6 +14,11 @@ extern SimpleSDIO sdio;
 
 void testTask(void *pvParameters){
     Result res = sdio.init();
+    uint32_t buf[1024]{0};
+    taskENTER_CRITICAL();
+    /*res = sdio.writeBlock(0, buf, 1024);
+    res = sdio.readBlock(0, buf, 1024);*/
+    taskEXIT_CRITICAL();
     while(true){
         vTaskDelay(1000);
 	}

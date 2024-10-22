@@ -18,6 +18,8 @@ SimpleSDIO::SimpleSDIO(SDIO_WideBus sdioWideBus, uint8_t clkDiv, uint32_t busFre
     adjustGPIO({GPIOC, 12});
     //RCC GPIO
     enableRCC(CLOCK_SDIO);
+    //Configure SDIO power control register
+    setRegValShift(SDIO->POWER, SDIO_POWER_PWRCTRL, 0b00);
 }
 
 void SimpleSDIO::adjustGPIO(GPIO_Info gpioInfo) {
@@ -32,9 +34,11 @@ Result SimpleSDIO::sendCmd(uint8_t cmd, uint32_t arg, SDIO_RESP_LEN respType) {
     // Command argument value
     SDIO->ARG = arg;
     // Write to SDIO CMD
-    setRegValShift(SDIO->CMD, SDIO_CMD_CMDINDEX, cmd);
-    setRegValShift(SDIO->CMD, SDIO_CMD_WAITRESP, respType);
-    setBit(SDIO->CMD,SDIO_CMD_CPSMEN);
+    uint32_t tmp = cmd | (respType << SDIO_CMD_WAITRESP_Pos) | SDIO_CMD_CPSMEN;
+//    setRegValShift(SDIO->CMD, SDIO_CMD_WAITRESP, respType);
+//    setBit(SDIO->CMD,SDIO_CMD_CPSMEN);
+//    setRegValShift(SDIO->CMD, SDIO_CMD_CMDINDEX, cmd);
+    SDIO->CMD = tmp;
     // Block till get a response
     OnDelayCommon::again();
     if (respType == SDIO_RESP_NONE) {
@@ -50,37 +54,37 @@ Result SimpleSDIO::sendCmd(uint8_t cmd, uint32_t arg, SDIO_RESP_LEN respType) {
     }
     // Check response
     if (bitIsOne(SDIO->STA, SDIO_STA_CTIMEOUT) || OnDelayCommon::get()){
-        return ResultBuilder::getError(2,"SDR Timeout");
+        return getResult(SDR_Timeout);
     }
     if (bitIsOne(SDIO->STA, SDIO_STA_CCRCFAIL)) {
-        return ResultBuilder::getError(3,"SDR CRCError"); // CRC fail will be always for R3 response
+        return getResult(SDR_CRCError); // CRC fail will be always for R3 response
     }
-    return ResultBuilder::getOK(1);
+    return getResult(SDR_Success);
 }
 
 Result SimpleSDIO::getError(uint32_t cardStatus) {
     if (cardStatus & SD_CS_ERROR_BITS) {
-        if (cardStatus & SD_CS_OUT_OF_RANGE) return ResultBuilder::getError("SDR AddrOutOfRange");
-        if (cardStatus & SD_CS_ADDRESS_ERROR) return ResultBuilder::getError("SDR AddrMisaligned");
-        if (cardStatus & SD_CS_BLOCK_LEN_ERROR) return ResultBuilder::getError("SDR BlockLenError");
-        if (cardStatus & SD_CS_ERASE_SEQ_ERROR) return ResultBuilder::getError("SDR EraseSeqError");
-        if (cardStatus & SD_CS_ERASE_PARAM) return ResultBuilder::getError("SDR EraseParam");
-        if (cardStatus & SD_CS_WP_VIOLATION) return ResultBuilder::getError("SDR WPViolation");
-        if (cardStatus & SD_CS_LOCK_UNLOCK_FAILED) return ResultBuilder::getError("SDR LockUnlockFailed");
-        if (cardStatus & SD_CS_COM_CRC_ERROR) return ResultBuilder::getError("SDR ComCRCError");
-        if (cardStatus & SD_CS_ILLEGAL_COMMAND) return ResultBuilder::getError("SDR IllegalCommand");
-        if (cardStatus & SD_CS_CARD_ECC_FAILED) return ResultBuilder::getError("SDR CardECCFailed");
-        if (cardStatus & SD_CS_CC_ERROR) return ResultBuilder::getError("SDR CCError");
-        if (cardStatus & SD_CS_ERROR) return ResultBuilder::getError("SDR GeneralError");
-        if (cardStatus & SD_CS_STREAM_R_UNDERRUN) return ResultBuilder::getError("SDR StreamUnderrun");
-        if (cardStatus & SD_CS_STREAM_W_OVERRUN) return ResultBuilder::getError("SDR StreamOverrun");
-        if (cardStatus & SD_CS_CSD_OVERWRITE) return ResultBuilder::getError("SDR CSDOverwrite");
-        if (cardStatus & SD_CS_WP_ERASE_SKIP) return ResultBuilder::getError("SDR WPEraseSkip");
-        if (cardStatus & SD_CS_CARD_ECC_DISABLED) return ResultBuilder::getError("SDR ECCDisabled");
-        if (cardStatus & SD_CS_ERASE_RESET) return ResultBuilder::getError("SDR EraseReset");
-        if (cardStatus & SD_CS_AKE_SEQ_ERROR) return ResultBuilder::getError("SDR AKESeqError");
+        if (cardStatus & SD_CS_OUT_OF_RANGE) return getResult(SDR_AddrOutOfRange);
+        if (cardStatus & SD_CS_ADDRESS_ERROR) return getResult(SDR_AddrMisaligned);
+        if (cardStatus & SD_CS_BLOCK_LEN_ERROR) return getResult(SDR_BlockLenError);
+        if (cardStatus & SD_CS_ERASE_SEQ_ERROR) return getResult(SDR_EraseSeqError);
+        if (cardStatus & SD_CS_ERASE_PARAM) return getResult(SDR_EraseParam);
+        if (cardStatus & SD_CS_WP_VIOLATION) return getResult(SDR_WPViolation);
+        if (cardStatus & SD_CS_LOCK_UNLOCK_FAILED) return getResult(SDR_LockUnlockFailed);
+        if (cardStatus & SD_CS_COM_CRC_ERROR) return getResult(SDR_ComCRCError);
+        if (cardStatus & SD_CS_ILLEGAL_COMMAND) return getResult(SDR_IllegalCommand);
+        if (cardStatus & SD_CS_CARD_ECC_FAILED) return getResult(SDR_CardECCFailed);
+        if (cardStatus & SD_CS_CC_ERROR) return getResult(SDR_CCError);
+        if (cardStatus & SD_CS_ERROR) return getResult(SDR_GeneralError);
+        if (cardStatus & SD_CS_STREAM_R_UNDERRUN) return getResult(SDR_StreamUnderrun);
+        if (cardStatus & SD_CS_STREAM_W_OVERRUN) return getResult(SDR_StreamOverrun);
+        if (cardStatus & SD_CS_CSD_OVERWRITE) return getResult(SDR_CSDOverwrite);
+        if (cardStatus & SD_CS_WP_ERASE_SKIP) return getResult(SDR_WPEraseSkip);
+        if (cardStatus & SD_CS_CARD_ECC_DISABLED) return getResult(SDR_ECCDisabled);
+        if (cardStatus & SD_CS_ERASE_RESET) return getResult(SDR_EraseReset);
+        if (cardStatus & SD_CS_AKE_SEQ_ERROR) return getResult(SDR_AKESeqError);
     }
-    return ResultBuilder::getOK("SDR Success");
+    return getResult(SDR_Success);
 }
 
 Result SimpleSDIO::recvResp(SDIO_RESP_TYPE resp_type, uint32_t *pResp) {
@@ -102,28 +106,28 @@ Result SimpleSDIO::recvResp(SDIO_RESP_TYPE resp_type, uint32_t *pResp) {
             // RESP1 contains the OCR register value
             // Check for correct OCR header
             if (SDIO->RESPCMD != 0x3f) {
-                return ResultBuilder::getError("Bad response");
+                return getResult(SDR_BadResponse);
             }
             break;
         case SDIO_RESP_SD_R6:
             // RESP1 contains the RCA response value
             // Only CMD3 generates R6 response, so RESPCMD must be 0x03
             if (SDIO->RESPCMD != 0x03) {
-                return ResultBuilder::getError("Bad response");
+                return getResult(SDR_BadResponse);
             }
             break;
         case SDIO_RESP_SD_R7:
             // RESP1 contains 'Voltage accepted' and echo-back of check pattern
             // Only CMD8 generates R7 response, so RESPCMD must be 0x08
             if (SDIO->RESPCMD != 0x08) {
-                return ResultBuilder::getError("Bad response");
+                return getResult(SDR_BadResponse);
             }
             break;
         default:
             // Unknown response
-            return ResultBuilder::getError("Unknown type");
+            return getResult(SDR_UnknownError);
     }
-    return ResultBuilder::getOK();
+    return getResult(SDR_Success);
 }
 
 void SimpleSDIO::parseCardInfo() {
@@ -209,7 +213,7 @@ Result SimpleSDIO::getCardState(uint8_t *pStatus) {
 Result SimpleSDIO::init() {
     uint32_t response[4];
     uint32_t sdType = SD_STD_CAPACITY; // SD card capacity
-    Result cmdRes = ResultBuilder::getOK();
+    Result cmdRes = getResult(SDR_Success);
 
     // Populate SDCard structure with default values
     sd.Capacity = 0;
@@ -223,13 +227,10 @@ Result SimpleSDIO::init() {
     setRegValShift(SDIO->CLKCR, SDIO_CLKCR_WIDBUS, sdioWideBus);
     setRegValShift(SDIO->CLKCR, SDIO_CLKCR_CLKDIV, clkDiv);
     setBit(SDIO->CLKCR, SDIO_CLKCR_CLKEN | SDIO_CLKCR_PWRSAV);
-    //Configure SDIO power control register
-    setRegValShift(SDIO->POWER, SDIO_POWER_PWRCTRL, 0b00);
 
     setRegValShift(SDIO->POWER, SDIO_POWER_PWRCTRL, 0b11); // Enable SDIO clock
 
     cmdRes = sendCmd(0,0x00,SDIO_RESP_NONE);
-
     // CMD8: SEND_IF_COND. Send this command to verify SD card interface operating condition
     // Argument: - [31:12]: Reserved (shall be set to '0')
     //           - [11:8]: Supply Voltage (VHS) 0x1 (Range: 2.7-3.6 V)
@@ -239,9 +240,9 @@ Result SimpleSDIO::init() {
         // SD v2.0 or later
 
         // Get and check R7 response
-        if (recvResp(SDIO_RESP_SD_R7,response) != rOK) return ResultBuilder::getError("Bad response");
+        if (recvResp(SDIO_RESP_SD_R7,response) != rOK) return getResult(SDR_BadResponse);
         // Check echo-back of check pattern
-        if ((response[0] & 0x01ff) != (SD_CHECK_PATTERN & 0x01ff)) return ResultBuilder::getError("SDR Unsupported");
+        if ((response[0] & 0x01ff) != (SD_CHECK_PATTERN & 0x01ff)) return getResult(SDR_Unsupported);
         sdType = SD_HIGH_CAPACITY; // SD v2.0 or later
 
         // Issue ACMD41 command
@@ -249,17 +250,17 @@ Result SimpleSDIO::init() {
         while (true) {
             // Send leading command for ACMD<n> command
             sendCmd(55,0,SDIO_RESP_SHORT); // CMD55 with RCA 0
-            if (recvResp(SDIO_RESP_SD_R1,response) != rOK) return ResultBuilder::getError("SDR BadResponse");
+            if (recvResp(SDIO_RESP_SD_R1,response) != rOK) return getResult(SDR_BadResponse);
             // ACMD41 - initiate initialization process.
             // Set 3.0-3.3V voltage window (bit 20)
             // Set HCS bit (30) (Host Capacity Support) to inform card what host support high capacity
             // Set XPC bit (28) (SDXC Power Control) to use maximum performance (SDXC only)
             sendCmd(41, SD_OCR_VOLTAGE | sdType, SDIO_RESP_SHORT);
-            if (recvResp(SDIO_RESP_SD_R3,response) != rOK) return ResultBuilder::getError("SDR BadResponse");
+            if (recvResp(SDIO_RESP_SD_R3,response) != rOK) return getResult(SDR_BadResponse);
             // Check if card finished power up routine
             if (response[0] & (1 << 31)) break;
             if(OnDelayCommon::get()){
-                return ResultBuilder::getError("SDR InvalidVoltage"); // Unsupported voltage range
+                return getResult(SDR_InvalidVoltage); // Unsupported voltage range
             }
         }
         // Check if card is SDHC/SDXC
@@ -274,16 +275,16 @@ Result SimpleSDIO::init() {
         while (true) {
             // Send leading command for ACMD<n> command
             cmdRes = sendCmd(55,0,SDIO_RESP_SHORT); // CMD55 with RCA 0
-            if (recvResp(SDIO_RESP_SD_R1,response) != rOK) return ResultBuilder::getError("SDR BadResponse");
+            if (recvResp(SDIO_RESP_SD_R1,response) != rOK) return getResult(SDR_BadResponse);
             // ACMD41 - initiate initialization process (bit HCS = 0)
             // R3 response do not protected with CRC and here will be CRC error
             cmdRes = sendCmd(41,SD_OCR_VOLTAGE,SDIO_RESP_SHORT);
             if (cmdRes.id == 2) break; // MMC will not respond to this command
-            if (recvResp(SDIO_RESP_SD_R3,response) != rOK) return ResultBuilder::getError("SDR BadResponse");
+            if (recvResp(SDIO_RESP_SD_R3,response) != rOK) return getResult(SDR_BadResponse);
             // Check if card finished power up routine
             if (response[0] & (1 << 31)) break;
             if(OnDelayCommon::get()){
-                return ResultBuilder::getError("SDR UnknownCard");// Unsupported card
+                return getResult(SDR_UnknownCard);// Unsupported card
             }
         }
         if (cmdRes.id != 2) {
@@ -298,11 +299,11 @@ Result SimpleSDIO::init() {
             while (true) {
                 // Issue CMD1: initiate initialization process.
                 sendCmd(1,SD_OCR_VOLTAGE,SDIO_RESP_SHORT); // CMD1
-                if (recvResp(SDIO_RESP_SD_R3,response) != rOK) return ResultBuilder::getError("SDR BadResponse");
+                if (recvResp(SDIO_RESP_SD_R3,response) != rOK) return getResult(SDR_BadResponse);
                 // Check if card finished power up routine
                 if (response[0] & (1 << 31)) break;
                 if(OnDelayCommon::get()){
-                    return ResultBuilder::getError("SDR UnknownCard");
+                    return getResult(SDR_UnknownCard);
                 }
             }
             sd.Type = SDCT_MMC; // MMC
@@ -370,7 +371,7 @@ Result SimpleSDIO::init() {
     if ((sd.Type == SDCT_SDSC_V1) || (sd.Type == SDCT_SDSC_V2) || (sd.Type == SDCT_MMC)) {
         sendCmd(16,512,SDIO_RESP_SHORT); // CMD16
         cmdRes = recvResp(SDIO_RESP_SD_R1,response);
-        if (cmdRes != rOK) return ResultBuilder::getError("SDR SetBlockSizeFailed");
+        if (cmdRes != rOK) return getResult(SDR_SetBlockSizeFailed);
     }
 /*
 	// Turn off CRC checks - will it work in SDIO mode?
@@ -379,7 +380,7 @@ Result SimpleSDIO::init() {
 	SD_Cmd(SD_CMD_CRC_ON_OFF,1,SD_R1,resp); // CMD59
 */
 
-    return ResultBuilder::getOK();
+    return getResult(SDR_Success);
 }
 
 // Abort an ongoing data transfer
@@ -392,7 +393,7 @@ Result SimpleSDIO::stopTransfer() {
 }
 
 Result SimpleSDIO::readBlock(uint32_t addr, uint32_t *pBuf, uint32_t length) {
-    Result cmdRes = ResultBuilder::getOK();
+    Result cmdRes = getResult(SDR_Success);
     uint32_t response;
     uint32_t blkCount = length / 512; // Sectors in block
     uint32_t STA; // to speed up SDIO flags checking
@@ -412,7 +413,7 @@ Result SimpleSDIO::readBlock(uint32_t addr, uint32_t *pBuf, uint32_t length) {
         STAmask = SDIO_STA_RXOVERR | SDIO_STA_DCRCFAIL | SDIO_STA_DTIMEOUT | SDIO_STA_STBITERR | SDIO_STA_DATAEND;
     } else {
         // Send READ_SINGLE_BLOCK command
-        sendCmd(17,addr,SDIO_RESP_SHORT); // CMD17
+        cmdRes = sendCmd(17,addr,SDIO_RESP_SHORT); // CMD17
         // Prepare bit checking variable for single block transfer
         STAmask = SDIO_STA_RXOVERR | SDIO_STA_DCRCFAIL | SDIO_STA_DTIMEOUT | SDIO_STA_STBITERR | SDIO_STA_DBCKEND;
     }
@@ -422,7 +423,7 @@ Result SimpleSDIO::readBlock(uint32_t addr, uint32_t *pBuf, uint32_t length) {
     SDIO->DTIMER = (busFreq / (clkDiv + 2) / 1000) * 100; // Data read timeout
     SDIO->DLEN = length; // Data length
     // Data transfer: block, card -> controller, size: 2^9 = 512bytes, enable transfer
-    SDIO->DCTRL  = SDIO_DCTRL_DTDIR | (9 << 4) | SDIO_DCTRL_DTEN;
+    SDIO->DCTRL = SDIO_DCTRL_DTDIR | (9 << 4) | SDIO_DCTRL_DTEN;
     // Receive a data block from the SDIO
     // ----> TIME CRITICAL SECTION BEGIN <----
     do {
@@ -444,10 +445,10 @@ Result SimpleSDIO::readBlock(uint32_t addr, uint32_t *pBuf, uint32_t length) {
     // Send stop transmission command in case of multiple block transfer
     if ((sd.Type != SDCT_MMC) && (blkCount > 1)) cmdRes = stopTransfer();
     // Check for errors
-    if (STA & SDIO_STA_DTIMEOUT) cmdRes = ResultBuilder::getError("SDR DataTimeout");
-    if (STA & SDIO_STA_DCRCFAIL) cmdRes = ResultBuilder::getError("SDR DataCRCFail");
-    if (STA & SDIO_STA_RXOVERR) cmdRes = ResultBuilder::getError("SDR RXOverrun");
-    if (STA & SDIO_STA_STBITERR) cmdRes = ResultBuilder::getError("SDR StartBitError");
+    if (STA & SDIO_STA_DTIMEOUT) cmdRes = getResult(SDR_DataTimeout);
+    if (STA & SDIO_STA_DCRCFAIL) cmdRes = getResult(SDR_DataCRCFail);
+    if (STA & SDIO_STA_RXOVERR) cmdRes = getResult(SDR_RXOverrun);
+    if (STA & SDIO_STA_STBITERR) cmdRes = getResult(SDR_StartBitError);
     // Read data remnant from RX FIFO (if there is still any data)
     while (SDIO->STA & SDIO_STA_RXDAVL) *pBuf++ = SDIO->FIFO;
     // Clear the static SDIO flags
@@ -456,7 +457,7 @@ Result SimpleSDIO::readBlock(uint32_t addr, uint32_t *pBuf, uint32_t length) {
 }
 
 Result SimpleSDIO::writeBlock(uint32_t addr, uint32_t *pBuf, uint32_t length) {
-    Result cmdRes = ResultBuilder::getOK();
+    Result cmdRes = getResult(SDR_Success);
     uint32_t response; // SDIO command response
     uint32_t blkCount = length / 512; // Sectors in block
     uint32_t STA; // To speed up SDIO flags checking
@@ -548,10 +549,10 @@ Result SimpleSDIO::writeBlock(uint32_t addr, uint32_t *pBuf, uint32_t length) {
     if ((sd.Type != SDCT_MMC) && (blkCount > 1)) cmdRes = stopTransfer();
 
     // Check for errors+
-    if (STA & SDIO_STA_DTIMEOUT) cmdRes = ResultBuilder::getError("SDR DataTimeout");
-    if (STA & SDIO_STA_DCRCFAIL) cmdRes = ResultBuilder::getError("SDR DataCRCFail");
-    if (STA & SDIO_STA_TXUNDERR) cmdRes = ResultBuilder::getError("SDR TXUnderrun");
-    if (STA & SDIO_STA_STBITERR) cmdRes = ResultBuilder::getError("SDR StartBitError");;
+    if (STA & SDIO_STA_DTIMEOUT) cmdRes = getResult(SDR_DataTimeout);
+    if (STA & SDIO_STA_DCRCFAIL) cmdRes = getResult(SDR_DataCRCFail);
+    if (STA & SDIO_STA_TXUNDERR) cmdRes = getResult(SDR_TXUnderrun);
+    if (STA & SDIO_STA_STBITERR) cmdRes = getResult(SDR_StartBitError);
 
     // Wait till the card is in programming state
     do {
@@ -562,4 +563,87 @@ Result SimpleSDIO::writeBlock(uint32_t addr, uint32_t *pBuf, uint32_t length) {
     SDIO->ICR = SDIO_ICR_STATIC;
 
     return cmdRes;
+}
+
+Result SimpleSDIO::getResult(SdioResultEnum resultENum) {
+    switch (resultENum) {
+        case SDR_Success:
+            return ResultBuilder::getOK(resultENum, "SDR Success");
+        case SDR_Timeout:
+            return ResultBuilder::getError(resultENum, "SDR Timeout");
+        case SDR_CRCError:
+            return ResultBuilder::getError(resultENum, "SDR CRCError");
+        case SDR_ReadError:
+            return ResultBuilder::getError(resultENum, "SDR ReadError");
+        case SDR_WriteError:
+            return ResultBuilder::getError(resultENum, "SDR WriteError");
+        case SDR_WriteErrorInternal:
+            return ResultBuilder::getError(resultENum, "SDR WriteErrorInternal");
+        case SDR_Unsupported:
+            return ResultBuilder::getError(resultENum, "SDR Unsupported");
+        case SDR_BadResponse:
+            return ResultBuilder::getError(resultENum, "SDR BadResponse");
+        case SDR_SetBlockSizeFailed:
+            return ResultBuilder::getError(resultENum, "SDR SetBlockSizeFailed");
+        case SDR_UnknownCard:
+            return ResultBuilder::getError(resultENum, "SDR UnknownCard");
+        case SDR_NoResponse:
+            return ResultBuilder::getError(resultENum, "SDR NoResponse");
+        case SDR_AddrOutOfRange:
+            return ResultBuilder::getError(resultENum, "SDR AddrOutOfRange");
+        case SDR_WriteCRCError:
+            return ResultBuilder::getError(resultENum, "SDR WriteCRCError");
+        case SDR_InvalidVoltage:
+            return ResultBuilder::getError(resultENum, "SDR InvalidVoltage");
+        case SDR_DataTimeout:
+            return ResultBuilder::getError(resultENum, "SDR DataTimeout");
+        case SDR_DataCRCFail:
+            return ResultBuilder::getError(resultENum, "SDR DataCRCFail");
+        case SDR_RXOverrun:
+            return ResultBuilder::getError(resultENum, "SDR RXOverrun");
+        case SDR_TXUnderrun:
+            return ResultBuilder::getError(resultENum, "SDR TXUnderrun");
+        case SDR_StartBitError:
+            return ResultBuilder::getError(resultENum, "SDR StartBitError");
+        case SDR_AddrMisaligned:
+            return ResultBuilder::getError(resultENum, "SDR AddrMisaligned");
+        case SDR_BlockLenError:
+            return ResultBuilder::getError(resultENum, "SDR BlockLenError");
+        case SDR_EraseSeqError:
+            return ResultBuilder::getError(resultENum, "SDR EraseSeqError");
+        case SDR_EraseParam:
+            return ResultBuilder::getError(resultENum, "SDR EraseParam");
+        case SDR_WPViolation:
+            return ResultBuilder::getError(resultENum, "SDR WPViolation");
+        case SDR_LockUnlockFailed:
+            return ResultBuilder::getError(resultENum, "SDR LockUnlockFailed");
+        case SDR_ComCRCError:
+            return ResultBuilder::getError(resultENum, "SDR ComCRCError");
+        case SDR_IllegalCommand:
+            return ResultBuilder::getError(resultENum, "SDR IllegalCommand");
+        case SDR_CardECCFailed:
+            return ResultBuilder::getError(resultENum, "SDR CardECCFailed");
+        case SDR_CCError:
+            return ResultBuilder::getError(resultENum, "SDR CCError");
+        case SDR_GeneralError:
+            return ResultBuilder::getError(resultENum, "SDR GeneralError");
+        case SDR_StreamUnderrun:
+            return ResultBuilder::getError(resultENum, "SDR StreamUnderrun");
+        case SDR_StreamOverrun:
+            return ResultBuilder::getError(resultENum, "SDR StreamOverrun");
+        case SDR_CSDOverwrite:
+            return ResultBuilder::getError(resultENum, "SDR CSDOverwrite");
+        case SDR_WPEraseSkip:
+            return ResultBuilder::getError(resultENum, "SDR WPEraseSkip");
+        case SDR_ECCDisabled:
+            return ResultBuilder::getError(resultENum, "SDR ECCDisabled");
+        case SDR_EraseReset:
+            return ResultBuilder::getError(resultENum, "SDR EraseReset");
+        case SDR_AKESeqError:
+            return ResultBuilder::getError(resultENum, "SDR AKESeqError");
+        case SDR_UnknownError:
+            return ResultBuilder::getError(resultENum, "SDR UnknownError");
+        default:
+            return ResultBuilder::getError(255, "Unknown result");
+    }
 }

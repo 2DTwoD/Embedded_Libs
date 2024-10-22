@@ -1,3 +1,7 @@
+//Thank you, Lonely Wolf (щас спою)
+//https://github.com/LonelyWolf/stm32/blob/master/cube-usb-msc/sdcard-sdio.h
+//https://github.com/LonelyWolf/stm32/blob/master/cube-usb-msc/sdcard-sdio.c
+
 #ifndef SIMPLE_SDIO_H
 #define SIMPLE_SDIO_H
 
@@ -106,19 +110,62 @@ struct SDCard_TypeDef{
     uint8_t     SCR[8];          // SD card SCR register (SD card configuration)
 };
 
+// SD functions result
+enum SdioResultEnum{
+    SDR_Success             = 0x00,
+    SDR_Timeout             = 0x01,  // Timeout
+    SDR_CRCError            = 0x02,  // Response for command received but CRC check failed
+    SDR_ReadError           = 0x03,  // Read block error (response for CMD17)
+    SDR_WriteError          = 0x04,  // Write block error (response for CMD24)
+    SDR_WriteErrorInternal  = 0x05,  // Write block error due to internal card error
+    SDR_Unsupported         = 0x06,  // Unsupported card found
+    SDR_BadResponse         = 0x07,
+    SDR_SetBlockSizeFailed  = 0x08,  // Set block size command failed (response for CMD16)
+    SDR_UnknownCard         = 0x09,
+    SDR_NoResponse          = 0x0A,
+    SDR_AddrOutOfRange      = 0x0B,  // Address out of range
+    SDR_WriteCRCError       = 0x0C,  // Data write rejected due to a CRC error
+    SDR_InvalidVoltage      = 0x0D,  // Unsupported voltage range
+    SDR_DataTimeout         = 0x0E,  // Data block transfer timeout
+    SDR_DataCRCFail         = 0x0F,  // Data block transfer CRC failed
+    SDR_RXOverrun           = 0x10,  // Receive FIFO overrun
+    SDR_TXUnderrun          = 0x11,  // Transmit FIFO underrun
+    SDR_StartBitError       = 0x12,  // Start bit not detected on all data signals
+    SDR_AddrMisaligned      = 0x13,  // A misaligned address which did not match the block length was used in the command
+    SDR_BlockLenError       = 0x14,  // The transfer block length is not allowed for this card
+    SDR_EraseSeqError       = 0x15,  // An error in the sequence of erase commands occurred
+    SDR_EraseParam          = 0x16,  // An invalid selection of write-blocks for erase occurred
+    SDR_WPViolation         = 0x17,  // Attempt to write to a protected block or to the write protected card
+    SDR_LockUnlockFailed    = 0x18,  // Error in lock/unlock command
+    SDR_ComCRCError         = 0x19,  // The CRC check of the previous command failed
+    SDR_IllegalCommand      = 0x1A,  // Command is not legal for the the current card state
+    SDR_CardECCFailed       = 0x1B,  // Card internal ECC was applied but failed to correct the data
+    SDR_CCError             = 0x1C,  // Internal card controller error
+    SDR_GeneralError        = 0x1D,  // A general or an unknown error occurred during the operation
+    SDR_StreamUnderrun      = 0x1E,  // The card could not sustain data transfer in stream read operation
+    SDR_StreamOverrun       = 0x1F,  // The card could not sustain data programming in stream mode
+    SDR_CSDOverwrite        = 0x20,  // CSD overwrite error
+    SDR_WPEraseSkip         = 0x21,  // Only partial address space was erased
+    SDR_ECCDisabled         = 0x22,  // The command has been executed without using the internal ECC
+    SDR_EraseReset          = 0x23,  // An erase sequence was cleared before executing
+    SDR_AKESeqError         = 0x24,  // Error in the sequence of the authentication process
+    SDR_UnknownError        = 0xFF   // Unknown error
+};
+
 class SimpleSDIO: private OnDelayCommon, public IUpdated1ms{
 private:
-    SDCard_TypeDef sd;
+    SDCard_TypeDef sd{};
     SDIO_WideBus sdioWideBus;
     uint32_t busFreq;
     uint8_t clkDiv;
-    void adjustGPIO(GPIO_Info gpioInfo);
+    static void adjustGPIO(GPIO_Info gpioInfo);
     Result sendCmd(uint8_t cmd, uint32_t arg, SDIO_RESP_LEN respType);
-    Result recvResp(SDIO_RESP_TYPE resp_type, uint32_t *pResp);
-    Result getError(uint32_t cardStatus);
+    static Result recvResp(SDIO_RESP_TYPE resp_type, uint32_t *pResp);
+    static Result getError(uint32_t cardStatus);
     Result stopTransfer();
     Result getCardState(uint8_t *pStatus);
     void parseCardInfo();
+    static Result getResult(SdioResultEnum sdiOresultEnum);
 public:
     SimpleSDIO(SDIO_WideBus sdioWideBus, uint8_t clkDiv, uint32_t busFreq, uint32_t errorDelay);
     void update1ms() override;
