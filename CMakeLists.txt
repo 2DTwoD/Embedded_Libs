@@ -62,6 +62,7 @@ include_directories(
         #Drivers/CMSIS/Device/ST/STM32F1xx/Include
         Drivers/CMSIS/Device/ST/STM32F4xx/Include
         Drivers/CMSIS/Include
+        FatFS/inc
         FreeRTOS/ARM_CM4F
         FreeRTOS/Inc
         Main/inc
@@ -85,6 +86,7 @@ file(GLOB_RECURSE SOURCES
         "Discrete/all/*.*"
         "Discrete/F407/*.*"
         "Drivers/CMSIS/Device/ST/STM32F4xx/*.*"
+        "FatFS/*.*"
         "FreeRTOS/*.*"
         "Main/*.*"
         "Misc/all/*.*"

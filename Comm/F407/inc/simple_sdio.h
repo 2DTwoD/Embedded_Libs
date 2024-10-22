@@ -90,27 +90,7 @@ enum SD_CARD_TYPE{
     SDCT_SDHC               = 0x04   // High capacity SD card (SDHC or SDXC)
 };
 
-// SD card description
-struct SDCard_TypeDef{
-    uint8_t     Type;            // Card type (detected by SD_Init())
-    uint32_t    Capacity;        // Card capacity (MBytes for SDHC/SDXC, bytes otherwise)
-    uint32_t    BlockCount;      // SD card blocks count
-    uint32_t    BlockSize;       // SD card block size (bytes), determined in SD_ReadCSD()
-    uint32_t    MaxBusClkFreq;   // Maximum card bus frequency (MHz)
-    uint8_t     CSDVer;          // SD card CSD register version
-    uint16_t    RCA;             // SD card RCA address (only for SDIO)
-    uint8_t     MID;             // SD card manufacturer ID
-    uint16_t    OID;             // SD card OEM/Application ID
-    uint8_t     PNM[5];          // SD card product name (5-character ASCII string)
-    uint8_t     PRV;             // SD card product revision (two BCD digits: '6.2' will be 01100010b)
-    uint32_t    PSN;             // SD card serial number
-    uint16_t    MDT;             // SD card manufacturing date
-    uint8_t     CSD[16];         // SD card CSD register (card structure data)
-    uint8_t     CID[16];         // SD card CID register (card identification number)
-    uint8_t     SCR[8];          // SD card SCR register (SD card configuration)
-};
-
-// SD functions result
+//SD functions result
 enum SdioResultEnum{
     SDR_Success             = 0x00,
     SDR_Timeout             = 0x01,  // Timeout
@@ -150,6 +130,26 @@ enum SdioResultEnum{
     SDR_EraseReset          = 0x23,  // An erase sequence was cleared before executing
     SDR_AKESeqError         = 0x24,  // Error in the sequence of the authentication process
     SDR_UnknownError        = 0xFF   // Unknown error
+};
+
+// SD card description
+struct SDCard_TypeDef{
+    uint8_t     Type;            // Card type (detected by SD_Init())
+    uint32_t    Capacity;        // Card capacity (MBytes for SDHC/SDXC, bytes otherwise)
+    uint32_t    BlockCount;      // SD card blocks count
+    uint32_t    BlockSize;       // SD card block size (bytes), determined in SD_ReadCSD()
+    uint32_t    MaxBusClkFreq;   // Maximum card bus frequency (MHz)
+    uint8_t     CSDVer;          // SD card CSD register version
+    uint16_t    RCA;             // SD card RCA address (only for SDIO)
+    uint8_t     MID;             // SD card manufacturer ID
+    uint16_t    OID;             // SD card OEM/Application ID
+    uint8_t     PNM[5];          // SD card product name (5-character ASCII string)
+    uint8_t     PRV;             // SD card product revision (two BCD digits: '6.2' will be 01100010b)
+    uint32_t    PSN;             // SD card serial number
+    uint16_t    MDT;             // SD card manufacturing date
+    uint8_t     CSD[16];         // SD card CSD register (card structure data)
+    uint8_t     CID[16];         // SD card CID register (card identification number)
+    uint8_t     SCR[8];          // SD card SCR register (SD card configuration)
 };
 
 class SimpleSDIO: private OnDelayCommon, public IUpdated1ms{

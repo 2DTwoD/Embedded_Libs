@@ -84,7 +84,7 @@
 / Locale and Namespace Configurations
 /---------------------------------------------------------------------------*/
 
-#define FF_CODE_PAGE	932
+#define FF_CODE_PAGE	866//932
 /* This option specifies the OEM code page to be used on the target system.
 /  Incorrect code page setting can cause a file open failure.
 /
@@ -133,7 +133,7 @@
 /  ff_memfree() exemplified in ffsystem.c, need to be added to the project. */
 
 
-#define FF_LFN_UNICODE	0
+#define FF_LFN_UNICODE	2
 /* This option switches the character encoding on the API when LFN is enabled.
 /
 /   0: ANSI/OEM in current CP (TCHAR = char)
@@ -146,7 +146,7 @@
 
 
 #define FF_LFN_BUF		255
-#define FF_SFN_BUF		12
+#define FF_SFN_BUF		30//12
 /* This set of options defines size of file name members in the FILINFO structure
 /  which is used to read out directory items. These values should be suffcient for
 /  the file names to read. The maximum possible length of the read file name depends
@@ -194,7 +194,7 @@
 
 
 #define FF_MIN_SS		512
-#define FF_MAX_SS		512
+#define FF_MAX_SS		4096
 /* This set of options configures the range of sector size to be supported. (512,
 /  1024, 2048 or 4096) Always set both 512 for most systems, generic memory card and
 /  harddisk, but a larger value may be required for on-board flash memory and some
