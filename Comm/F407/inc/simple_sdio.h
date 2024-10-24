@@ -172,6 +172,7 @@ public:
     Result init();
     Result readBlock(uint32_t addr, uint32_t *pBuf, uint32_t length);
     Result writeBlock(uint32_t addr, uint32_t *pBuf, uint32_t length);
+    SDCard_TypeDef getSDInfo();
 };
 
 #endif //SIMPLE_SDIO_H

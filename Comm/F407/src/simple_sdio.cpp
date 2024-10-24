@@ -647,3 +647,7 @@ Result SimpleSDIO::getResult(SdioResultEnum resultENum) {
             return ResultBuilder::getError(255, "Unknown result");
     }
 }
+
+SDCard_TypeDef SimpleSDIO::getSDInfo() {
+    return sd;
+}

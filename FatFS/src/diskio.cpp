@@ -42,7 +42,7 @@ DSTATUS disk_initialize (
 )
 {
     if(sdio.init() == rOK){
-        return 0;
+        return RES_OK;
     }
     return STA_NOINIT;
 }
@@ -58,7 +58,8 @@ DRESULT disk_read (
 	UINT count		/* Number of sectors to read */
 )
 {
-    if(sdio.readBlock(sector, (uint32_t *)buff, count) == rOK){
+    Result res = sdio.readBlock(sector, (uint32_t *)buff, count * sdio.getSDInfo().BlockSize);
+    if(res == rOK){
         return RES_OK;
     }
     return RES_ERROR;
@@ -77,8 +78,7 @@ DRESULT disk_write (
 	UINT count			/* Number of sectors to write */
 )
 {
-    // translate the result code here
-    if(sdio.writeBlock(sector, (uint32_t *)buff, count) == rOK){
+    if(sdio.writeBlock(sector, (uint32_t *)buff, count * sdio.getSDInfo().BlockSize) == rOK){
         return RES_OK;
     }
     return RES_ERROR;
@@ -96,5 +96,26 @@ DRESULT disk_ioctl (
 	void *buff		/* Buffer to send/receive control data */
 )
 {
-	return RES_PARERR;
+    DRESULT res;
+    switch (cmd)
+    {
+        case CTRL_SYNC :
+            res = RES_OK;
+            break;
+        case GET_SECTOR_COUNT :
+            *(DWORD*)buff = sdio.getSDInfo().BlockCount;
+            res = RES_OK;
+            break;
+        case GET_SECTOR_SIZE:
+            *(WORD*)buff = sdio.getSDInfo().BlockSize;
+            res = RES_OK;
+            break;
+        case GET_BLOCK_SIZE :
+            *(DWORD*)buff = 4;
+            res = RES_OK;
+            break;
+        default:
+            res = RES_PARERR;
+    }
+    return res;
 }
