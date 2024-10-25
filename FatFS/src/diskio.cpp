@@ -30,7 +30,7 @@ DSTATUS disk_status (
 	BYTE pdrv		/* Physical drive nmuber to identify the drive */
 )
 {
-	return STA_NOINIT;
+	return RES_OK;
 }
 
 /*-----------------------------------------------------------------------*/
@@ -58,8 +58,7 @@ DRESULT disk_read (
 	UINT count		/* Number of sectors to read */
 )
 {
-    Result res = sdio.readBlock(sector, (uint32_t *)buff, count * sdio.getSDInfo().BlockSize);
-    if(res == rOK){
+    if(sdio.readBlock(sector, (uint32_t *)buff, count * sdio.getSDInfo().BlockSize) == rOK){
         return RES_OK;
     }
     return RES_ERROR;
@@ -96,26 +95,19 @@ DRESULT disk_ioctl (
 	void *buff		/* Buffer to send/receive control data */
 )
 {
-    DRESULT res;
     switch (cmd)
     {
         case CTRL_SYNC :
-            res = RES_OK;
-            break;
+            return RES_OK;
         case GET_SECTOR_COUNT :
             *(DWORD*)buff = sdio.getSDInfo().BlockCount;
-            res = RES_OK;
-            break;
+            return RES_OK;
         case GET_SECTOR_SIZE:
-            *(WORD*)buff = sdio.getSDInfo().BlockSize;
-            res = RES_OK;
-            break;
+            *(WORD*)buff = 4096;
+            return RES_OK;
         case GET_BLOCK_SIZE :
-            *(DWORD*)buff = 4;
-            res = RES_OK;
-            break;
-        default:
-            res = RES_PARERR;
+            *(DWORD*)buff = sdio.getSDInfo().BlockSize;
+            return RES_OK;
     }
-    return res;
+    return RES_PARERR;
 }
